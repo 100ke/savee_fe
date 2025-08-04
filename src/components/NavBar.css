@@ -1,0 +1,10 @@
+.custom-side-menu li a:hover {
+  background-color: var(--main-color-dark);
+  color: white;
+}
+.sidebar {
+  border-color: var(--main-color-dark);
+}
+.logout {
+  color: var(--black30);
+}
