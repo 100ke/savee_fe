@@ -8,6 +8,7 @@ export default function NavBar() {
     { label: "공유 가계부", path: "/", icon: IconCalender },
     { label: "소비 분석", path: "/", icon: IconCalender },
     { label: "내 정보", path: "/", icon: IconCalender },
+    { label: "고객센터", path: "/", icon: IconCalender },
   ];
 
   return (
