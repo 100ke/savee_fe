@@ -1,0 +1,12 @@
+.custom-card1 {
+  background-color: var(--accent-color);
+  color: white;
+}
+.custom-card2 {
+  border-color: var(--accent-color);
+  color: var(--accent-color);
+}
+
+.custom-search-btn {
+  background-color: var(--accent-color);
+}
