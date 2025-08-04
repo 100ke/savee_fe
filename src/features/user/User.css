@@ -1,5 +1,14 @@
 /* 회원가입 */
 .termsstep .steps .step-primary::after {
-    background-color: var(--accent-color);
-    border: var(--accent-color);
+  background-color: var(--accent-color);
+  border: var(--accent-color);
 }
+.termsstep .steps .step-primary::before {
+  background-color: var(--accent-color);
+  border: var(--accent-color);
+}
+
+/* .btn-primary {
+  background-color: var(--accent-color);
+  border: var(--accent-color);
+} */
