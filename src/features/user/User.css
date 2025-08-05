@@ -23,3 +23,28 @@
 .find-pw .temp-pw .code {
   color: var(--accent-color);
 }
+
+.find-pw .hidden-area .notice {
+  color: var(--black70);
+}
+
+.mypage .withdrawal {
+  color: var(--black50);
+  font-weight: normal;
+}
+
+.profile-circle {
+  background-color: var(--main-color-dark);
+}
+
+.profile-circle .user {
+  color: var(--black10);
+}
+
+.account-settings .card {
+  border-color: var(--black10);
+}
+
+.supports .card {
+  border-color: var(--black10);
+}

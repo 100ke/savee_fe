@@ -1,4 +1,6 @@
 import React from "react";
+import "../features/user/User.css";
+import FindPassword from "../features/user/modal/FindPassword.jsx";
 
 function Login() {
   return (
@@ -15,7 +17,10 @@ function Login() {
       </fieldset>
       <div className="flex flex-col items-center">
         <div className="flex justify-center items-center text-sm">
-          <a href="" className="text-gray-400">
+          <a
+            className="text-gray-400"
+            onClick={() => document.getElementById("find-pw-modal").showModal()}
+          >
             비밀번호 찾기
           </a>
           <div className="divider divider-horizontal" />
@@ -24,6 +29,7 @@ function Login() {
           </a>
         </div>
       </div>
+      <FindPassword />
     </div>
   );
 }
