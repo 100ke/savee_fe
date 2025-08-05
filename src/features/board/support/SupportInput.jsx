@@ -1,4 +1,5 @@
 import React, { useState, useRef } from "react";
+import PostHeader from "./SupportHeader";
 export default function SupportInput() {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
@@ -29,8 +30,6 @@ export default function SupportInput() {
   };
   //파일 첨부
   const handleFileChange = (e) => {
-    const files = Array.from(e.target.files);
-
     //이미지 미리보기
     const selectedFiles = Array.from(e.target.files);
 
@@ -56,12 +55,17 @@ export default function SupportInput() {
 
     setPreviews((prev) => [...prev, ...newPreviews]);
   };
+  //파일 삭제
+  const handleRemoveFile = (fileName) => {
+    // files 배열에서 제거
+    setFiles((prev) => prev.filter((file) => file.name !== fileName));
+    // previews 배열에서도 제거
+    setPreviews((prev) => prev.filter((file) => file.name !== fileName));
+  };
 
   return (
     <div className="container w-3/4">
-      <h2 className="text-xl text-center pb-2 ">공지사항</h2>
-      <div className="border-b line mt-2 mb-6 w-full opacity-50" />
-
+      <PostHeader></PostHeader>
       <fieldset className="fieldset">
         <legend className="fieldset-legend text-base font-normal">제목</legend>
         <input
@@ -121,13 +125,23 @@ export default function SupportInput() {
           <ul className="mt-2 flex ">
             <div className="flex flex-wrap gap-2 ">
               {previews.map((file, idx) => (
-                <div key={idx} className="flex flex-col items-center">
+                <div key={idx} className="flex flex-col items-center relative">
+                  {/* 삭제 버튼 */}
+                  <button
+                    className="absolute top-0 right-0 text-red-500 bg-white rounded-full w-5 h-5 flex items-center justify-center text-xs shadow"
+                    onClick={() => handleRemoveFile(file.name)}
+                    type="button"
+                  >
+                    ×
+                  </button>
                   <img
                     src={file.url}
                     alt={file.name}
                     className="w-24 h-24 object-cover rounded shadow"
                   />
-                  <p className="text-xs mt-1 text-gray-600">{file.name}</p>
+                  <p className="text-xs mt-1 text-gray-600 w-20 truncate">
+                    {file.name}
+                  </p>
                 </div>
               ))}
             </div>

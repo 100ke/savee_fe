@@ -1,6 +1,7 @@
 import Support from "../features/board/support/Support";
 import NavBar from "./NavBar"; // 사이드바 컴포넌트
 import { Outlet } from "react-router-dom";
+import SupportInput from "../features/board/support/SupportInput";
 import SupportDetail from "../features/board/support/SupportDetail";
 import {
   BrowserRouter as Router,
@@ -24,8 +25,9 @@ export default function Layout() {
           </Routes>
         </Router> */}
         {/* <Support /> */}
-        <DailyLedger />
+        {/* <DailyLedger /> */}
         {/* <SupportDetail /> */}
+        <SupportInput></SupportInput>
         <Outlet />
       </main>
     </div>
