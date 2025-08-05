@@ -10,3 +10,24 @@
 .custom-search-btn {
   background-color: var(--accent-color);
 }
+
+.support-title {
+  color: var(--accent-color);
+}
+.support-submit {
+  background-color: var(--accent-color);
+  color: white;
+}
+.support-btn {
+  background-color: var(--main-color-dark);
+  color: white;
+}
+.required-input {
+  color: var(--error-color);
+}
+.background-sky {
+  background-color: var(--main-color-lightest-40);
+}
+.line {
+  border-color: var(--black20);
+}
