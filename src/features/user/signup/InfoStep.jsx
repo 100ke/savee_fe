@@ -93,9 +93,7 @@ function InfoStep({ onBack, onNext }) {
 
             <input type="text" required placeholder="Verified Code" />
           </label>
-          <p className="validator-hint">
-            비밀번호는 6자리 이상, 20자리 이하로 입력 가능합니다.
-          </p>
+          <p className="validator-hint">인증번호가 일치하지 않습니다.</p>
         </div>
       </div>
       <div className="input-password flex mb-3">

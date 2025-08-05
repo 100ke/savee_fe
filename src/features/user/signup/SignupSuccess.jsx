@@ -3,18 +3,22 @@ import { FaCheckCircle } from "react-icons/fa";
 
 function SignupSuccess() {
   return (
-    <div className="card bg-base-100 w-96 shadow-sm">
+    <div className="card bg-base-100 w-96 shadow-md mx-auto border border-gray-100">
       <figure className="px-10 pt-10">
-        <FaCheckCircle />
+        <FaCheckCircle className="check-circle text-6xl" />
       </figure>
       <div className="card-body items-center text-center">
-        <h2 className="card-title">Card Title</h2>
-        <p>
-          A card component has a figure, a body part, and inside body there are
-          title and actions parts
+        <h2 className="card-title text-2xl">회원가입 완료</h2>
+        <p className="mx-8 my-5">
+          홍길동님(email@test.com)의 회원가입이 성공적으로 완료되었습니다.
+        </p>
+        <p className="mb-3">
+          *회원가입 내역 확인 및 수정은{" "}
+          <span className="accent">마이페이지&gt;계정 설정</span>에서
+          가능합니다.
         </p>
         <div className="card-actions">
-          <button className="btn btn-primary">Buy Now</button>
+          <button className="btn btn-primary">로그인 바로가기</button>
         </div>
       </div>
     </div>
