@@ -4,13 +4,7 @@ function FindPassword() {
   return (
     <div className="find-pw">
       {/* 이메일 입력란, 인증버튼(메일발송), 인증번호 입력, 임시 비밀번호 발급 */}
-      <button
-        className="btn"
-        onClick={() => document.getElementById("my_modal_3").showModal()}
-      >
-        open modal
-      </button>
-      <dialog id="my_modal_3" className="modal">
+      <dialog id="find-pw-modal" className="modal">
         <div className="modal-box">
           <form method="dialog">
             {/* if there is a button in form, it will close the modal */}
@@ -46,7 +40,7 @@ function FindPassword() {
               </label>
               <p className="validator-hint">유효한 이메일 형식이 아닙니다.</p>
             </div>
-            <button className="btn btn-primary join-item">인증</button>
+            <button className="btn btn-primary join-item">인증번호 발송</button>
           </div>
           <div className="input-verify-code flex">
             <p className="w-30 mt-2">
@@ -74,10 +68,19 @@ function FindPassword() {
               </label>
               <p className="validator-hint">인증번호가 일치하지 않습니다.</p>
             </div>
+            <div className="btn btn-primary">인증</div>
           </div>
-          <div className="temp-pw rounded-box p-3">
-            <p className="">
-              임시 비밀번호: <span className="code">T2MP9W</span>
+          <div className="hidden-area">
+            <p className="mb-2">
+              홍길동님의 비밀번호가 아래와 같이 초기화 되었습니다.
+            </p>
+            <div className="temp-pw rounded-box p-4">
+              <p className="text-center text-xl">
+                임시 비밀번호: <span className="code font-bold">T2MP9W</span>
+              </p>
+            </div>
+            <p className="mt-3 notice text-sm">
+              임시 비밀번호로 로그인 한 후 반드시 비밀번호를 변경해주세요.
             </p>
           </div>
         </div>
