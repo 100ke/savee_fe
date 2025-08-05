@@ -3,6 +3,7 @@ import SignupSteps from "../features/user/signup/SignupSteps";
 import TermsStep from "../features/user/signup/TermsStep";
 import InfoStep from "../features/user/signup/InfoStep";
 import SignupSuccess from "../features/user/signup/SignupSuccess";
+import "../features/user/User.css";
 
 function Signup() {
   const [currentStep, setCurrentStep] = useState(0);
