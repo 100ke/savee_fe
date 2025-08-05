@@ -8,7 +8,18 @@
   border: var(--accent-color);
 }
 
-/* .btn-primary {
-  background-color: var(--accent-color);
-  border: var(--accent-color);
-} */
+.check-circle {
+  color: var(--main-color-dark);
+}
+
+.card .accent {
+  color: var(--accent-color);
+}
+
+.find-pw .temp-pw {
+  background-color: var(--color-sub3-40);
+}
+
+.find-pw .temp-pw .code {
+  color: var(--accent-color);
+}
