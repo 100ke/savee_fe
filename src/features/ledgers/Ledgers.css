@@ -80,3 +80,12 @@
   border-color: var(--main-color-lightest) !important;
   cursor: pointer;
 }
+
+/* 탭 */
+.tab-active {
+  color: var(--main-color);
+}
+
+.tab {
+  font-size: medium !important;
+}

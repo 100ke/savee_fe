@@ -26,7 +26,7 @@ function LedgerHeader() {
   return (
     <div className="relative">
       <div className="stats shadow calendar-stats w-full max-w-full flex justify-center gap-4">
-        <div className="stat stat1 justify-center w-100 border-none text-center flex flex-col flex-1 min-w-[120px] items-center flex-shrink">
+        <div className="stat stat1 overflow-x-hidden justify-center w-100 border-none text-center flex flex-col flex-1 min-w-[120px] items-center flex-shrink">
           <div className="stat-title">{year}</div>
           <div className="flex items-center gap-x-1 ml-[1rem]">
             <div className="stat-value items-end text-[var(--black90)]">
