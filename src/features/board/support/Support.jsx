@@ -9,39 +9,41 @@ export default function Support() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  useEffect(() => {
-    fetchPosts(currentPage);
-  }, [currentPage]);
+//   useEffect(() => {
+//     fetchPosts(currentPage);
+//   }, [currentPage]);
 
-  const fetchPosts = async (page) => {
-    try {
-      const response = await fetch(`/support`);
-      console.log(response);
-      const data = await response.json();
+//   const fetchPosts = async (page) => {
+//     try {
+//       const response = await fetch(`/support`);
 
-      if (!response.ok) {
-        throw new Error(data.message || "게시글을 불러오는데 실패했습니다.");
-      }
+//       const data = await response.text(); // 임시로 JSON 대신 text
 
-      setPosts(data.data.posts || []);
-      setTotalPages(
-        (data.data.pagination && data.data.pagination.totalPages) || 1
-      );
-      setError(null);
-    } catch (err) {
-      console.error("게시글을 불러오는 중 오류가 발생했습니다:", err);
-      setError("게시글을 불러오는데 실패했습니다.");
-    } finally {
-      setLoading(false);
-    }
-  };
+// console.log("응답 내용:", data);
 
-  const handlePageChange = (newPage) => {
-    if (newPage >= 1 && newPage <= totalPages) {
-      setCurrentPage(newPage);
-    }
-  };
-  if (error) return <div className="alert alert-danger">{error}</div>;
+//       // if (!response.ok) {
+//       //   throw new Error(data.message || "게시글을 불러오는데 실패했습니다.");
+//       // }
+
+//       setPosts(data.data.posts || []);
+//       setTotalPages(
+//         (data.data.pagination && data.data.pagination.totalPages) || 1
+//       );
+//       setError(null);
+//     } catch (err) {
+//       console.error("게시글을 불러오는 중 오류가 발생했습니다:", err);
+//       setError("게시글을 불러오는데 실패했습니다.");
+//     } finally {
+//       setLoading(false);
+//     }
+//   };
+
+//   const handlePageChange = (newPage) => {
+//     if (newPage >= 1 && newPage <= totalPages) {
+//       setCurrentPage(newPage);
+//     }
+//   };
+//   if (error) return <div className="alert alert-danger">{error}</div>;
   return (
     <div className="flex justify-center w-3/4 flex-col">
       <section className="flex flex-col gap-6 mb-10">
@@ -71,16 +73,16 @@ export default function Support() {
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
                 viewBox="0 0 24 24"
-                stroke-width="1.5"
+                strokeWidth={1.5}
                 stroke="currentColor"
-                class="size-6 inline mr-1"
+                className="size-6 inline mr-1"
               >
                 <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                   d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75"
                 />
-              </svg>{" "}
+              </svg>
               savee@savee.com
             </a>
           </div>
@@ -106,13 +108,13 @@ export default function Support() {
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
                 viewBox="0 0 24 24"
-                stroke-width="1.5"
+                strokeWidth={1.5}
                 stroke="currentColor"
-                class="size-5 text-white"
+                className="size-6 text-white"
               >
                 <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                   d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"
                 />
               </svg>
@@ -143,11 +145,6 @@ export default function Support() {
                 <td>2025.00.00</td>
               </tr>
               {/* row 3 */}
-              <tr>
-                <th>공지</th>
-                <td>안녕하세요.</td>
-                <td>2025.00.00</td>
-              </tr>
               <tr>
                 <th>공지</th>
                 <td>안녕하세요.</td>
