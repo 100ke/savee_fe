@@ -1,6 +1,7 @@
 import React, { useState, useRef } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import PostHeader from "./SupportHeader";
-export default function SupportInput() {
+export default function SupportInput(isEdit = false) {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [error, setError] = useState("");
@@ -10,6 +11,7 @@ export default function SupportInput() {
   const titleRef = useRef(null); // 제목 input 참조
   const contentRef = useRef(null); // 내용 textarea 참조
   const MAX = 10;
+
   //제출
   const handleSubmit = () => {
     if (!title.trim()) {
