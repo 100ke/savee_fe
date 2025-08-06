@@ -77,7 +77,7 @@ function TransactionCard({ transactions }) {
                 {items.map((item) => (
                   <tr key={item.id} className="border-t border-gray-200 m-2">
                     <td className="text-center p-2 align-top text-sm text-[var(--black90)] border-r border-[var(--black30)]">
-                      {item.category_transactions.name}
+                      {item.category_transactions?.name || ""}
                     </td>
                     <td className="text-center p-2 align-top">{item.memo}</td>
                     <td className="text-right p-2 align-top">
