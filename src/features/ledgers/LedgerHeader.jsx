@@ -5,12 +5,9 @@ import { useState } from "react";
 import DatePicker from "react-datepicker";
 import { ko } from "date-fns/locale";
 
-function LedgerHeader() {
-  // datepicker에서 고른 날짜 저장
-  const [selectedDate, setSelectedDate] = useState(new Date());
+// 페이지 컴포넌트에서 데이터 받아와서 처리
+function LedgerHeader({ selectedDate, setSelectedDate, summary }) {
   const [showCalendar, setShowCalendar] = useState(false);
-
-  // 년도/월 분리
   const year = selectedDate.getFullYear();
   const month = String(selectedDate.getMonth() + 1);
 
@@ -47,11 +44,15 @@ function LedgerHeader() {
         <div className="stat stat2 justify-center rounded-md p-5 overflow-x-hidden flex flex-wrap text-center gap-x-23 bg-[var(--main-color-lightest-40)]">
           <div className="stat-income text-center items-end flex flex-wrap gap-3">
             <div className="stat-title p-2">총 수입</div>
-            <div className="stat-value">Tasks done</div>
+            <div className="stat-value">
+              {summary.totalIncome.toLocaleString()}원
+            </div>
           </div>
           <div className="stat-expense text-center items-end flex flex-wrap gap-3">
             <div className="stat-title p-2">총 지출</div>
-            <div className="stat-value">Tasks done</div>
+            <div className="stat-value">
+              {summary.totalExpense.toLocaleString()}원
+            </div>
           </div>
         </div>
       </div>
