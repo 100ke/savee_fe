@@ -1,7 +1,8 @@
 import "./../Board.css";
 import Pagination from "../Pagination";
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+
 const ITEMS_PER_PAGE = 5;
 export default function Support() {
   const [posts, setPosts] = useState([]);
@@ -9,7 +10,7 @@ export default function Support() {
   const [totalPages, setTotalPages] = useState(1);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
+  const navigate = useNavigate();
   const token = localStorage.getItem("accessToken");
   useEffect(() => {
     fetchPosts(currentPage);
@@ -142,12 +143,13 @@ export default function Support() {
             <tbody>
               {/* row 1 */}
               {posts.map((post, idx) => (
-                <tr>
-                  <Link to=":id">
-                    <th>{post.post_type}</th>
-                    <td>{post.title}</td>
-                    <td>{post.createdAt.split("T")[0]}</td>
-                  </Link>
+                <tr
+                  className="cursor-pointer"
+                  onClick={() => navigate(`/support/${post.id}`)}
+                >
+                  <th>{post.post_type}</th>
+                  <td>{post.title}</td>
+                  <td>{post.createdAt.split("T")[0]}</td>
                 </tr>
               ))}
             </tbody>
