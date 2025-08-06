@@ -1,15 +1,7 @@
-import Support from "../features/board/support/Support";
 import NavBar from "./NavBar"; // 사이드바 컴포넌트
 import { BrowserRouter, Outlet } from "react-router-dom";
 import SupportMain from "../pages/SupportMain.jsx";
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  Link,
-  Navigate,
-} from "react-router-dom";
-import DailyLedger from "../pages/DailyLedger";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 export default function Layout() {
   return (
     <BrowserRouter>
