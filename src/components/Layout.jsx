@@ -10,6 +10,7 @@ import {
   Navigate,
 } from "react-router-dom";
 import DailyLedger from "../pages/DailyLedger";
+import WeeklyLedger from "../pages/WeeklyLedger";
 export default function Layout() {
   return (
     <div className="flex h-screen">
@@ -24,7 +25,8 @@ export default function Layout() {
           </Routes>
         </Router> */}
         {/* <Support /> */}
-        <DailyLedger />
+        {/* <DailyLedger /> */}
+        <WeeklyLedger />
         {/* <SupportDetail /> */}
         <Outlet />
       </main>
