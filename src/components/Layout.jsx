@@ -6,6 +6,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 import DailyLedger from "../pages/DailyLedger";
 import WeeklyLedger from "../pages/WeeklyLedger";
+import MyPage from "../pages/MyPage.jsx";
 
 export default function Layout() {
   return (
@@ -16,15 +17,14 @@ export default function Layout() {
 
         {/* 메인 콘텐츠 영역 */}
         <main className="flex flex-1 bg-white overflow-y-auto overflow-x-hidden justify-center pt-10 pb-10 flex-wrap">
-
           <Routes>
             <Route path="/support/*" element={<SupportMain />} />
+            <Route path="/mypage" element={<MyPage />} />
           </Routes>
 
           <Outlet />
         </main>
       </div>
     </BrowserRouter>
-
   );
 }
