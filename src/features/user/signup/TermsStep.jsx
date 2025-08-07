@@ -1,6 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 
 function TermsStep({ onNext }) {
+  const [agreed, setAgreed] = useState(false);
+
+  const handleNext = () => {
+    if (!agreed) {
+      alert("약관에 동의해 주세요.");
+      return;
+    }
+    onNext();
+  };
   return (
     <div className="termsstep flex flex-col items-center">
       <div className="box border rounded-lg w-1/2 mb-3">
@@ -36,11 +45,13 @@ function TermsStep({ onNext }) {
       <div className="agree flex items-center mb-2">
         <input
           type="checkbox"
+          checked={agreed}
+          onChange={(e) => setAgreed(e.target.checked)}
           className="checkbox checkbox-sm checkbox-primary"
         />
         <p className="ml-2">위 약관에 동의합니다.</p>
       </div>
-      <button onClick={onNext} className="btn btn-primary">
+      <button onClick={handleNext} className="btn btn-primary">
         다음
       </button>
     </div>

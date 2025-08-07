@@ -1,13 +1,16 @@
 import React, { useState, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import PostHeader from "./SupportHeader";
+
 export default function SupportInput(isEdit = false) {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [error, setError] = useState("");
   const [files, setFiles] = useState([]);
   const [previews, setPreviews] = useState([]);
+  const navigate = useNavigate();
 
+  //포커싱
   const titleRef = useRef(null); // 제목 input 참조
   const contentRef = useRef(null); // 내용 textarea 참조
   const MAX = 10;
@@ -66,7 +69,7 @@ export default function SupportInput(isEdit = false) {
   };
 
   return (
-    <div className="container w-3/4">
+    <div>
       <PostHeader></PostHeader>
       <fieldset className="fieldset">
         <legend className="fieldset-legend text-base font-normal">제목</legend>
@@ -158,7 +161,12 @@ export default function SupportInput(isEdit = false) {
           ))}
       </div>
       <div className="w-auto justify-between gap-2 mt-2 flex">
-        <button className="btn join-item rounded-box w-20 ">취소</button>
+        <button
+          className="btn join-item rounded-box w-20 "
+          onClick={() => navigate(`/support`)}
+        >
+          취소
+        </button>
         <button
           className="btn join-item rounded-box w-20 support-submit"
           onClick={handleSubmit}
