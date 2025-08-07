@@ -10,6 +10,7 @@ import {
   Navigate,
 } from "react-router-dom";
 import DailyLedger from "../pages/DailyLedger";
+import WeeklyLedger from "../pages/WeeklyLedger";
 export default function Layout() {
   return (
     <div className="flex h-screen">
@@ -17,14 +18,15 @@ export default function Layout() {
       <NavBar />
 
       {/* 메인 콘텐츠 영역 */}
-      <main className="flex flex-1 bg-white overflow-y-auto overflow-x-hidden justify-center pt-10 pb-10 flex-wrap">
+      <main className="flex flex-1 bg-white overflow-visible justify-center pt-10 pb-10 flex-wrap">
         {/* <Router>
           <Routes>
             <Route path="/" element={<Support />} />
           </Routes>
         </Router> */}
         {/* <Support /> */}
-        <DailyLedger />
+        {/* <DailyLedger /> */}
+        <WeeklyLedger />
         {/* <SupportDetail /> */}
         <Outlet />
       </main>

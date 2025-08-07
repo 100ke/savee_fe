@@ -5,11 +5,11 @@ import TransactionCard from "../features/ledgers/transaction/TransactionCard";
 import axios from "axios";
 import "../features/ledgers/Ledgers.css";
 
-function DailyLedger() {
+function WeeklyLedger() {
   const [error, setError] = useState(null);
   const [ledgerId, setLedgerId] = useState(1);
-  const [transactions, setTransactions] = useState(null);
   const [selectedDate, setSelectedDate] = useState(new Date());
+  const [weeklyDatas, setWeeklyDatas] = useState([]);
   const [summary, setSummary] = useState({ totalIncome: 0, totalExpense: 0 });
   const token = process.env.REACT_APP_TOKEN;
 
@@ -23,23 +23,22 @@ function DailyLedger() {
         const reDate = `${year}-${month}`;
 
         const response = await axios.get(
-          `ledgers/${ledId}/transactions/daily?month=${reDate}`,
+          `ledgers/${ledId}/transactions/weekly?month=${reDate}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
             },
           }
         );
-        const { transactions, summary } = await response.data.data;
+        const data = await response.data.data;
 
-        setTransactions(transactions);
-        setSummary(summary);
+        setWeeklyDatas(data);
+        setSummary({ totalIncome: data.income, totalExpense: data.expense });
         setError(null);
       } catch (error) {
         console.error(error);
         setError("데이터를 불러오는 데 실패했습니다.");
-        setTransactions([]);
-        setSummary({ totalIncome: 0, totalExpense: 0 });
+        setWeeklyDatas([]);
       }
     };
 
@@ -56,8 +55,9 @@ function DailyLedger() {
       />
       <LedgerTab />
 
-      <TransactionCard transactions={transactions} />
+      <TransactionCard weeklydatas={weeklyDatas} />
     </div>
   );
 }
-export default DailyLedger;
+
+export default WeeklyLedger;
