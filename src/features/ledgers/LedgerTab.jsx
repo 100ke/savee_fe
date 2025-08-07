@@ -1,49 +1,42 @@
 import { useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 
 function LedgerTab() {
   // 클릭할 때마다 값이 바뀌어야 함
-  const [activeTab, setActiveTab] = useState("일일");
-  const handleTabClick = (tabName) => {
-    setActiveTab(tabName);
-  };
+  // const [activeTab, setActiveTab] = useState("일일");
+  // const handleTabClick = (tabName) => {
+  //   setActiveTab(tabName);
+  // };
+
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  // 현재 경로에 따라 active 탭 설정
+  const activeTab = location.pathname;
+
+  const tabs = [
+    { name: "일일", path: "/ledger" },
+    { name: "주간", path: "/ledger/weekly" },
+    { name: "월간", path: "/ledger/monthly" },
+    { name: "목표", path: "/ledger/goals" },
+    { name: "코멘트", path: "/ledger/comments" },
+  ];
+
   return (
     <div>
       <div role="tablist" className="tabs tabs-border mt-[1rem]">
-        <a
-          role="tab"
-          className={`tab ${activeTab === "일일" ? "tab-active" : ""}`}
-          onClick={() => handleTabClick("일일")}
-        >
-          일일
-        </a>
-        <a
-          role="tab"
-          className={`tab ${activeTab === "주간" ? "tab-active" : ""}`}
-          onClick={() => handleTabClick("주간")}
-        >
-          주간
-        </a>
-        <a
-          role="tab"
-          className={`tab ${activeTab === "월간" ? "tab-active" : ""}`}
-          onClick={() => handleTabClick("월간")}
-        >
-          월간
-        </a>
-        <a
-          role="tab"
-          className={`tab ${activeTab === "목표" ? "tab-active" : ""}`}
-          onClick={() => handleTabClick("목표")}
-        >
-          목표
-        </a>
-        <a
-          role="tab"
-          className={`tab ${activeTab === "코멘트" ? "tab-active" : ""}`}
-          onClick={() => handleTabClick("코멘트")}
-        >
-          코멘트
-        </a>
+        {tabs.map((tab) => {
+          return (
+            <a
+              key={tab.name}
+              role="tab"
+              className={`tab ${activeTab === tab.path ? "tab-active" : ""}`}
+              onClick={() => navigate(tab.path)}
+            >
+              {tab.name}
+            </a>
+          );
+        })}
       </div>
       <hr className="text-[var(--black30)]" />
     </div>
