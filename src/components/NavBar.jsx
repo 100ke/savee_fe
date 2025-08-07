@@ -1,5 +1,7 @@
 import "./NavBar.css";
 import IconCalender from "./../assets/calendar3.svg";
+import Logo from "./../assets/savee.png";
+import { Link } from "react-router-dom";
 export default function NavBar() {
   const menuItems = [
     {
@@ -110,7 +112,9 @@ export default function NavBar() {
     },
     {
       label: "고객센터",
-      path: "/",
+
+      path: "/support",
+
       icon: (
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -133,18 +137,20 @@ export default function NavBar() {
   return (
     <div className="border-r sidebar w-48 h-screen flex flex-col justify-between">
       <div className="p-4 flex items-center justify-center">
-        <p className="h-48px">logo</p>
+        <p className="h-48px">
+          <img src={Logo} alt="savee_logo" className="w-[48px] h-[48px]" />
+        </p>
       </div>
       <ul className="menu [&_li>*]:rounded-none p-0 w-48 custom-side-menu">
         {menuItems.map((item, idx) => (
           <li key={idx}>
-            <a
-              href={item.path}
+            <Link
+              to={item.path}
               className="p-4 text-base flex items-center gap-2"
             >
               {item.icon}
               {item.label}
-            </a>
+            </Link>
           </li>
         ))}
       </ul>

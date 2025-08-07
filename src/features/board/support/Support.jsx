@@ -1,6 +1,8 @@
 import "./../Board.css";
 import Pagination from "../Pagination";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+
 const ITEMS_PER_PAGE = 5;
 export default function Support() {
   const [posts, setPosts] = useState([]);
@@ -8,42 +10,49 @@ export default function Support() {
   const [totalPages, setTotalPages] = useState(1);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const navigate = useNavigate();
+  const token = localStorage.getItem("accessToken");
+  useEffect(() => {
+    fetchPosts(currentPage);
+  }, [currentPage]);
 
-//   useEffect(() => {
-//     fetchPosts(currentPage);
-//   }, [currentPage]);
+  const fetchPosts = async (page) => {
+    try {
+      const response = await fetch(`/support`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer${token}`,
+        },
+      });
 
-//   const fetchPosts = async (page) => {
-//     try {
-//       const response = await fetch(`/support`);
+      const data = await response.json(); // 임시로 JSON 대신 text
 
-//       const data = await response.text(); // 임시로 JSON 대신 text
+      // console.log("응답 내용:", data);
 
-// console.log("응답 내용:", data);
+      if (!response.ok) {
+        throw new Error(data.message || "게시글을 불러오는데 실패했습니다.");
+      }
+      const posts = data.data.posts;
+      console.log(posts);
+      setPosts(data.data.posts || []);
+      setTotalPages(
+        (data.data.pagination && data.data.pagination.totalPages) || 1
+      );
+    } catch (err) {
+      console.error("게시글을 불러오는 중 오류가 발생했습니다:", err);
+      setError("게시글을 불러오는데 실패했습니다.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
-//       // if (!response.ok) {
-//       //   throw new Error(data.message || "게시글을 불러오는데 실패했습니다.");
-//       // }
-
-//       setPosts(data.data.posts || []);
-//       setTotalPages(
-//         (data.data.pagination && data.data.pagination.totalPages) || 1
-//       );
-//       setError(null);
-//     } catch (err) {
-//       console.error("게시글을 불러오는 중 오류가 발생했습니다:", err);
-//       setError("게시글을 불러오는데 실패했습니다.");
-//     } finally {
-//       setLoading(false);
-//     }
-//   };
-
-//   const handlePageChange = (newPage) => {
-//     if (newPage >= 1 && newPage <= totalPages) {
-//       setCurrentPage(newPage);
-//     }
-//   };
-//   if (error) return <div className="alert alert-danger">{error}</div>;
+  const handlePageChange = (newPage) => {
+    if (newPage >= 1 && newPage <= totalPages) {
+      setCurrentPage(newPage);
+    }
+  };
+  if (error) return <div className="alert alert-danger">{error}</div>;
   return (
     <div className="flex justify-center w-3/4 flex-col">
       <section className="flex flex-col gap-6 mb-10">
@@ -133,33 +142,16 @@ export default function Support() {
             </thead>
             <tbody>
               {/* row 1 */}
-              <tr>
-                <th>공지</th>
-                <td>안녕하세요.</td>
-                <td>2025.00.00</td>
-              </tr>
-              {/* row 2 */}
-              <tr>
-                <th>공지</th>
-                <td>안녕하세요.</td>
-                <td>2025.00.00</td>
-              </tr>
-              {/* row 3 */}
-              <tr>
-                <th>공지</th>
-                <td>안녕하세요.</td>
-                <td>2025.00.00</td>
-              </tr>
-              <tr>
-                <th>공지</th>
-                <td>안녕하세요.</td>
-                <td>2025.00.00</td>
-              </tr>
-              <tr>
-                <th>공지</th>
-                <td>안녕하세요.</td>
-                <td>2025.00.00</td>
-              </tr>
+              {posts.map((post, idx) => (
+                <tr
+                  className="cursor-pointer"
+                  onClick={() => navigate(`/support/${post.id}`)}
+                >
+                  <th>{post.post_type}</th>
+                  <td>{post.title}</td>
+                  <td>{post.createdAt.split("T")[0]}</td>
+                </tr>
+              ))}
             </tbody>
           </table>
         </div>
