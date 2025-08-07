@@ -51,7 +51,7 @@ function Login() {
             비밀번호 찾기
           </a>
           <div className="divider divider-horizontal" />
-          <a href="" className="text-gray-400">
+          <a href="/signup" className="text-gray-400">
             회원가입
           </a>
         </div>
