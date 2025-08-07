@@ -94,7 +94,7 @@ export default function NavBar() {
     },
     {
       label: "내 정보",
-      path: "/",
+      path: "/mypage",
       icon: (
         <svg
           xmlns="http://www.w3.org/2000/svg"

@@ -1,8 +1,30 @@
 import React, { useState } from "react";
+import { verifyCode, verifyEmail } from "../userApi";
 
 function InfoStep({ onBack, onNext }) {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [code, setCode] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+
+  const sendEmail = async () => {
+    try {
+      await verifyEmail(email);
+      alert("이메일이 발송되었습니다.");
+    } catch (error) {
+      throw error;
+    }
+  };
+
+  const handleVerify = async () => {
+    try {
+      await verifyCode(email, code);
+      alert("인증번호가 일치합니다.");
+    } catch (error) {
+      throw error; // 에러 메시지 출력으로 변경
+    }
+  };
 
   return (
     <div className="w-3/4 md:w-1/2 lg:w-1/3 mx-auto">
@@ -34,6 +56,8 @@ function InfoStep({ onBack, onNext }) {
               placeholder="Username"
               minlength="2"
               maxlength="10"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
             />
           </label>
           <p className="validator-hint">
@@ -63,11 +87,19 @@ function InfoStep({ onBack, onNext }) {
                 <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
               </g>
             </svg>
-            <input type="email" placeholder="mail@site.com" required />
+            <input
+              type="email"
+              placeholder="mail@site.com"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
           </label>
           <p className="validator-hint">유효한 이메일 형식이 아닙니다.</p>
         </div>
-        <button className="btn btn-primary join-item">인증</button>
+        <button className="btn btn-primary join-item" onClick={sendEmail}>
+          인증
+        </button>
       </div>
       <div className="input-verify-code flex mb-3">
         <p className="w-30 mt-2">
@@ -91,10 +123,19 @@ function InfoStep({ onBack, onNext }) {
               </g>
             </svg>
 
-            <input type="text" required placeholder="Verified Code" />
+            <input
+              type="text"
+              required
+              placeholder="Verified Code"
+              value={code}
+              onChange={(e) => setCode(e.target.value)}
+            />
           </label>
           <p className="validator-hint">인증번호가 일치하지 않습니다.</p>
         </div>
+        <button className="btn btn-primary join-item" onClick={handleVerify}>
+          확인
+        </button>
       </div>
       <div className="input-password flex mb-3">
         <p className="w-30 mt-2">
