@@ -20,7 +20,6 @@ export default function SupportList() {
 
   const fetchPosts = async (page) => {
     try {
-      const response = await axios.get(`/support`);
 
       const data = await getSupportPosts();
       console.log("응답 내용:", data);
