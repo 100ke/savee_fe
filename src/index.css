@@ -9,6 +9,7 @@ body {
   padding: 0;
   list-style: none;
   color: var(--black90);
+  overflow: hidden;
 }
 
 code {

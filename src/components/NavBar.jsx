@@ -112,7 +112,9 @@ export default function NavBar() {
     },
     {
       label: "고객센터",
+
       path: "/support",
+
       icon: (
         <svg
           xmlns="http://www.w3.org/2000/svg"
