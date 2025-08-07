@@ -4,8 +4,9 @@ import { BrowserRouter, Outlet } from "react-router-dom";
 import SupportMain from "../pages/SupportMain.jsx";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
-import DailyLedger from "../pages/DailyLedger";
-import WeeklyLedger from "../pages/WeeklyLedger";
+import DailyLedger from "../features/ledgers/daily/DailyLedger.jsx";
+import WeeklyLedger from "../features/ledgers/weekly/WeeklyLedger.jsx";
+import LedgerMain from "../pages/LedgerMain.jsx";
 
 export default function Layout() {
   return (
@@ -16,15 +17,14 @@ export default function Layout() {
 
         {/* 메인 콘텐츠 영역 */}
         <main className="flex flex-1 bg-white overflow-y-auto overflow-x-hidden justify-center pt-10 pb-10 flex-wrap">
-
           <Routes>
             <Route path="/support/*" element={<SupportMain />} />
+            <Route path="/ledger/*" element={<LedgerMain />} />
           </Routes>
 
           <Outlet />
         </main>
       </div>
     </BrowserRouter>
-
   );
 }
