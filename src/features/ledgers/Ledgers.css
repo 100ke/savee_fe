@@ -80,3 +80,36 @@
   border-color: var(--main-color-lightest) !important;
   cursor: pointer;
 }
+
+/* 탭 */
+.tab-active {
+  color: var(--main-color);
+}
+
+.tab {
+  font-size: medium !important;
+}
+
+/* 트랜잭션 카드 스크롤x */
+.scrollbar-hidden {
+  /* 크롬, 사파리, 엣지 스크롤바 숨기기 */
+  -ms-overflow-style: none !important;
+  scrollbar-width: none !important;
+}
+
+.scrollbar-hidden::-webkit-scrollbar {
+  display: none;
+}
+
+/* 테이블 스타일링 */
+table {
+  table-layout: auto; /* 내용에 맞춰 테이블 레이아웃 자동 조정 */
+  width: 100%;
+  border-collapse: collapse; /* 셀 간격 제거 */
+}
+
+/* td 높이가 내용에 맞게 자동으로 늘어남 */
+td {
+  vertical-align: top; /* 내용이 많을 경우, 셀 상단에 맞춰 배치 */
+  padding: 8px;
+}
