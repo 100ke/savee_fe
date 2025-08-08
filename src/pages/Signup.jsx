@@ -33,7 +33,7 @@ function Signup() {
     }
   };
   return (
-    <div className="signup-page">
+    <div className="signup-page w-full">
       <h3 className="text-2xl text-center mb-4">회원가입</h3>
       <SignupSteps currentStep={currentStep} />
       {renderStep()}

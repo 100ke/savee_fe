@@ -19,11 +19,11 @@ function Login() {
   return (
     <div className="login-page">
       <h3 className="text-2xl text-center mb-4">로그인</h3>
-      <fieldset className="fieldset rounded-box w-xs p-4 mx-auto">
+      <fieldset className="fieldset rounded-box w-xs lg:w-md p-4 mx-auto">
         <label className="label text-base">아이디</label>
         <input
           type="email"
-          className="input mb-2"
+          className="input mb-2 w-full"
           placeholder="Email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
@@ -32,7 +32,7 @@ function Login() {
         <label className="label text-base">비밀번호</label>
         <input
           type="password"
-          className="input"
+          className="input w-full"
           placeholder="Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}

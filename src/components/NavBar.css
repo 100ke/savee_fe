@@ -8,3 +8,7 @@
 .logout {
   color: var(--black30);
 }
+
+.logo {
+  color: var(--accent-color);
+}

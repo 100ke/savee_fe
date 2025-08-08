@@ -40,7 +40,14 @@ const fetchWeeklyTransactions = async (ledgerId, selectedDate, token) => {
     );
 
     const datas = await response.data.data;
-    return datas;
+
+    // header에 보낼 summary 추출
+    const weeklyTotalIncome = datas.reduce((sum, week) => sum + week.income, 0);
+    const weeklyTotalExpense = datas.reduce(
+      (sum, week) => sum + week.expense,
+      0
+    );
+    return { datas, weeklyTotalExpense, weeklyTotalIncome };
   } catch (error) {
     throw error;
   }

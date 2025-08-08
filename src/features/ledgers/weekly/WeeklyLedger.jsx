@@ -3,6 +3,8 @@ import "../Ledgers.css";
 import TransactionChart from "./TransactionChart";
 import { fetchWeeklyTransactions } from "../TransactionsAPI";
 import { useNavigate, useOutletContext } from "react-router-dom";
+import "../Ledgers.css";
+import TransactionAccordion from "./TransactionAccordion";
 
 function WeeklyLedger() {
   const [ledgerId, setLedgerId] = useState(1);
@@ -19,10 +21,6 @@ function WeeklyLedger() {
     setWeeklyDatas,
     selectedWeeks, // 아코디언 선택 주차
     setSelectedWeeks,
-    activeWeekIndex,
-    setActiveWeekIndex,
-    onWeekClick,
-    setOnWeekClick,
   } = useOutletContext();
 
   const navigate = useNavigate();
@@ -39,18 +37,19 @@ function WeeklyLedger() {
           return;
         }
 
-        const datas = await fetchWeeklyTransactions(
-          ledgerId,
-          selectedDate,
-          token
-        );
-        console.log(datas);
+        const { datas, weeklyTotalExpense, weeklyTotalIncome } =
+          await fetchWeeklyTransactions(ledgerId, selectedDate, token);
+
         if (!datas) {
           setError("데이터가 없습니다.");
           setWeeklyDatas([]);
           setSelectedWeeks(null);
         } else {
           setWeeklyDatas(datas);
+          setSummary({
+            totalIncome: weeklyTotalIncome,
+            totalExpense: weeklyTotalExpense,
+          });
           setError(null);
         }
       } catch (error) {
@@ -88,7 +87,10 @@ function WeeklyLedger() {
           로딩 중 ...{" "}
         </div>
       ) : (
-        <TransactionChart weeklyDatas={weeklyDatas} />
+        <div>
+          <TransactionChart weeklyDatas={weeklyDatas} />
+          <TransactionAccordion weeklyDatas={weeklyDatas} />
+        </div>
       )}
     </div>
   );
