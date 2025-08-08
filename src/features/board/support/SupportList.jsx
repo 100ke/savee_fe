@@ -1,32 +1,38 @@
 import "./../Board.css";
 import Pagination from "../Pagination";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useParams, useSearchParams, useNavigate } from "react-router-dom";
 import axios from "../../../api/axiosInstance";
 import { getSupportPosts } from "../SupportApi";
-
-const ITEMS_PER_PAGE = 5;
+const ITEMS_PER_PAGE = 6;
 export default function SupportList() {
   const [posts, setPosts] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const pageParam = parseInt(searchParams.get("page")) || 1;
+  const page = searchParams.get("page") || 1;
+
   const navigate = useNavigate();
 
+  useEffect(() => {
+    setCurrentPage(pageParam); // 쿼리 변경될 때 state도 갱신
+  }, [pageParam]);
   useEffect(() => {
     fetchPosts(currentPage);
   }, [currentPage]);
 
   const fetchPosts = async (page) => {
+    setLoading(true);
     try {
-
-      const data = await getSupportPosts();
+      const data = await getSupportPosts(page, ITEMS_PER_PAGE);
       console.log("응답 내용:", data);
 
       const posts = data.data.posts;
-      const pagination = data.data.pagenation;
-      // console.log(posts);
+      const pagination = data.data.pagination;
+      console.log(pagination);
       setPosts(posts || []);
 
       //페이지네이션
@@ -46,7 +52,7 @@ export default function SupportList() {
   };
   if (error) return <div className="alert alert-danger">{error}</div>;
   return (
-    <section className="flex flex-col gap-6">
+    <section className="flex flex-col gap-5">
       <h1 className="text-xl text-center">공지사항</h1>
       <div className="join gap-2 justify-center">
         <div>
@@ -99,7 +105,9 @@ export default function SupportList() {
               <tr
                 key={post.id}
                 className="cursor-pointer"
-                onClick={() => navigate(`/support/${post.id}`)}
+                onClick={() =>
+                  navigate(`/support/${post.id}?page=${currentPage}`)
+                }
               >
                 <th>{post.post_type}</th>
                 <td>{post.title}</td>
@@ -109,7 +117,11 @@ export default function SupportList() {
           </tbody>
         </table>
       </div>
-      <Pagination></Pagination>
+      <Pagination
+        totalPages={totalPages}
+        currentPage={currentPage}
+        onPageChange={handlePageChange}
+      ></Pagination>
     </section>
   );
 }
