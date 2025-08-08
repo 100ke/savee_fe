@@ -1,22 +1,30 @@
 import { useEffect, useState } from "react";
-import LedgerHeader from "../LedgerHeader";
-import LedgerTab from "../LedgerTab";
-import axios from "axios";
 import "../Ledgers.css";
 import TransactionChart from "./TransactionChart";
 import { fetchWeeklyTransactions } from "../TransactionsAPI";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useOutletContext } from "react-router-dom";
 
 function WeeklyLedger() {
-  const [error, setError] = useState(null);
   const [ledgerId, setLedgerId] = useState(1);
-  const [selectedDate, setSelectedDate] = useState(new Date());
-  const [weeklyDatas, setWeeklyDatas] = useState([]);
-  const [summary, setSummary] = useState({ totalIncome: 0, totalExpense: 0 });
-  // 전체 주차 데이터
-  const [weeklyData, setWeeklyData] = useState([]);
-  // 아코디언 선택 주차
-  const [selectedWeeks, setSelectedWeeks] = useState([]);
+  const {
+    selectedDate,
+    setSelectedDate,
+    summary,
+    setSummary,
+    transactions,
+    setTransactions,
+    error,
+    setError,
+    weeklyDatas, // 전체 주차 데이터
+    setWeeklyDatas,
+    selectedWeeks, // 아코디언 선택 주차
+    setSelectedWeeks,
+    activeWeekIndex,
+    setActiveWeekIndex,
+    onWeekClick,
+    setOnWeekClick,
+  } = useOutletContext();
+
   const navigate = useNavigate();
   const token = process.env.REACT_APP_TOKEN;
 
@@ -36,26 +44,52 @@ function WeeklyLedger() {
           selectedDate,
           token
         );
-
+        console.log(datas);
         if (!datas) {
+          setError("데이터가 없습니다.");
+          setWeeklyDatas([]);
+          setSelectedWeeks(null);
+        } else {
+          setWeeklyDatas(datas);
+          setError(null);
         }
-        setWeeklyDatas(datas);
-        setSummary({ totalIncome: datas.income, totalExpense: datas.expense });
-        setError(null);
       } catch (error) {
+        const message = error.response?.data?.message;
         console.error(error);
-        setError("데이터를 불러오는 데 실패했습니다.");
+        // axios response status를 사용해 토큰이 없는 상태에 따른 에러 메시지 설정
+        if (error.response?.status === 401) {
+          navigate("/login");
+        } else if (error.response?.status === 404) {
+          if (
+            typeof message === "string" &&
+            message.includes("입력한 내역이 없습니다.")
+          ) {
+            setError("데이터가 없습니다.");
+          } else {
+            setError("데이터를 불러오는 데 실패했습니다.");
+          }
+        }
+
         setWeeklyDatas([]);
       }
     };
 
     fetchTransactions();
-  }, [selectedDate]);
+  }, [selectedDate, ledgerId, token, navigate]);
 
   return (
     // ledgerheader 반응형으로 줄어들도록 상위 요소 크기 설정
     <div className="max-w-full px-full scrollbar-hidden">
-      <TransactionChart />
+      {/* 에러 상황에 맞게 메시지 출력 */}
+      {error ? (
+        <div className="text-center text-[var(--black70)] mt-10">{error}</div>
+      ) : weeklyDatas === null ? (
+        <div className="text-center text-[var(--black70)] mt-10">
+          로딩 중 ...{" "}
+        </div>
+      ) : (
+        <TransactionChart weeklyDatas={weeklyDatas} />
+      )}
     </div>
   );
 }

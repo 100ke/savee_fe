@@ -1,5 +1,5 @@
 import { Routes, Route } from "react-router-dom";
-import SupportMain from "../features/board/support/SuportMain.js";
+import SupportMain from "../features/board/support/SuportMain.jsx";
 import SupportInput from "../features/board/support/SupportInput.jsx";
 import SupportDetail from "../features/board/support/SupportDetail.jsx";
 export default function Support() {
@@ -10,6 +10,7 @@ export default function Support() {
         <Route path="/add" element={<SupportInput />} />
         <Route path="/:id" element={<SupportDetail />} />
       </Routes>
+      
     </div>
   );
 }

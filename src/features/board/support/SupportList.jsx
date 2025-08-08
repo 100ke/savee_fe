@@ -3,6 +3,7 @@ import Pagination from "../Pagination";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "../../../api/axiosInstance";
+import { getSupportPosts } from "../SupportApi";
 
 const ITEMS_PER_PAGE = 5;
 export default function SupportList() {
@@ -19,9 +20,8 @@ export default function SupportList() {
 
   const fetchPosts = async (page) => {
     try {
-      const response = await axios.get(`/support`);
 
-      const data = response.data;
+      const data = await getSupportPosts();
       console.log("응답 내용:", data);
 
       const posts = data.data.posts;

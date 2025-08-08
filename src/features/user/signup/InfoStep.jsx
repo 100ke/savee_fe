@@ -1,19 +1,29 @@
 import React, { useState } from "react";
-import { verifyCode, verifyEmail } from "../userApi";
+import { signup, verifyCode, verifyEmail } from "../userApi";
 
-function InfoStep({ onBack, onNext }) {
+function InfoStep({ onBack, onNext, onSignupSuccess }) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [code, setCode] = useState("");
+  const [isVerified, setIsVerified] = useState(false);
+  const [verifyErrorMsg, setBackErrorMsg] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const isPasswordMatch =
+    confirmPassword.length > 0 && password === confirmPassword;
+  const isPasswordMismatch =
+    confirmPassword.length > 0 && password !== confirmPassword;
 
   const sendEmail = async () => {
     try {
       await verifyEmail(email);
       alert("이메일이 발송되었습니다.");
+      setBackErrorMsg("");
     } catch (error) {
-      throw error;
+      const message = error.response?.data?.error || "오류가 발생했습니다.";
+      setBackErrorMsg(message);
+      console.log("메일 발송 오류: ", message);
+      alert(message);
     }
   };
 
@@ -21,8 +31,37 @@ function InfoStep({ onBack, onNext }) {
     try {
       await verifyCode(email, code);
       alert("인증번호가 일치합니다.");
+      setIsVerified(true);
+      setBackErrorMsg("");
     } catch (error) {
-      throw error; // 에러 메시지 출력으로 변경
+      const message = error.response?.data?.error || "오류가 발생했습니다.";
+      setBackErrorMsg(message);
+      console.log("인증 오류: ", message);
+    }
+  };
+
+  const handleSignup = async () => {
+    if (!name || !email || !password || !confirmPassword) {
+      alert("모든 필드를 입력해주세요.");
+      return;
+    }
+    if (!isVerified) {
+      alert("이메일 인증을 완료해주세요.");
+      return;
+    }
+    if (password !== confirmPassword) {
+      alert("비밀번호가 일치하지 않습니다.");
+      return;
+    }
+    try {
+      await signup(email, name, password);
+      setBackErrorMsg("");
+      onNext();
+      onSignupSuccess({ name, email });
+    } catch (error) {
+      const message = error.response?.data?.error || "오류가 발생했습니다.";
+      setBackErrorMsg(message);
+      console.log("회원 가입 오류: ", message);
     }
   };
 
@@ -106,7 +145,11 @@ function InfoStep({ onBack, onNext }) {
           인증번호 확인 <span className="text-red-500">*</span>
         </p>
         <div className="flex-1">
-          <label className="input validator flex w-full">
+          <label
+            className={`input flex w-full ${
+              isVerified ? "input-success" : verifyErrorMsg ? "input-error" : ""
+            }`}
+          >
             <svg
               className="h-[1em] opacity-50"
               xmlns="http://www.w3.org/2000/svg"
@@ -131,7 +174,9 @@ function InfoStep({ onBack, onNext }) {
               onChange={(e) => setCode(e.target.value)}
             />
           </label>
-          <p className="validator-hint">인증번호가 일치하지 않습니다.</p>
+          <p className="text-error text-sm mt-1 min-h-[1.25rem]">
+            {verifyErrorMsg ? "인증번호가 일치하지 않습니다." : ""}
+          </p>
         </div>
         <button className="btn btn-primary join-item" onClick={handleVerify}>
           확인
@@ -181,7 +226,15 @@ function InfoStep({ onBack, onNext }) {
           비밀번호 확인 <span className="text-red-500">*</span>
         </p>
         <div className="flex-1">
-          <label className="input validator flex w-full">
+          <label
+            className={`input flex w-full ${
+              isPasswordMatch
+                ? "input-success"
+                : isPasswordMismatch
+                ? "input-error"
+                : ""
+            }`}
+          >
             <svg
               className="h-[1em] opacity-50"
               xmlns="http://www.w3.org/2000/svg"
@@ -210,14 +263,16 @@ function InfoStep({ onBack, onNext }) {
               }}
             />
           </label>
-          <p className="validator-hint">비밀번호가 일치하지 않습니다.</p>
+          <p className="text-error text-sm mt-1 min-h-[1.25rem]">
+            {isPasswordMismatch ? "비밀번호가 일치하지 않습니다." : ""}
+          </p>
         </div>
       </div>
       <div className="flex justify-between">
         <button className="btn btn-soft btn-primary w-1/3" onClick={onBack}>
           이용 약관
         </button>
-        <button className="btn btn-primary w-1/3" onClick={onNext}>
+        <button className="btn btn-primary w-1/3" onClick={handleSignup}>
           가입하기
         </button>
       </div>

@@ -52,7 +52,10 @@ function TransactionCard({ transactions }) {
             .reduce((acc, cur) => acc + cur.amount, 0);
 
           return (
-            <table className="table-auto w-full bg-base-100 rounded-3xl shadow-md p-4 scrollbar-hidden">
+            <table
+              key={date}
+              className="table-auto w-full bg-base-100 rounded-3xl shadow-md p-4 scrollbar-hidden"
+            >
               <thead>
                 <tr>
                   <th colSpan={4} className="text-left text-sm font-bold p-4">
