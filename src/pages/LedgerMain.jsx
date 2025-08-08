@@ -8,7 +8,7 @@ export default function LedgerMain() {
     <Routes>
       <Route path="/" element={<LedgerPage />}>
         <Route index element={<DailyLedger />} />
-        <Route path="/weekly" element={<WeeklyLedger />} />
+        <Route path="weekly" element={<WeeklyLedger />} />
         <Route path="/monthly" element={<WeeklyLedger />} />
         <Route path="/goals" element={<WeeklyLedger />} />
         <Route path="/comments" element={<WeeklyLedger />} />
