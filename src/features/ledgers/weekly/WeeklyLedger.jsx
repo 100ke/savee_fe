@@ -24,7 +24,7 @@ function WeeklyLedger() {
   } = useOutletContext();
 
   const navigate = useNavigate();
-  const token = process.env.REACT_APP_TOKEN;
+  const token = localStorage.getItem("accessToken");
 
   useEffect(() => {
     const fetchTransactions = async () => {

@@ -16,7 +16,7 @@ function DailyLedger() {
     error,
     setError,
   } = useOutletContext();
-  const token = process.env.REACT_APP_TOKEN;
+  const token = localStorage.getItem("accessToken");
   const navigate = useNavigate();
   // LedgerPage에서 전달한 상태, 함수 받아오기
 
