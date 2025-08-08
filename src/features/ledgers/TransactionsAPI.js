@@ -1,4 +1,5 @@
 import axios from "axios";
+import instance from "../../api/axiosInstance";
 
 const getAuthHeader = (token) => ({
   headers: {
@@ -30,10 +31,10 @@ const fetchWeeklyTransactions = async (ledgerId, selectedDate, token) => {
   try {
     const ledId = Number(ledgerId);
     const year = selectedDate.getFullYear();
-    const month = String(selectedDate.getMonth() + 1);
+    const month = String(selectedDate.getMonth() + 1).padStart(2, "0");
     const reDate = `${year}-${month}`;
 
-    const response = await axios.get(
+    const response = await instance.get(
       `ledgers/${ledId}/transactions/weekly?month=${reDate}`,
       getAuthHeader(token)
     );
