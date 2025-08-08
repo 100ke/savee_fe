@@ -4,6 +4,7 @@ import LedgerTab from "../features/ledgers/LedgerTab";
 import { useState } from "react";
 import DailyLedger from "../features/ledgers/daily/DailyLedger";
 import WeeklyLedger from "../features/ledgers/weekly/WeeklyLedger";
+import MonthlyLedger from "../features/ledgers/monthly/MonthlyLedger";
 
 export default function LedgerPage() {
   const location = useLocation();
@@ -25,6 +26,10 @@ export default function LedgerPage() {
 
     if (path === "/ledger/weekly") {
       return <WeeklyLedger />;
+    }
+
+    if (path === "/ledger/monthly") {
+      return <MonthlyLedger />;
     }
   };
 
