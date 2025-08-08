@@ -14,8 +14,6 @@ export default function LedgerPage() {
 
   const [weeklyDatas, setWeeklyDatas] = useState(null);
   const [selectedWeeks, setSelectedWeeks] = useState(null);
-  const [activeWeekIndex, setActiveWeekIndex] = useState(null);
-  const [onWeekClick, setOnWeekClick] = useState(null);
 
   // ledgertab에서 선택한 값으로 daily, week, month content 변경
   const renderContent = () => {
@@ -53,10 +51,6 @@ export default function LedgerPage() {
           setWeeklyDatas,
           selectedWeeks,
           setSelectedWeeks,
-          activeWeekIndex,
-          setActiveWeekIndex,
-          onWeekClick,
-          setOnWeekClick,
         }}
       />
     </div>
