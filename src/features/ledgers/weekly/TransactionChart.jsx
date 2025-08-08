@@ -100,10 +100,16 @@ export default function TransactionChart({ weeklyDatas }) {
           callback: function (value) {
             return (value / 10000).toLocaleString() + " 만원"; // 숫자에 콤마 찍기
           },
+          font: {
+            size: 14,
+          },
         },
       },
       x: {
         grid: { display: false },
+        ticks: {
+          font: { size: 14 },
+        },
       },
     },
     plugins: {

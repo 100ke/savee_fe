@@ -116,7 +116,7 @@ td {
 
 /* 그래프 */
 .chart {
-  height: clamp(150px, 40vw, 400px);
+  height: clamp(150px, 40vw, 360px);
 }
 
 /* 아코디언 */
