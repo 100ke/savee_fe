@@ -2,21 +2,9 @@ import React, { useEffect, useState } from "react";
 import { FaUserAlt } from "react-icons/fa";
 import { getUserInfo } from "../userApi";
 
-function Profile() {
-  const [user, setUser] = useState(null);
-  const fetchMyInfo = async () => {
-    try {
-      const data = await getUserInfo();
-      setUser(data);
-    } catch (error) {
-      console.log("사용자 정보 조회 실패", error);
-    }
-  };
-  useEffect(() => {
-    fetchMyInfo();
-  }, []);
+function Profile({ user }) {
   if (!user) {
-    return <div>로딩 중...</div>;
+    return <div>사용자 정보를 불러올 수 없습니다.</div>;
   }
 
   return (

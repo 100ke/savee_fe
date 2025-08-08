@@ -1,8 +1,42 @@
-import React from "react";
+import React, { useState } from "react";
+import { changePassword } from "../userApi";
 
-function ChangePassword() {
+function ChangePassword({ onSuccess }) {
+  const [currentPw, setCurrentPw] = useState("");
+  const [newPw, setNewPw] = useState("");
+  const [confirmPw, setConfirmPw] = useState("");
+
+  const handleChangePw = async () => {
+    if (
+      newPw.length < 6 ||
+      newPw.length > 20 ||
+      confirmPw.length < 6 ||
+      confirmPw.length > 20
+    ) {
+      alert("비밀번호는 6~20자 사이여야 합니다.");
+      return;
+    }
+    if (!currentPw || !newPw || !confirmPw) {
+      alert("모든 필드를 입력해주세요.");
+      return;
+    }
+    if (newPw !== confirmPw) {
+      alert("새 비밀번호와 비밀번호 확인값이 일치하지 않습니다.");
+      return;
+    }
+    try {
+      await changePassword(currentPw, newPw);
+      alert("비밀번호가 변경되었습니다.");
+      onSuccess();
+    } catch (error) {
+      const message = error.response?.data?.error || "오류가 발생했습니다.";
+      console.log("비밀번호 변경 오류: ", message);
+      alert(message);
+    }
+  };
+
   return (
-    <div>
+    <div className="change-pw">
       {/* 현재 비밀번호 입력(버튼 확인), 새 비밀번호, 재입력, 변경버튼 */}
       <dialog id="change-pw-modal" className="modal">
         <div className="modal-box">
@@ -48,6 +82,8 @@ function ChangePassword() {
                   placeholder="Password"
                   minlength="6"
                   maxlength="20"
+                  value={currentPw}
+                  onChange={(e) => setCurrentPw(e.target.value)}
                 />
               </label>
               <p className="validator-hint">비밀번호를 다시 확인해주세요.</p>
@@ -86,6 +122,10 @@ function ChangePassword() {
                   placeholder="Password"
                   minlength="6"
                   maxlength="20"
+                  value={newPw}
+                  onChange={(e) => {
+                    setNewPw(e.target.value);
+                  }}
                 />
               </label>
               <p className="validator-hint">
@@ -126,13 +166,21 @@ function ChangePassword() {
                   placeholder="Confirm Password"
                   minlength="6"
                   maxlength="20"
+                  value={confirmPw}
+                  onChange={(e) => {
+                    setConfirmPw(e.target.value);
+                  }}
                 />
               </label>
-              <p className="validator-hint">비밀번호가 일치하지 않습니다.</p>
+              <p className="validator-hint">
+                비밀번호는 6자리 이상, 20자리 이하로 입력 가능합니다.
+              </p>
             </div>
           </div>
           <div className="flex justify-end">
-            <button className="btn btn-primary">변경</button>
+            <button className="btn btn-primary" onClick={handleChangePw}>
+              변경
+            </button>
           </div>
         </div>
       </dialog>

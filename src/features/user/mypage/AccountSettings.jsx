@@ -2,7 +2,7 @@ import React from "react";
 import ChangeName from "../modal/ChangeName";
 import ChangePassword from "../modal/ChangePassword";
 
-function AccountSettings() {
+function AccountSettings({ onInfoChange }) {
   return (
     <div className="account-settings mb-5">
       <div className="card bg-base-100 shadow-md border">
@@ -27,8 +27,8 @@ function AccountSettings() {
             </a>
           </div>
         </div>
-        <ChangeName />
-        <ChangePassword />
+        <ChangeName onSuccess={onInfoChange} />
+        <ChangePassword onSuccess={onInfoChange} />
       </div>
     </div>
   );

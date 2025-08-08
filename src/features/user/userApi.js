@@ -76,3 +76,60 @@ export const getUserInfo = async () => {
   const response = await axiosInstance.get("/user/me");
   return response.data;
 };
+
+export const findPasswordMail = async (email) => {
+  try {
+    const response = await axiosInstance.post("/user/password/send", {
+      email,
+    });
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const resetPassword = async (email) => {
+  try {
+    const response = await axiosInstance.post("/user/password/reset", {
+      email,
+    });
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const changePassword = async (currentPassword, newPassword) => {
+  try {
+    const response = await axiosInstance.put("/user/password", {
+      currentPassword,
+      newPassword,
+    });
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const changeName = async (name) => {
+  try {
+    const response = await axiosInstance.put("/user/name", { name });
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const deleteUser = async (email, password) => {
+  try {
+    const response = await axiosInstance.delete("/user", {
+      data: {
+        email,
+        password,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
