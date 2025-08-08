@@ -16,6 +16,7 @@
   color: var(--accent-color);
 }
 
+/* 비밀번호 찾기 모달 */
 .find-pw .temp-pw {
   background-color: var(--color-sub3-40);
 }
@@ -28,6 +29,11 @@
   color: var(--black70);
 }
 
+.find-pw .validator-hint {
+  margin-top: 0.1rem;
+}
+
+/* 마이페이지 */
 .mypage .withdrawal {
   color: var(--black50);
   font-weight: normal;
@@ -47,4 +53,9 @@
 
 .supports .card {
   border-color: var(--black10);
+}
+
+/* 회원 탈퇴 모달 */
+.withdraw .notice {
+  background-color: var(--black10);
 }

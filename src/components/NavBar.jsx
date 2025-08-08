@@ -137,9 +137,8 @@ export default function NavBar() {
   return (
     <div className="border-r sidebar w-48 h-screen flex flex-col justify-between">
       <div className="p-4 flex items-center justify-center">
-        <p className="h-48px">
-          <img src={Logo} alt="savee_logo" className="w-[48px] h-[48px]" />
-        </p>
+        <img src={Logo} alt="savee_logo" className="w-[48px] h-[48px]" />
+        <p className="logo h-48px font-bold m-2 pt-1 text-xl">SAVEE</p>
       </div>
       <ul className="menu [&_li>*]:rounded-none p-0 w-48 custom-side-menu">
         {menuItems.map((item, idx) => (

@@ -66,7 +66,7 @@ function InfoStep({ onBack, onNext, onSignupSuccess }) {
   };
 
   return (
-    <div className="w-3/4 md:w-1/2 lg:w-1/3 mx-auto">
+    <div className="w-3/4 md:w-2/3 lg:w-1/2 mx-auto max-w-lg min-w-[320px]">
       <div className="input-name flex mb-3">
         <p className="w-30 mt-2">
           이름 <span className="text-red-500">*</span>
