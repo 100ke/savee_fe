@@ -7,6 +7,8 @@ import "../features/user/User.css";
 
 function Signup() {
   const [currentStep, setCurrentStep] = useState(0);
+  const [signupData, setSignupData] = useState(null);
+
   const renderStep = () => {
     switch (currentStep) {
       case 0:
@@ -16,10 +18,15 @@ function Signup() {
           <InfoStep
             onNext={() => setCurrentStep(2)}
             onBack={() => setCurrentStep(0)}
+            onSignupSuccess={(data) => {
+              setSignupData(data);
+            }}
           />
         );
       case 2:
-        return <SignupSuccess />;
+        return (
+          <SignupSuccess name={signupData?.name} email={signupData?.email} />
+        );
 
       default:
         return null;

@@ -1,12 +1,22 @@
+import { Route, Routes } from "react-router-dom";
 import "./App.css";
 import Layout from "./components/Layout.jsx";
+import LedgerMain from "./pages/LedgerMain.jsx";
+import Support from "./pages/Support.jsx";
+import MyPage from "./pages/MyPage.jsx";
+import Login from "./pages/Login.jsx";
+import Signup from "./pages/Signup.jsx";
 function App() {
   return (
-    <div>
-      <Layout />
-      {/* <h1 className="text-2xl font-bold mb-4">DaisyUI 버튼 테스트</h1>
-      <button className="btn btn-neutral">Neutral</button> */}
-    </div>
+    <Routes>
+      <Route path="/*" element={<Layout />}>
+        <Route path="ledger/*" element={<LedgerMain />} />
+        <Route path="support/*" element={<Support />} />
+        <Route path="mypage" element={<MyPage />} />
+        <Route path="login" element={<Login />} />
+        <Route path="signup" element={<Signup />} />
+      </Route>
+    </Routes>
   );
 }
 
