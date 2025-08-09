@@ -1,13 +1,16 @@
 import { useEffect, useState } from "react";
 import "../Ledgers.css";
 import TransactionChart from "./TransactionChart";
-import { fetchWeeklyTransactions } from "../TransactionsAPI";
+import {
+  fetchWeeklyTransactions,
+  getPersonalLedgerId,
+} from "../TransactionsAPI";
 import { useNavigate, useOutletContext } from "react-router-dom";
 import "../Ledgers.css";
 import TransactionAccordion from "./TransactionAccordion";
 
 function WeeklyLedger() {
-  const [ledgerId, setLedgerId] = useState(1);
+  const [ledgerId, setLedgerId] = useState(null);
   const {
     selectedDate,
     setSelectedDate,
@@ -36,6 +39,9 @@ function WeeklyLedger() {
           setSummary({ totalIncome: 0, totalExpense: 0 });
           return;
         }
+
+        const peersonalLedgerId = await getPersonalLedgerId(token);
+        setLedgerId(peersonalLedgerId.id);
 
         const { datas, weeklyTotalExpense, weeklyTotalIncome } =
           await fetchWeeklyTransactions(ledgerId, selectedDate, token);

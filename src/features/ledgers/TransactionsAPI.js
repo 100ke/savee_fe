@@ -7,6 +7,21 @@ const getAuthHeader = (token) => ({
   },
 });
 
+// ledgerId 가져오는 함수
+const getPersonalLedgerId = async (token) => {
+  try {
+    const response = await instance.get(
+      `/ledgers/personal`,
+      getAuthHeader(token)
+    );
+
+    const peersonalLedgerId = await response.data.data;
+    return peersonalLedgerId;
+  } catch (error) {
+    throw error;
+  }
+};
+
 const fetchDailyTransactions = async (ledgerId, selectedDate, token) => {
   try {
     const ledId = Number(ledgerId);
@@ -53,4 +68,4 @@ const fetchWeeklyTransactions = async (ledgerId, selectedDate, token) => {
   }
 };
 
-export { fetchDailyTransactions, fetchWeeklyTransactions };
+export { getPersonalLedgerId, fetchDailyTransactions, fetchWeeklyTransactions };

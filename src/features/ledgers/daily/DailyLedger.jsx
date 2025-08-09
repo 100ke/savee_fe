@@ -1,11 +1,14 @@
 import { useEffect, useState } from "react";
 import TransactionCard from "./TransactionCard";
 import "../Ledgers.css";
-import { fetchDailyTransactions } from "../TransactionsAPI";
+import {
+  fetchDailyTransactions,
+  getPersonalLedgerId,
+} from "../TransactionsAPI";
 import { useNavigate, useOutletContext } from "react-router-dom";
 
 function DailyLedger() {
-  const [ledgerId, setLedgerId] = useState(1);
+  const [ledgerId, setLedgerId] = useState(null);
   const {
     selectedDate,
     setSelectedDate,
@@ -31,6 +34,10 @@ function DailyLedger() {
           setSummary({ totalIncome: 0, totalExpense: 0 });
           return;
         }
+
+        const peersonalLedgerId = await getPersonalLedgerId(token);
+        setLedgerId(peersonalLedgerId.id);
+        console.log(typeof peersonalLedgerId.id, peersonalLedgerId.id);
 
         const data = await fetchDailyTransactions(
           ledgerId,
