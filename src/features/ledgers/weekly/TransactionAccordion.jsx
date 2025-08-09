@@ -3,9 +3,7 @@ import "../Ledgers.css";
 export default function TransactionAccordion({ weeklyDatas }) {
   if (!weeklyDatas || weeklyDatas.length === 0)
     return (
-      <div className="p-4 col-span-full text-center text-[var(--black70)] px-4 mt-6">
-        데이터가 없습니다.
-      </div>
+      <div className="p-4 col-span-full text-center text-[var(--black70)] px-4 mt-6"></div>
     );
 
   const getWeeks = weeklyDatas.map((weeks) => ({

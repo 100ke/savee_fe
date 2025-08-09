@@ -68,4 +68,39 @@ const fetchWeeklyTransactions = async (ledgerId, selectedDate, token) => {
   }
 };
 
-export { getPersonalLedgerId, fetchDailyTransactions, fetchWeeklyTransactions };
+const fetchMonthlyTransactions = async (ledgerId, selectedDate, token) => {
+  try {
+    const ledId = Number(ledgerId);
+    const year = selectedDate.getFullYear();
+    const month = String(selectedDate.getMonth() + 1).padStart(2, "0");
+    const reDate = `${year}-${month}`;
+
+    const response = await instance.get(
+      `ledgers/${ledId}/transactions/monthly?month=${reDate}`,
+      getAuthHeader(token)
+    );
+
+    const data = await response.data.data;
+
+    // header에 보낼 summary 추출
+    const monthlyTotalIncome = data.reduce(
+      (sum, month) => sum + Number(month.totalIncome),
+      0
+    );
+    const monthlyTotalExpense = data.reduce(
+      (sum, month) => sum + Number(month.totalExpense),
+      0
+    );
+
+    return { data, monthlyTotalExpense, monthlyTotalIncome };
+  } catch (error) {
+    throw error;
+  }
+};
+
+export {
+  getPersonalLedgerId,
+  fetchDailyTransactions,
+  fetchWeeklyTransactions,
+  fetchMonthlyTransactions,
+};

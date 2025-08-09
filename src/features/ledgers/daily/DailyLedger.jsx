@@ -37,7 +37,6 @@ function DailyLedger() {
 
         const peersonalLedgerId = await getPersonalLedgerId(token);
         setLedgerId(peersonalLedgerId.id);
-        console.log(typeof peersonalLedgerId.id, peersonalLedgerId.id);
 
         const data = await fetchDailyTransactions(
           ledgerId,
