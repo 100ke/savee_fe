@@ -136,7 +136,7 @@ export default function NavBar() {
 
   return (
     <div className="border-r sidebar w-48 h-screen flex flex-col justify-between">
-      <div className="p-4 flex items-center justify-center">
+      <div className="p-4 flex items-center justify-center cursor-pointer">
         <img src={Logo} alt="savee_logo" className="w-[48px] h-[48px]" />
         <p className="logo h-48px font-bold m-2 pt-1 text-xl">SAVEE</p>
       </div>
