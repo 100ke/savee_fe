@@ -4,7 +4,7 @@ import TransactionChart from "./TransactionChart";
 import {
   fetchWeeklyTransactions,
   getPersonalLedgerId,
-} from "../TransactionsAPI";
+} from "../TransactionApi";
 import { useNavigate, useOutletContext } from "react-router-dom";
 import "../Ledgers.css";
 import TransactionAccordion from "./TransactionAccordion";

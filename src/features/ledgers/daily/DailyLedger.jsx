@@ -1,10 +1,7 @@
 import { useEffect, useState } from "react";
 import TransactionCard from "./TransactionCard";
 import "../Ledgers.css";
-import {
-  fetchDailyTransactions,
-  getPersonalLedgerId,
-} from "../TransactionsAPI";
+import { fetchDailyTransactions, getPersonalLedgerId } from "../TransactionApi";
 import { useNavigate, useOutletContext } from "react-router-dom";
 
 function DailyLedger() {
