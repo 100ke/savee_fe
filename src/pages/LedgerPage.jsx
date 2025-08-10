@@ -5,6 +5,7 @@ import { useState } from "react";
 import DailyLedger from "../features/ledgers/daily/DailyLedger";
 import WeeklyLedger from "../features/ledgers/weekly/WeeklyLedger";
 import MonthlyLedger from "../features/ledgers/monthly/MonthlyLedger";
+import LedgerAddButton from "../features/ledgers/LedgerAddButton";
 
 export default function LedgerPage() {
   const location = useLocation();
@@ -62,6 +63,9 @@ export default function LedgerPage() {
           setMonthlyDatas,
         }}
       />
+      <div className="fixed bottom-10 right-10 z-50">
+        <LedgerAddButton />
+      </div>
     </div>
   );
 }

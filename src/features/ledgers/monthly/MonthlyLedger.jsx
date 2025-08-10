@@ -17,7 +17,7 @@ export default function MonthlyLedger() {
     setTransactions,
     error,
     setError,
-    monthlyDatas, // 전체 주차 데이터
+    monthlyDatas, // 전체 월 데이터
     setMonthlyDatas,
   } = useOutletContext();
   const token = localStorage.getItem("accessToken");
@@ -65,7 +65,7 @@ export default function MonthlyLedger() {
           }
         }
 
-        setTransactions([]);
+        setMonthlyDatas([]);
         setSummary({ totalIncome: 0, totalExpense: 0 });
       }
     };
@@ -79,7 +79,7 @@ export default function MonthlyLedger() {
       {/* 에러 상황에 맞게 메시지 출력 */}
       {error ? (
         <div className="text-center text-[var(--black70)] mt-10">{error}</div>
-      ) : transactions === null ? (
+      ) : monthlyDatas === null ? (
         <div className="text-center text-[var(--black70)] mt-10">
           로딩 중 ...{" "}
         </div>
