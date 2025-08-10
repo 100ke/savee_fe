@@ -1,12 +1,12 @@
 /* 가계부 헤더 */
-.stat-title {
+.ledger-header .stat-title {
   font-size: 1rem;
   color: var(--black90);
 }
 
 /* 캘린더 */
 /* react-datepicker 전체 */
-.react-datepicker {
+.ledger-header .react-datepicker {
   font-family: "Pretendard", sans-serif;
   background-color: var(--black10);
   border-radius: 1rem;
@@ -19,7 +19,7 @@
 }
 
 /* 헤더 스타일 */
-.react-datepicker__header {
+.ledger-header .react-datepicker__header {
   background-color: var(--white) !important;
   height: 1rem; /* 높이 고정 */
   line-height: 1.5rem; /* 텍스트가 수직 중앙에 오도록 */
@@ -35,14 +35,14 @@
 }
 
 /* 선택된 날짜 */
-.react-datepicker__month-text--selected {
+.ledger-header .react-datepicker__month-text--selected {
   background-color: var(--main-color) !important;
   color: var(--white);
   border-radius: 0.5rem;
 }
 
 /* 월 선택 영역 */
-.react-datepicker__month-container {
+.ledger-header .react-datepicker__month-container {
   display: flex;
   flex-direction: column;
   flex-wrap: wrap; /* 여러 줄로 배치되도록 */
@@ -51,7 +51,7 @@
 }
 
 /* 월 텍스트 (월 선택 박스) */
-.react-datepicker__month-text {
+.ledger-header .react-datepicker__month-text {
   font-size: 1rem; /* 텍스트 크기 */
   margin: 0.3rem !important; /* 각 월 텍스트와의 간격 */
   padding: 0.3rem !important; /* 여백을 추가하여 클릭할 수 있는 영역을 키움 */
@@ -65,8 +65,8 @@
 }
 
 /* 공통 */
-.react-datepicker__navigation--previous,
-.react-datepicker__navigation--next {
+.ledger-header .react-datepicker__navigation--previous,
+.ledger-header .react-datepicker__navigation--next {
   border-color: transparent !important; /* 기본 테두리 투명 처리 */
   height: 1.2rem;
   width: 1.2rem;
@@ -75,18 +75,18 @@
 }
 
 /* 버튼 hover 시 스타일 */
-.react-datepicker__navigation--previous:hover,
-.react-datepicker__navigation--next:hover {
+.ledger-header .react-datepicker__navigation--previous:hover,
+.ledger-header .react-datepicker__navigation--next:hover {
   border-color: var(--main-color-lightest) !important;
   cursor: pointer;
 }
 
 /* 탭 */
-.tab-active {
+.ledger_tab .tab-active {
   color: var(--main-color);
 }
 
-.tab {
+.ledger_tab .tab {
   font-size: medium !important;
 }
 
@@ -102,20 +102,20 @@
 }
 
 /* 테이블 스타일링 */
-table {
+.transaction-card-container table {
   table-layout: auto; /* 내용에 맞춰 테이블 레이아웃 자동 조정 */
   width: 100%;
   border-collapse: collapse; /* 셀 간격 제거 */
 }
 
 /* td 높이가 내용에 맞게 자동으로 늘어남 */
-td {
+.transaction-card-container td {
   vertical-align: top; /* 내용이 많을 경우, 셀 상단에 맞춰 배치 */
   padding: 8px;
 }
 
 /* 그래프 */
-.chart {
+.ledgers-transaction .weekly-chart {
   height: clamp(150px, 40vw, 360px);
 }
 

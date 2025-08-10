@@ -93,7 +93,7 @@ function WeeklyLedger() {
           로딩 중 ...{" "}
         </div>
       ) : (
-        <div>
+        <div className="ledgers-transaction">
           <TransactionChart weeklyDatas={weeklyDatas} />
           <TransactionAccordion weeklyDatas={weeklyDatas} />
         </div>

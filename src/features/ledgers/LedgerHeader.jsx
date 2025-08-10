@@ -21,7 +21,7 @@ function LedgerHeader({ selectedDate, setSelectedDate, summary }) {
   };
 
   return (
-    <div className="relative">
+    <div className="relative ledger-header">
       <div className="stats shadow calendar-stats w-full max-w-full flex justify-center gap-4">
         <div className="stat stat1 overflow-x-hidden justify-center w-100 border-none text-center flex flex-col flex-1 min-w-[120px] items-center flex-shrink">
           <div className="stat-title">{year}</div>

@@ -24,7 +24,7 @@ function LedgerTab() {
 
   return (
     <div>
-      <div role="tablist" className="tabs tabs-border mt-[1rem]">
+      <div role="tablist" className="ledger-tab tabs tabs-border mt-[1rem]">
         {tabs.map((tab) => {
           return (
             <a

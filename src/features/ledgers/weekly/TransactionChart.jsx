@@ -149,7 +149,7 @@ export default function TransactionChart({ weeklyDatas }) {
   };
 
   return (
-    <div className="chart w-full max-w-4xl mx-auto flex justify-center">
+    <div className="weekly-chart w-full max-w-4xl mx-auto flex justify-center">
       <Bar data={data} options={options} className="mt-5" />
     </div>
   );
