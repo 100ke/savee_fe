@@ -1,6 +1,4 @@
-import React, { useEffect, useState } from "react";
 import { FaUserAlt } from "react-icons/fa";
-import { getUserInfo } from "../userApi";
 
 function Profile({ user }) {
   if (!user) {

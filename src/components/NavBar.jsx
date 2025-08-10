@@ -46,7 +46,7 @@ export default function NavBar() {
     },
     {
       label: "통계",
-      path: "/",
+      path: "/statistics",
       icon: (
         <svg
           xmlns="http://www.w3.org/2000/svg"

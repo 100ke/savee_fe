@@ -44,12 +44,12 @@ function Login() {
       </fieldset>
       <div className="flex flex-col items-center">
         <div className="flex justify-center items-center text-sm">
-          <a
+          <button
             className="text-gray-400"
             onClick={() => document.getElementById("find-pw-modal").showModal()}
           >
             비밀번호 찾기
-          </a>
+          </button>
           <div className="divider divider-horizontal" />
           <a href="/signup" className="text-gray-400">
             회원가입
