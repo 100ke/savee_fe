@@ -19,6 +19,8 @@ export default function LedgerPage() {
 
   const [monthlyDatas, setMonthlyDatas] = useState(null);
 
+  const [ledgers, setLedgers] = useState([]);
+
   // ledgertab에서 선택한 값으로 daily, week, month content 변경
   const renderContent = () => {
     const path = location.pathname;
@@ -64,7 +66,12 @@ export default function LedgerPage() {
         }}
       />
       <div className="fixed bottom-10 right-10 z-50">
-        <LedgerAddButton />
+        <LedgerAddButton
+          ledgers={ledgers}
+          setLedgers={setLedgers}
+          error={error}
+          setError={setError}
+        />
       </div>
     </div>
   );

@@ -98,9 +98,56 @@ const fetchMonthlyTransactions = async (ledgerId, selectedDate, token) => {
   }
 };
 
+const fetchGetLedgers = async (token) => {
+  try {
+    const response = await instance.get(`ledgers`, getAuthHeader(token));
+
+    const ledgers = await response.data.data;
+    return ledgers;
+  } catch (error) {
+    throw error;
+  }
+};
+
+const fetchCreateTransactions = async (
+  ledgerId,
+  token,
+  type,
+  memo,
+  amount,
+  date,
+  categoryId
+) => {
+  try {
+    const ledId = Number(ledgerId);
+
+    const data = {
+      type,
+      amount,
+      memo,
+      categoryId,
+      ledgerId: ledId,
+      date,
+    };
+
+    const response = await instance.post(
+      `ledgers/${ledId}/transactions`,
+      data,
+      getAuthHeader(token)
+    );
+
+    const transaction = await response.data.data;
+    return transaction;
+  } catch (error) {
+    throw error;
+  }
+};
+
 export {
   getPersonalLedgerId,
   fetchDailyTransactions,
   fetchWeeklyTransactions,
   fetchMonthlyTransactions,
+  fetchGetLedgers,
+  fetchCreateTransactions,
 };
