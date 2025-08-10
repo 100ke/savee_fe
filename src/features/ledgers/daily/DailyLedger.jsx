@@ -7,6 +7,7 @@ import { useNavigate, useOutletContext } from "react-router-dom";
 function DailyLedger() {
   const [ledgerId, setLedgerId] = useState(null);
   const {
+    isShared,
     selectedDate,
     setSelectedDate,
     summary,

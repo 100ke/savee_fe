@@ -49,6 +49,7 @@ export default function LedgerPage() {
 
       <Outlet
         context={{
+          isShared: false,
           selectedDate,
           setSelectedDate,
           summary,
