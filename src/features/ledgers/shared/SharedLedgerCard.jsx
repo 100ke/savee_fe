@@ -1,22 +1,21 @@
-export default function SharedLedgerCard() {
+export default function SharedLedgerCard({ sharedLedgers, onClick }) {
   return (
-    <div className="card bg-base-100 w-96 shadow-sm">
-      <figure>
-        <img
-          src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp"
-          alt="Shoes"
-        />
-      </figure>
-      <div className="card-body">
-        <h2 className="card-title">Card Title</h2>
-        <p>
-          A card component has a figure, a body part, and inside body there are
-          title and actions parts
-        </p>
-        <div className="card-actions justify-end">
-          <button className="btn btn-primary">Buy Now</button>
+    <div className="shared-ledger grid grid-cols-3 gap-4">
+      {sharedLedgers.map((ledger) => (
+        <div
+          key={ledger.id}
+          className="card bg-[var(--main-color)] w-96 shadow-sm cursor-pointer hover:bg-[var(--main-color-light)] transition"
+          onClick={() => onClick && onClick(ledger.id)}
+        >
+          <div className="card-body">
+            <h2 className="card-title">{ledger.name}</h2>
+            <p>{ledger.description || "설명이 없습니다."}</p>
+            <div className="card-actions justify-end">
+              <button className="btn btn-outline btn-sm">이동</button>
+            </div>
+          </div>
         </div>
-      </div>
+      ))}
     </div>
   );
 }

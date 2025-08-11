@@ -4,9 +4,11 @@ import {
   fetchAcceptCodes,
   fetchCreateSharedLedgers,
   fetchGetLedgers,
+  fetchGetLedgersByMembership,
   fetchInviteLedgerMembers,
 } from "../TransactionApi";
 import AddSharedLedger from "../modal/AddSahredLedger";
+import SharedLedgerCard from "./SharedLedgerCard";
 
 export default function SharedLedger() {
   const [sharedLedgers, setSharedLedgers] = useState([]);
@@ -58,6 +60,7 @@ export default function SharedLedger() {
       return;
     }
 
+    // 공유 가계부 생성 및 초대 시 사용 - owner 전용
     const fetchSharedLedgers = async () => {
       try {
         const ledgers = await fetchGetLedgers(token);
@@ -68,7 +71,18 @@ export default function SharedLedger() {
       }
     };
 
+    // 공유 가계부에 참여한 멤버 전용
+    const fetchMembershipLedgers = async () => {
+      try {
+        const memberLedgers = await fetchGetLedgersByMembership(token);
+        setSharedLedgers(memberLedgers);
+      } catch (error) {
+        setError("공유 가계부 목록을 가져오지 못했습니다.");
+      }
+    };
+
     fetchSharedLedgers();
+    fetchMembershipLedgers();
   }, [token, navigate]);
 
   if (
@@ -81,22 +95,15 @@ export default function SharedLedger() {
   }
 
   const handleLedgerClick = (ledgerId) => {
-    navigate(`/sharedLedger/${ledgerId}`);
+    navigate(`/sharedLedger/${ledgerId}/daily`);
   };
 
   return (
     <div className="shared-ledgers-list p-6">
-      <div className="shared-ledger grid grid-cols-3 gap-4">
-        {sharedLedgers.map((ledger) => (
-          <div
-            key={ledger.id}
-            className="p-4 border rounded-lg cursor-pointer hover:bg-gray-100"
-            onClick={() => handleLedgerClick(ledger.id)}
-          >
-            <h3 className="font-bold text-lg">{ledger.name}</h3>
-          </div>
-        ))}
-      </div>
+      <SharedLedgerCard
+        sharedLedgers={sharedLedgers}
+        onClick={handleLedgerClick}
+      />
       <div
         onClick={() => {
           document.getElementById("add-shared-ledger-modal").showModal();
