@@ -70,6 +70,19 @@ export const updatePost = async (id, updateData) => {
     throw error;
   }
 };
+
+//답변 등록
+export const updateanswer = async (id, updateAnswer) => {
+  try {
+    const response = await axios.patch(`qna/${id}/answer`, updateAnswer);
+    return response.data;
+  } catch (error) {
+    console.error("답변 등록 실패", error);
+    throw error;
+  }
+};
+
+//admin 확인
 export const isAdmin = async () => {
   const token = localStorage.getItem("accessToken");
   if (!token) return false;
