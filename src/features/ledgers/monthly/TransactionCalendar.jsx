@@ -49,9 +49,12 @@ export default function TransactionCalendar({ monthlyDatas, selectedDate }) {
           ))}
 
           {calendarDates.map((date, idx) => {
-            const dateStr = date.toISOString().split("T")[0];
+            // 오늘 찾기
+            const dateStr = date.toLocaleDateString("sv-SE").split("T")[0];
             const dayData = monthlyDatas.find((d) => d.date === dateStr);
-            const todayStr = new Date().toISOString().split("T")[0];
+            const todayStr = new Date()
+              .toLocaleDateString("sv-SE")
+              .split("T")[0];
             const isToday = dateStr === todayStr;
 
             return (

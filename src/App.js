@@ -8,12 +8,14 @@ import Login from "./pages/Login.jsx";
 import Signup from "./pages/Signup.jsx";
 import Qna from "./pages/Qna.jsx";
 import Statistic from "./pages/Statistic.jsx";
+import SharedLedgerMain from "./pages/SharedLedgerMain.jsx";
 
 function App() {
   return (
     <Routes>
       <Route path="/*" element={<Layout />}>
         <Route path="ledger/*" element={<LedgerMain />} />
+        <Route path="sharedLedger/*" element={<SharedLedgerMain />} />
         <Route path="support/*" element={<Support />} />
         <Route path="mypage" element={<MyPage />} />
         <Route path="login" element={<Login />} />
