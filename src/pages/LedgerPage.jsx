@@ -4,6 +4,8 @@ import LedgerTab from "../features/ledgers/LedgerTab";
 import { useState } from "react";
 import DailyLedger from "../features/ledgers/daily/DailyLedger";
 import WeeklyLedger from "../features/ledgers/weekly/WeeklyLedger";
+import MonthlyLedger from "../features/ledgers/monthly/MonthlyLedger";
+import LedgerAddButton from "../features/ledgers/LedgerAddButton";
 
 export default function LedgerPage() {
   const location = useLocation();
@@ -15,6 +17,10 @@ export default function LedgerPage() {
   const [weeklyDatas, setWeeklyDatas] = useState(null);
   const [selectedWeeks, setSelectedWeeks] = useState(null);
 
+  const [monthlyDatas, setMonthlyDatas] = useState(null);
+
+  const [ledgers, setLedgers] = useState([]);
+
   // ledgertab에서 선택한 값으로 daily, week, month content 변경
   const renderContent = () => {
     const path = location.pathname;
@@ -25,6 +31,10 @@ export default function LedgerPage() {
 
     if (path === "/ledger/weekly") {
       return <WeeklyLedger />;
+    }
+
+    if (path === "/ledger/monthly") {
+      return <MonthlyLedger />;
     }
   };
 
@@ -39,6 +49,7 @@ export default function LedgerPage() {
 
       <Outlet
         context={{
+          isShared: false,
           selectedDate,
           setSelectedDate,
           summary,
@@ -51,8 +62,18 @@ export default function LedgerPage() {
           setWeeklyDatas,
           selectedWeeks,
           setSelectedWeeks,
+          monthlyDatas,
+          setMonthlyDatas,
         }}
       />
+      <div className="fixed bottom-10 right-10 z-50">
+        <LedgerAddButton
+          ledgers={ledgers}
+          setLedgers={setLedgers}
+          error={error}
+          setError={setError}
+        />
+      </div>
     </div>
   );
 }
