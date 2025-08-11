@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { fetchPostById, updatePost, createPost } from "../QnaApi";
-export default function QnaInput() {
+export default function QnaInput({ onRegistered }) {
   const [title, setTitle] = useState("");
   const [question, setQuestion] = useState("");
   const [error, setError] = useState("");
@@ -60,11 +60,12 @@ export default function QnaInput() {
       const data = await createPost({ title, question, qna_type });
       newPostId = data.data.id;
       fetchPostById(newPostId);
-      document.getElementById("my_modal_2").close();
       alert("질문이 등록 되었습니다.");
       setTitle("");
       setQuestion("");
       setType("로그인");
+      onRegistered();
+      document.getElementById("my_modal_2").close();
     }
   };
   return (

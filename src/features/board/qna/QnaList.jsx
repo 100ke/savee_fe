@@ -1,13 +1,14 @@
 import "./../Board.css";
 import Pagination from "../Pagination";
 import Search from "../Search";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { getQnaPosts } from "../QnaApi";
 import QnaDetail from "./QnaDetail";
 import QnaModal from "./QnaModal";
-export default function QnaList() {
+export default function QnaList({ refreshFlag }) {
   const [openIndex, setOpenIndex] = useState(null);
+
   const navigate = useNavigate();
   //조회 데이터
   const {
@@ -24,6 +25,10 @@ export default function QnaList() {
     pageParam,
   } = Search(getQnaPosts);
   if (error) return <div className="alert alert-danger">{error}</div>;
+
+  useEffect(() => {
+    handleSearch();
+  }, [refreshFlag]);
 
   //토글
   const toggle = (index) => {
