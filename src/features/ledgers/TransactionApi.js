@@ -187,7 +187,7 @@ const fetchAcceptCodes = async (ledgerId, token, code, email) => {
     };
 
     const response = await instance.post(
-      `invites/accep/${code}`,
+      `invites/accept/${code}`,
       data,
       getAuthHeader(token)
     );

@@ -13,6 +13,7 @@ import SharedLedgerCard from "./SharedLedgerCard";
 export default function SharedLedger() {
   const [sharedLedgers, setSharedLedgers] = useState([]);
   const token = localStorage.getItem("accessToken");
+
   const navigate = useNavigate();
   const { error, setError } = useOutletContext();
   const [open, setOpen] = useState(false);
@@ -23,6 +24,10 @@ export default function SharedLedger() {
         await fetchCreateSharedLedgers(formData.name, formData.token);
         alert("공유 가계부 생성 완료");
         setOpen(true);
+
+        const updatedLedgers = await fetchGetLedgers(formData.token);
+        const shared = updatedLedgers.filter((ledger) => ledger.is_shared);
+        setSharedLedgers(shared);
       }
 
       if (formData.email) {
@@ -103,17 +108,18 @@ export default function SharedLedger() {
       <SharedLedgerCard
         sharedLedgers={sharedLedgers}
         onClick={handleLedgerClick}
-      />
-      <div
-        onClick={() => {
-          document.getElementById("add-shared-ledger-modal").showModal();
-        }}
-        className="add-shared-ledger bg-[var(--color-sub3-40)] w-50 h-70 rounded-[1rem] cursor-pointer flex justify-center items-center"
       >
-        <button className="add-ledgers text-3xl text-[var(--main-color-dark)] bg-[var(--color-sub3)] p-4 rounded-full w-17 cursor-pointer">
-          +
-        </button>
-      </div>
+        <div
+          onClick={() => {
+            document.getElementById("add-shared-ledger-modal").showModal();
+          }}
+          className="add-shared-ledger bg-[var(--color-sub3-40)] w-50 h-70 rounded-[1rem] cursor-pointer flex justify-center items-center"
+        >
+          <button className="add-ledgers text-3xl text-[var(--main-color-dark)] bg-[var(--color-sub3)] p-4 rounded-full w-17 cursor-pointer">
+            +
+          </button>
+        </div>
+      </SharedLedgerCard>
       <AddSharedLedger onSave={handleSave} sharedLedgers={sharedLedgers} />
     </div>
   );
