@@ -143,6 +143,76 @@ const fetchCreateTransactions = async (
   }
 };
 
+const fetchCreateSharedLedgers = async (name, token) => {
+  const is_shared = true;
+  try {
+    const data = { name, is_shared };
+
+    const response = await instance.post(`ledgers`, data, getAuthHeader(token));
+
+    const ledger = await response.data.data;
+    return ledger;
+  } catch (error) {
+    throw error;
+  }
+};
+
+const fetchInviteLedgerMembers = async (ledgerId, token, email) => {
+  try {
+    const ledId = Number(ledgerId);
+    const data = {
+      email,
+      ledgerId: ledId,
+    };
+
+    const response = await instance.post(
+      `ledgers/${ledId}/members`,
+      data,
+      getAuthHeader(token)
+    );
+
+    const inviteMember = await response.data.data;
+    return inviteMember;
+  } catch (error) {
+    throw error;
+  }
+};
+
+const fetchAcceptCodes = async (ledgerId, token, code, email) => {
+  try {
+    const ledId = Number(ledgerId);
+    const data = {
+      code,
+      email,
+    };
+
+    const response = await instance.post(
+      `invites/accep/${code}`,
+      data,
+      getAuthHeader(token)
+    );
+
+    const result = await response.data;
+    return result;
+  } catch (error) {
+    throw error;
+  }
+};
+
+const fetchGetLedgersByMembership = async (token) => {
+  try {
+    const response = await instance.get(
+      `ledgers/membership`,
+      getAuthHeader(token)
+    );
+
+    const memberLedgers = await response.data.data;
+    return memberLedgers;
+  } catch (error) {
+    throw error;
+  }
+};
+
 export {
   getPersonalLedgerId,
   fetchDailyTransactions,
@@ -150,4 +220,8 @@ export {
   fetchMonthlyTransactions,
   fetchGetLedgers,
   fetchCreateTransactions,
+  fetchCreateSharedLedgers,
+  fetchInviteLedgerMembers,
+  fetchAcceptCodes,
+  fetchGetLedgersByMembership,
 };
