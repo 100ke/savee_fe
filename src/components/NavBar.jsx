@@ -1,8 +1,13 @@
 import "./NavBar.css";
 import IconCalender from "./../assets/calendar3.svg";
 import Logo from "./../assets/savee.png";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 export default function NavBar() {
+  const navigate = useNavigate();
+  const goMainPage = async () => {
+    navigate("/");
+  };
+
   const menuItems = [
     {
       label: "달력",
@@ -136,7 +141,10 @@ export default function NavBar() {
 
   return (
     <div className="border-r sidebar w-48 h-screen flex flex-col justify-between">
-      <div className="p-4 flex items-center justify-center cursor-pointer">
+      <div
+        className="p-4 flex items-center justify-center cursor-pointer"
+        onClick={goMainPage}
+      >
         <img src={Logo} alt="savee_logo" className="w-[48px] h-[48px]" />
         <p className="logo h-48px font-bold m-2 pt-1 text-xl">SAVEE</p>
       </div>

@@ -94,12 +94,12 @@ function CategoryStats({ type, onSelectedFilter }) {
           ref={chartRef}
         />
       </div>
-      <div className="legend-area mt-5 flex flex-col items-center sm:mx-10">
+      <div className="legend-area mt-5 flex flex-col items-center sm:mx-5">
         {cateData.map((item, i) => {
           const percent = ((item.total / total) * 100).toFixed(0) + "%";
           return (
             <div
-              className="legend-item w-full flex justify-between my-2 text-xl"
+              className="legend-item w-full flex justify-between my-2 text-lg"
               key={item.category + i}
             >
               <div className="area flex gap-2 items-center">
@@ -111,7 +111,9 @@ function CategoryStats({ type, onSelectedFilter }) {
                 />
                 <span className="legend-label">{item.category}</span>
                 <div className="badge">
-                  <span className="legend-percent">{percent}</span>
+                  <span className="legend-percent font-semibold">
+                    {percent}
+                  </span>
                 </div>
               </div>
               <span className="legend-amount">

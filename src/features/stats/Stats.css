@@ -27,7 +27,7 @@
 
 /* 카테고리별 지출 */
 .category-stats .badge {
-  width: 3rem;
+  width: 2.5rem;
   border-color: var(--black20);
   background-color: var(--black20);
 }
