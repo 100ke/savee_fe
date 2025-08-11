@@ -1,6 +1,16 @@
-import React from "react";
+import React, { useState } from "react";
+import { changeName } from "../userApi";
 
-function ChangeName() {
+function ChangeName({ onSuccess }) {
+  const [name, setName] = useState("");
+
+  const handleChangeName = async () => {
+    try {
+      await changeName(name);
+      alert("이름이 변경되었습니다.");
+      onSuccess();
+    } catch (error) {}
+  };
   return (
     <div className="change-name">
       {/* 이름 입력란, 변경 버튼 */}
@@ -25,6 +35,10 @@ function ChangeName() {
                   className="input"
                   min="2"
                   max="10"
+                  value={name}
+                  onChange={(e) => {
+                    setName(e.target.value);
+                  }}
                   required
                 />
               </label>
@@ -34,7 +48,9 @@ function ChangeName() {
             </div>
           </div>
           <div className="flex justify-end">
-            <button className="btn btn-primary">변경</button>
+            <button className="btn btn-primary" onClick={handleChangeName}>
+              변경
+            </button>
           </div>
         </div>
       </dialog>
