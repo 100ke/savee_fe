@@ -1,30 +1,37 @@
 import QnaInput from "./QnaInput";
+
 export default function QnaModal({ onRegistered }) {
+  const openModal = () => document.getElementById("my_modal_2")?.showModal();
+  const closeModal = () => document.getElementById("my_modal_2")?.close();
+
   return (
     <div>
-      {/* Open the modal using document.getElementById('ID').showModal() method */}
-      {/* Open the modal using document.getElementById('ID').showModal() method */}
       <button
         className="btn bg-[var(--accent-color)] text-white rounded-box"
-        onClick={() => document.getElementById("my_modal_2").showModal()}
+        onClick={openModal}
       >
         문의 접수
       </button>
+
       <dialog id="my_modal_2" className="modal">
-        <div className="modal-box">
+        <div className="modal-box relative">
           <h3 className="font-bold text-lg">문의 작성하기</h3>
-          <QnaInput onRegistered={onRegistered}></QnaInput>
-          <form method="dialog">
-            {/* if there is a button in form, it will close the modal */}
-            <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
-              ✕
-            </button>
-          </form>
+
+          {/* QnaInput이 form과 제출 로직을 가집니다. closeModal도 prop으로 넘김 */}
+          <QnaInput onRegistered={onRegistered} closeModal={closeModal} />
+
+          {/* 오른쪽 상단 닫기 버튼 (type="button"으로 자동 닫힘 방지) */}
+          <button
+            type="button"
+            className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
+            onClick={closeModal}
+          >
+            ✕
+          </button>
         </div>
 
-        <form method="dialog" className="modal-backdrop">
-          <button>close</button>
-        </form>
+        {/* 배경 클릭시 닫기 원하면 아래처럼 처리(없애도 됨) */}
+        <div className="modal-backdrop" onClick={closeModal} />
       </dialog>
     </div>
   );

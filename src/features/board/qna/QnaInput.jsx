@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { fetchPostById, updatePost, createPost } from "../QnaApi";
-export default function QnaInput({ onRegistered }) {
+export default function QnaInput({ onRegistered, closeModal }) {
   const [title, setTitle] = useState("");
   const [question, setQuestion] = useState("");
   const [error, setError] = useState("");
@@ -51,21 +51,34 @@ export default function QnaInput({ onRegistered }) {
     }
 
     setError("");
-    if (isEdit) {
-      // 수정 API 호출
-      await updatePost(id, { title, question, qna_type });
-      alert("질문이 수정 되었습니다.");
-    } else {
-      // 등록 API 호출
-      const data = await createPost({ title, question, qna_type });
-      newPostId = data.data.id;
-      fetchPostById(newPostId);
-      alert("질문이 등록 되었습니다.");
-      setTitle("");
-      setQuestion("");
-      setType("로그인");
-      onRegistered();
-      document.getElementById("my_modal_2").close();
+    try {
+      if (isEdit) {
+        // 수정 API 호출
+        await updatePost(id, { title, question, qna_type });
+        alert("질문이 수정 되었습니다.");
+        if (onRegistered) onRegistered();
+        if (closeModal) closeModal();
+      } else {
+        // 등록 API 호출
+        const data = await createPost({ title, question, qna_type });
+        newPostId = data.data.id;
+        fetchPostById(newPostId);
+        alert("질문이 등록 되었습니다.");
+        setTitle("");
+        setQuestion("");
+        setType("로그인");
+        // window.location.reload();
+        // createPost 호출 성공 후
+        console.log("등록 성공, onRegistered 호출 직전");
+        if (typeof onRegistered === "function") {
+          await onRegistered();
+          console.log("onRegistered 호출 완료");
+        }
+        closeModal();
+      }
+    } catch (err) {
+      console.error(err);
+      alert("등록 중 오류가 발생했습니다.");
     }
   };
   return (
@@ -119,7 +132,10 @@ export default function QnaInput({ onRegistered }) {
       <div className="w-auto justify-between gap-2 mt-2 flex">
         <button
           className="btn join-item rounded-box w-20 "
-          onClick={() => navigate(`/support`)}
+          onClick={() => {
+            // 취소는 모달 닫기만
+            if (closeModal) closeModal();
+          }}
         >
           취소
         </button>

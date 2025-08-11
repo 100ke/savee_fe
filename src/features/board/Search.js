@@ -3,7 +3,7 @@ import { useSearchParams, useLocation } from "react-router-dom";
 import { isAdmin } from "./SupportApi";
 
 const ITEMS_PER_PAGE = 6;
-export default function Search(fetchFunction) {
+export default function useSearch(fetchFunction, refreshFlag) {
   const [data, setData] = useState([]); // 게시글 리스트
   const [currentPage, setCurrentPage] = useState(1); // 현재 페이지 번호
   const [totalPages, setTotalPages] = useState(1); // 총 페이지 수
@@ -18,7 +18,7 @@ export default function Search(fetchFunction) {
   // 쿼리에서 page 값을 받아서 숫자로 변환, 없으면 기본 1
   const pageParam = parseInt(searchParams.get("page")) || 1;
   const keywordParam = searchParams.get("keyword") || "";
-
+  const categoryParam = searchParams.get("qna_type") || "";
   useEffect(() => {
     if (location.state?.refresh) {
       fetchPosts(pageParam, keywordParam);
@@ -28,8 +28,8 @@ export default function Search(fetchFunction) {
   useEffect(() => {
     setSearchKeyword(keywordParam);
     setCurrentPage(pageParam);
-    fetchPosts(pageParam, keywordParam);
-  }, [keywordParam, pageParam]);
+    fetchPosts(pageParam, keywordParam, categoryParam);
+  }, [keywordParam, pageParam, refreshFlag, categoryParam]);
 
   useEffect(() => {
     if (pageParam !== currentPage) {
@@ -48,10 +48,15 @@ export default function Search(fetchFunction) {
   // console.log("admin", admin);
 
   // 게시글 불러오는 함수 (페이지 번호 인자 받음)
-  const fetchPosts = async (page, keyword = "") => {
+  const fetchPosts = async (page, keyword = "", category = "") => {
     setLoading(true); // 로딩 시작
     try {
-      const response = await fetchFunction(page, ITEMS_PER_PAGE, keyword);
+      const response = await fetchFunction(
+        page,
+        ITEMS_PER_PAGE,
+        keyword,
+        category
+      );
       const { pagination, data } = response.data;
       console.log(response);
       setData(Array.isArray(data) ? data : []);
@@ -66,14 +71,22 @@ export default function Search(fetchFunction) {
     }
   };
   const handleSearch = () => {
-    setSearchParams({ page: "1", keyword: searchKeyword });
+    setSearchParams({
+      page: "1",
+      keyword: searchKeyword,
+      qna_type: categoryParam,
+    });
   };
   // 페이지 변경 함수: 페이지 버튼 클릭 시 실행됨
   const handlePageChange = (newPage) => {
     if (newPage >= 1 && newPage <= totalPages) {
       // URL 쿼리 파라미터를 바꿔서 주소도 바뀌도록 함
       setSearchParams(
-        { page: newPage.toString(), keyword: searchKeyword },
+        {
+          page: newPage.toString(),
+          keyword: searchKeyword,
+          qna_type: categoryParam,
+        },
         { replace: true }
       );
       // currentPage는 useEffect에서 쿼리 파라미터 변화를 감지해서 변경됨
@@ -91,5 +104,6 @@ export default function Search(fetchFunction) {
     handlePageChange,
     totalPages,
     pageParam,
+    category: categoryParam,
   };
 }

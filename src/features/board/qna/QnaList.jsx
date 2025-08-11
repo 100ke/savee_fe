@@ -1,53 +1,37 @@
 import "./../Board.css";
 import Pagination from "../Pagination";
-import Search from "../Search";
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { getQnaPosts } from "../QnaApi";
 import QnaDetail from "./QnaDetail";
-import QnaModal from "./QnaModal";
-export default function QnaList({ refreshFlag }) {
-  const [openIndex, setOpenIndex] = useState(null);
 
+export default function QnaList({
+  data,
+  loading,
+  error,
+  admin,
+  currentPage,
+  totalPages,
+  onPageChange,
+  pageParam,
+  onRefresh,
+}) {
+  const [openIndex, setOpenIndex] = useState(null);
   const navigate = useNavigate();
-  //조회 데이터
-  const {
-    data,
-    searchKeyword,
-    setSearchKeyword,
-    admin,
-    currentPage,
-    loading,
-    error,
-    handleSearch,
-    handlePageChange,
-    totalPages,
-    pageParam,
-  } = Search(getQnaPosts);
+
+  const handleAfterChange = () => {
+    if (onRefresh) onRefresh();
+  };
+
+  if (loading) return <div>로딩중...</div>;
+  if (error) return <div className="alert alert-danger">{error}</div>;
+  if (!data.length) return <div>게시글이 없습니다.</div>;
+
+  // Hook 호출이 끝난 뒤에 조건부 렌더링(조기 반환)을 해도 안전
   if (error) return <div className="alert alert-danger">{error}</div>;
 
-  useEffect(() => {
-    handleSearch();
-  }, [refreshFlag]);
+  const toggle = (index) =>
+    setOpenIndex((prev) => (prev === index ? null : index));
 
-  //토글
-  const toggle = (index) => {
-    if (openIndex === index) {
-      setOpenIndex(null); // 이미 열려있으면 닫기
-    } else {
-      setOpenIndex(index); // 열기
-    }
-  };
-
-  //답변 등록
-  const handleRegister = async (id) => {
-    try {
-      await fetch(`/:id/answer`, { method: "PATCH" });
-      handleSearch(); // 데이터 다시 로드
-    } catch (err) {
-      console.error(err);
-    }
-  };
   return (
     <section className="flex flex-col gap-5">
       <div className="join gap-2 justify-center">
@@ -61,11 +45,9 @@ export default function QnaList({ refreshFlag }) {
         )}
       </div>
 
-      <div className="">
+      <div>
         <table className="table">
           <tbody>
-            {/* row 1 */}
-
             {data.map((post, idx) => (
               <React.Fragment key={post.id}>
                 <tr
@@ -83,14 +65,14 @@ export default function QnaList({ refreshFlag }) {
                     </div>
                   </td>
                   <td>{post.title}</td>
-                  <td>{post.createdAt.split("T")[0]}</td>
-                  {console.log(post.iscommpleted)}
+                  <td>{post.createdAt?.split("T")[0]}</td>
                   <td>{post.iscommpleted ? "답변완료" : "답변없음"}</td>
                 </tr>
+
                 <tr>
-                  <td colSpan={4} className="p-0">
+                  <td colSpan={5} className="p-0">
                     <div
-                      className={`overflow-hidden transition-all duration-20 ${
+                      className={`overflow-hidden transition-all duration-200 ${
                         openIndex === idx ? "max-h-96 p-5" : "max-h-0 p-0"
                       }`}
                     >
@@ -98,6 +80,19 @@ export default function QnaList({ refreshFlag }) {
                         question={post.question}
                         answer={post.answer}
                       />
+                      {/* {admin && (
+                        <div className="mt-3">
+                          {post.iscommpleted ? (
+                            <button onClick={() => handleDeleteAnswer(post.id)}>
+                              답변 삭제
+                            </button>
+                          ) : (
+                            <button onClick={() => handleRegister(post.id)}>
+                              답변 등록(완료 처리)
+                            </button>
+                          )}
+                        </div>
+                      )} */}
                     </div>
                   </td>
                 </tr>
@@ -106,11 +101,12 @@ export default function QnaList({ refreshFlag }) {
           </tbody>
         </table>
       </div>
+
       <Pagination
         totalPages={totalPages}
         currentPage={pageParam}
-        onPageChange={handlePageChange}
-      ></Pagination>
+        onPageChange={onPageChange}
+      />
     </section>
   );
 }
