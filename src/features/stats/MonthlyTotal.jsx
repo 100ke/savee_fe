@@ -79,7 +79,8 @@ function MonthlyTotal({ onSelectedFilter }) {
     if (!elements.length) return;
     const index = elements[0].index;
     const month = data.labels[index];
-    onSelectedFilter?.({ type: "month", value: month });
+    const monthNum = Number(month.replace("월", ""));
+    onSelectedFilter?.({ type: "month", month: monthNum });
   };
 
   return (

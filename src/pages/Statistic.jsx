@@ -33,7 +33,7 @@ function Statistic() {
     }
     if (filter.type === "month") {
       try {
-        const data = await fetchMonthlyExpensesList(year, month);
+        const data = await fetchMonthlyExpensesList(year, filter.month);
         setDetailData(data.expenses || []);
       } catch (error) {
         console.log(error);
@@ -89,25 +89,29 @@ function Statistic() {
           </div>
         </div>
       </div>
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-2">
-        <CategoryStats
-          type={active === "weekly" ? "weekly" : "monthly"}
-          onSelectedFilter={handleSelectFilter}
-          categoryName={selectedFilter?.value}
-        />
-        <div className="flex flex-col">
-          {active === "weekly" ? (
-            <WeeklyTotal onSelectedFilter={handleSelectFilter} />
-          ) : (
-            <MonthlyTotal onSelectedFilter={handleSelectFilter} />
-          )}
-          <DetailList
-            detailData={detailData}
+      <div className="grid grid-cols-1">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-2 stats-area1">
+          <CategoryStats
+            type={active === "weekly" ? "weekly" : "monthly"}
+            onSelectedFilter={handleSelectFilter}
             categoryName={selectedFilter?.value}
           />
+          <div className="flex flex-col right">
+            {active === "weekly" ? (
+              <WeeklyTotal onSelectedFilter={handleSelectFilter} />
+            ) : (
+              <MonthlyTotal onSelectedFilter={handleSelectFilter} />
+            )}
+            <DetailList
+              detailData={detailData}
+              categoryName={selectedFilter?.value}
+            />
+          </div>
+        </div>
+        <div className="stats-area2">
+          <DailyTrend />
         </div>
       </div>
-      <DailyTrend />
     </div>
   );
 }
