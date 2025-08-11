@@ -6,7 +6,9 @@ import Support from "./pages/Support.jsx";
 import MyPage from "./pages/MyPage.jsx";
 import Login from "./pages/Login.jsx";
 import Signup from "./pages/Signup.jsx";
+import Qna from "./pages/Qna.jsx";
 import Statistic from "./pages/Statistic.jsx";
+
 function App() {
   return (
     <Routes>
@@ -16,6 +18,7 @@ function App() {
         <Route path="mypage" element={<MyPage />} />
         <Route path="login" element={<Login />} />
         <Route path="signup" element={<Signup />} />
+        <Route path="Qna/*" element={<Qna />} />
         <Route path="statistics" element={<Statistic />} />
       </Route>
     </Routes>
