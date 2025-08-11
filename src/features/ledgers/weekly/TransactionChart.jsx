@@ -100,10 +100,16 @@ export default function TransactionChart({ weeklyDatas }) {
           callback: function (value) {
             return (value / 10000).toLocaleString() + " 만원"; // 숫자에 콤마 찍기
           },
+          font: {
+            size: 14,
+          },
         },
       },
       x: {
         grid: { display: false },
+        ticks: {
+          font: { size: 14 },
+        },
       },
     },
     plugins: {
@@ -143,7 +149,7 @@ export default function TransactionChart({ weeklyDatas }) {
   };
 
   return (
-    <div className="chart w-full max-w-4xl mx-auto flex justify-center">
+    <div className="weekly-chart w-full max-w-4xl mx-auto flex justify-center">
       <Bar data={data} options={options} className="mt-5" />
     </div>
   );

@@ -1,15 +1,12 @@
 import { useEffect, useState } from "react";
-import "../Ledgers.css";
-import TransactionChart from "./TransactionChart";
+import TransactionCalendar from "./TransactionCalendar";
+import { useNavigate, useOutletContext } from "react-router-dom";
 import {
-  fetchWeeklyTransactions,
+  fetchMonthlyTransactions,
   getPersonalLedgerId,
 } from "../TransactionApi";
-import { useNavigate, useOutletContext } from "react-router-dom";
-import "../Ledgers.css";
-import TransactionAccordion from "./TransactionAccordion";
 
-function WeeklyLedger() {
+export default function MonthlyLedger() {
   const [ledgerId, setLedgerId] = useState(null);
   const {
     selectedDate,
@@ -20,14 +17,11 @@ function WeeklyLedger() {
     setTransactions,
     error,
     setError,
-    weeklyDatas, // 전체 주차 데이터
-    setWeeklyDatas,
-    selectedWeeks, // 아코디언 선택 주차
-    setSelectedWeeks,
+    monthlyDatas, // 전체 월 데이터
+    setMonthlyDatas,
   } = useOutletContext();
-
-  const navigate = useNavigate();
   const token = localStorage.getItem("accessToken");
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchTransactions = async () => {
@@ -43,39 +37,36 @@ function WeeklyLedger() {
         const peersonalLedgerId = await getPersonalLedgerId(token);
         setLedgerId(peersonalLedgerId.id);
 
-        const { datas, weeklyTotalExpense, weeklyTotalIncome } =
-          await fetchWeeklyTransactions(ledgerId, selectedDate, token);
+        const { data, monthlyTotalExpense, monthlyTotalIncome } =
+          await fetchMonthlyTransactions(ledgerId, selectedDate, token);
 
-        if (!datas) {
+        if (!data) {
           setError("데이터가 없습니다.");
-          setWeeklyDatas([]);
-          setSelectedWeeks(null);
+          setMonthlyDatas([]);
         } else {
-          setWeeklyDatas(datas);
+          setMonthlyDatas(data);
           setSummary({
-            totalIncome: weeklyTotalIncome,
-            totalExpense: weeklyTotalExpense,
+            totalIncome: monthlyTotalIncome,
+            totalExpense: monthlyTotalExpense,
           });
           setError(null);
         }
       } catch (error) {
         const message = error.response?.data?.message;
-        console.error(error);
+
         // axios response status를 사용해 토큰이 없는 상태에 따른 에러 메시지 설정
         if (error.response?.status === 401) {
           navigate("/login");
         } else if (error.response?.status === 404) {
-          if (
-            typeof message === "string" &&
-            message.includes("입력한 내역이 없습니다.")
-          ) {
+          if (message.includes("입력한 내역이 없습니다.")) {
             setError("데이터가 없습니다.");
           } else {
             setError("데이터를 불러오는 데 실패했습니다.");
           }
         }
 
-        setWeeklyDatas([]);
+        setMonthlyDatas([]);
+        setSummary({ totalIncome: 0, totalExpense: 0 });
       }
     };
 
@@ -88,18 +79,16 @@ function WeeklyLedger() {
       {/* 에러 상황에 맞게 메시지 출력 */}
       {error ? (
         <div className="text-center text-[var(--black70)] mt-10">{error}</div>
-      ) : weeklyDatas === null ? (
+      ) : monthlyDatas === null ? (
         <div className="text-center text-[var(--black70)] mt-10">
           로딩 중 ...{" "}
         </div>
       ) : (
-        <div className="ledgers-transaction">
-          <TransactionChart weeklyDatas={weeklyDatas} />
-          <TransactionAccordion weeklyDatas={weeklyDatas} />
-        </div>
+        <TransactionCalendar
+          monthlyDatas={monthlyDatas}
+          selectedDate={selectedDate}
+        />
       )}
     </div>
   );
 }
-
-export default WeeklyLedger;

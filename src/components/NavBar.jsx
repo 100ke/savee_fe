@@ -46,7 +46,7 @@ export default function NavBar() {
     },
     {
       label: "통계",
-      path: "/",
+      path: "/statistics",
       icon: (
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -60,7 +60,7 @@ export default function NavBar() {
     },
     {
       label: "공유 가계부",
-      path: "/",
+      path: "/sharedLedger",
       icon: (
         <svg
           xmlns="http://www.w3.org/2000/svg"

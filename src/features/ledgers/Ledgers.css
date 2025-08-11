@@ -1,5 +1,5 @@
 /* 가계부 헤더 */
-.stat-title {
+.ledger-header .stat-title {
   font-size: 1rem;
   color: var(--black90);
 }
@@ -82,11 +82,11 @@
 }
 
 /* 탭 */
-.tab-active {
+.ledger_tab .tab-active {
   color: var(--main-color);
 }
 
-.tab {
+.ledger_tab .tab {
   font-size: medium !important;
 }
 
@@ -102,21 +102,21 @@
 }
 
 /* 테이블 스타일링 */
-table {
+.transaction-card-container table {
   table-layout: auto; /* 내용에 맞춰 테이블 레이아웃 자동 조정 */
   width: 100%;
   border-collapse: collapse; /* 셀 간격 제거 */
 }
 
 /* td 높이가 내용에 맞게 자동으로 늘어남 */
-td {
+.transaction-card-container td {
   vertical-align: top; /* 내용이 많을 경우, 셀 상단에 맞춰 배치 */
   padding: 8px;
 }
 
 /* 그래프 */
-.chart {
-  height: clamp(150px, 40vw, 400px);
+.ledgers-transaction .weekly-chart {
+  height: clamp(150px, 40vw, 360px);
 }
 
 /* 아코디언 */

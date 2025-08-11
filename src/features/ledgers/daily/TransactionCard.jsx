@@ -41,7 +41,7 @@ function TransactionCard({ transactions }) {
   }
 
   return (
-    <div className="trans-container grid gap-6 grid-cols-[repeat(auto-fit,minmax(300px,1fr))] px-4 mt-6 max-h-[450px] overflow-y-auto overflow-x-hidden scrollbar-hidden pb-4">
+    <div className="transaction-card-container grid gap-6 grid-cols-[repeat(auto-fit,minmax(300px,1fr))] px-4 mt-6 max-h-[450px] overflow-y-auto overflow-x-hidden scrollbar-hidden pb-4">
       {transactions && transactions.length > 0 ? (
         Object.entries(groupByDate(transactions)).map(([date, items]) => {
           const income = items

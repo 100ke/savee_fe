@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 import TransactionCard from "./TransactionCard";
 import "../Ledgers.css";
-import { fetchDailyTransactions } from "../TransactionsAPI";
+import { fetchDailyTransactions, getPersonalLedgerId } from "../TransactionApi";
 import { useNavigate, useOutletContext } from "react-router-dom";
 
 function DailyLedger() {
-  const [ledgerId, setLedgerId] = useState(1);
+  const [ledgerId, setLedgerId] = useState(null);
   const {
+    isShared,
     selectedDate,
     setSelectedDate,
     summary,
@@ -16,7 +17,7 @@ function DailyLedger() {
     error,
     setError,
   } = useOutletContext();
-  const token = process.env.REACT_APP_TOKEN;
+  const token = localStorage.getItem("accessToken");
   const navigate = useNavigate();
   // LedgerPage에서 전달한 상태, 함수 받아오기
 
@@ -31,6 +32,9 @@ function DailyLedger() {
           setSummary({ totalIncome: 0, totalExpense: 0 });
           return;
         }
+
+        const peersonalLedgerId = await getPersonalLedgerId(token);
+        setLedgerId(peersonalLedgerId.id);
 
         const data = await fetchDailyTransactions(
           ledgerId,
