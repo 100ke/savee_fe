@@ -2,9 +2,6 @@ import { Outlet, useLocation, useParams } from "react-router-dom";
 import LedgerHeader from "../features/ledgers/LedgerHeader";
 import LedgerTab from "../features/ledgers/LedgerTab";
 import { useState } from "react";
-import DailyLedger from "../features/ledgers/daily/DailyLedger";
-import WeeklyLedger from "../features/ledgers/weekly/WeeklyLedger";
-import MonthlyLedger from "../features/ledgers/monthly/MonthlyLedger";
 import LedgerAddButton from "../features/ledgers/LedgerAddButton";
 import SharedLedger from "../features/ledgers/shared/SharedLedger";
 
@@ -29,11 +26,10 @@ export default function SharedLedgerPage() {
 
   // 공유 가계부 id가 있을 때만 탭 렌더링
   const { ledgerId } = useParams();
-  console.log("렌더링됨: SharedLedgerPage");
-  console.log("ledgerId:", ledgerId);
+
   return (
     <div className="max-w-full px-full scrollbar-hidden">
-      {/* 1️⃣ ledgerId가 있을 때만 헤더와 탭을 렌더링합니다. */}
+      {/* ledgerId가 있을 때만 헤더와 탭을 렌더링 */}
       {ledgerId && (
         <>
           <LedgerHeader
@@ -45,8 +41,7 @@ export default function SharedLedgerPage() {
         </>
       )}
 
-      {/* 2️⃣ Outlet은 조건 없이 항상 렌더링되어야 합니다.
-          SharedLedger 컴포넌트나 DailyLedger 컴포넌트가 이 위치에 렌더링됩니다. */}
+      {/* Outlet은 조건 없이 항상 렌더링*/}
       <Outlet
         context={{
           isShared: true,
@@ -66,8 +61,8 @@ export default function SharedLedgerPage() {
           setMonthlyDatas,
         }}
       />
-      <div>제발 아무거나 나와 좀\</div>
-      {/* 3️⃣ 추가 버튼은 ledgerId가 있을 때만 렌더링합니다. */}
+
+      {/* 추가 버튼은 ledgerId가 있을 때만 렌더링 */}
       {ledgerId && (
         <div className="fixed bottom-10 right-10 z-50">
           <LedgerAddButton
