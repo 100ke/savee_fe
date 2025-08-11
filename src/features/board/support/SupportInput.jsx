@@ -1,14 +1,35 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import PostHeader from "./SupportHeader";
-
-export default function SupportInput(isEdit = false) {
+import { createPost, fetchPostById, updatePost } from "../SupportApi";
+export default function SupportInput() {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [error, setError] = useState("");
   const [files, setFiles] = useState([]);
   const [previews, setPreviews] = useState([]);
   const navigate = useNavigate();
+  const [post_type, setType] = useState("공지");
+  const { id } = useParams(); // id가 있으면 수정, 없으면 등록
+  const isEdit = Boolean(id);
+  let newPostId = null;
+
+  //상태확인
+  useEffect(() => {
+    if (isEdit) {
+      fetchPostById(id)
+        .then((res) => {
+          const post = res.data;
+          setTitle(post.title);
+          setContent(post.content);
+          setType(post.post_type || "공지");
+        })
+        .catch(() => {
+          alert("게시글을 불러오는 중 오류가 발생했습니다.");
+          navigate("/support");
+        });
+    }
+  }, [id, isEdit, navigate]);
 
   //포커싱
   const titleRef = useRef(null); // 제목 input 참조
@@ -16,10 +37,11 @@ export default function SupportInput(isEdit = false) {
   const MAX = 10;
 
   //제출
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!title.trim()) {
       setError("제목을 입력해주세요.");
       titleRef.current?.focus(); // 제목에 포커스
+
       return;
     }
 
@@ -30,8 +52,19 @@ export default function SupportInput(isEdit = false) {
     }
 
     setError("");
+    if (isEdit) {
+      // 수정 API 호출
+      await updatePost(id, { title, content, post_type });
+      alert("공지사항이 수정 되었습니다.");
+    } else {
+      // 등록 API 호출
+      const data = await createPost({ title, content, post_type });
+      newPostId = data.data.id;
+      fetchPostById(newPostId);
+      alert("공지사항이 등록 되었습니다.");
+    }
 
-    alert("공지사항이 등록 되었습니다.");
+    navigate(`/support/${isEdit ? id : newPostId}`);
   };
   //파일 첨부
   const handleFileChange = (e) => {
@@ -71,18 +104,34 @@ export default function SupportInput(isEdit = false) {
   return (
     <div>
       <PostHeader></PostHeader>
-      <fieldset className="fieldset">
-        <legend className="fieldset-legend text-base font-normal">제목</legend>
-        <input
-          ref={titleRef}
-          type="text"
-          className="input w-auto"
-          placeholder="제목을 입력해주세요."
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-        />
-        <p className="label">필수 입력</p>
-      </fieldset>
+      <div className="flex items-center">
+        <fieldset className="fieldset flex-1">
+          <legend className="fieldset-legend text-base font-normal">
+            제목
+          </legend>
+          <input
+            ref={titleRef}
+            type="text"
+            className="input w-auto"
+            placeholder="제목을 입력해주세요."
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+          />
+          <p className="label">필수 입력</p>
+        </fieldset>
+        <form onSubmit={handleSubmit} className="justify-center ml-3">
+          <select
+            value={post_type}
+            onChange={(e) => setType(e.target.value)}
+            required
+            className="rounded-box border-[var(--black70)]"
+          >
+            <option value="공지">공지</option>
+            <option value="업데이트">업데이트</option>
+            <option value="가이드">가이드</option>
+          </select>
+        </form>
+      </div>
       <fieldset className="fieldset h-2/4 flex flex-col">
         <legend className="fieldset-legend text-base font-normal w-full">
           내용

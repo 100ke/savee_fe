@@ -1,7 +1,8 @@
+import { Link } from "react-router-dom";
 import SupportList from "./SupportList";
 export default function SupportMain() {
   return (
-    <div>
+    <div className="pb-10">
       <section className="flex flex-col gap-6 mb-7">
         <h1 className="text-xl text-center">고객센터</h1>
         <div className="flex flex-col gap-6">
@@ -58,31 +59,33 @@ export default function SupportMain() {
             </div>
           </div>
           <div className="container cursor-pointer text-[var(--main-color-dark)] border border-[var(--main-color-dark)] rounded-box shadow-md p-5 m-auto">
-            <div className="flex items-center gap-2">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={1.5}
-                stroke="currentColor"
-                className="w-6 h-6 inline"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 5.25h.008v.008H12v-.008Z"
-                />
-              </svg>
-              <span className="font-semibold">Qna</span>
+            <Link to="/Qna">
+              <div className="flex items-center gap-2">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={1.5}
+                  stroke="currentColor"
+                  className="w-6 h-6 inline"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 5.25h.008v.008H12v-.008Z"
+                  />
+                </svg>
+                <span className="font-semibold">Qna</span>
 
-              <small className="ml-1">
-                궁금한 점이 있으시면 답변 드리겠습니다
-              </small>
+                <small className="ml-1">
+                  궁금한 점이 있으시면 답변 드리겠습니다
+                </small>
 
-              <small className="ml-auto cursor-pointe text-[var(--black70)]">
-                문의 남기러 가기 &gt;
-              </small>
-            </div>
+                <small className="ml-auto cursor-pointe text-[var(--black70)]">
+                  문의 남기러 가기 &gt;
+                </small>
+              </div>
+            </Link>
           </div>
         </div>
       </section>
