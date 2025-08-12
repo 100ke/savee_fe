@@ -54,16 +54,16 @@ export default function SharedLedger() {
   };
 
   useEffect(() => {
-    if (
-      !token ||
-      token.trim() === "" ||
-      token === "null" ||
-      token === "undefined"
-    ) {
-      navigate("/login");
-      setSharedLedgers(null);
-      return;
-    }
+    // if (
+    //   !token ||
+    //   token.trim() === "" ||
+    //   token === "null" ||
+    //   token === "undefined"
+    // ) {
+    //   navigate("/login");
+    //   setSharedLedgers(null);
+    //   return;
+    // }
 
     // 공유 가계부 생성 및 초대 시 사용 - owner 전용
     const fetchSharedLedgers = async () => {
