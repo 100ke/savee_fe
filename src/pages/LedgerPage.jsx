@@ -2,9 +2,6 @@ import { Outlet, useLocation } from "react-router-dom";
 import LedgerHeader from "../features/ledgers/LedgerHeader";
 import LedgerTab from "../features/ledgers/LedgerTab";
 import { useState } from "react";
-import DailyLedger from "../features/ledgers/daily/DailyLedger";
-import WeeklyLedger from "../features/ledgers/weekly/WeeklyLedger";
-import MonthlyLedger from "../features/ledgers/monthly/MonthlyLedger";
 import LedgerAddButton from "../features/ledgers/LedgerAddButton";
 
 export default function LedgerPage() {
@@ -21,22 +18,7 @@ export default function LedgerPage() {
 
   const [ledgers, setLedgers] = useState([]);
 
-  // ledgertab에서 선택한 값으로 daily, week, month content 변경
-  const renderContent = () => {
-    const path = location.pathname;
-
-    if (path === "/ledger" || path === "/ledger/daily") {
-      return <DailyLedger />;
-    }
-
-    if (path === "/ledger/weekly") {
-      return <WeeklyLedger />;
-    }
-
-    if (path === "/ledger/monthly") {
-      return <MonthlyLedger />;
-    }
-  };
+  const isCalendarRoute = location.pathname.includes("/calendar");
 
   return (
     <div className="max-w-full px-full scrollbar-hidden">
@@ -45,7 +27,7 @@ export default function LedgerPage() {
         setSelectedDate={setSelectedDate}
         summary={summary}
       />
-      <LedgerTab />
+      {!isCalendarRoute && <LedgerTab />}
 
       <Outlet
         context={{
