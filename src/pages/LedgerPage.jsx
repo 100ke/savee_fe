@@ -21,23 +21,6 @@ export default function LedgerPage() {
 
   const [ledgers, setLedgers] = useState([]);
 
-  // ledgertab에서 선택한 값으로 daily, week, month content 변경
-  const renderContent = () => {
-    const path = location.pathname;
-
-    if (path === "/ledger" || path === "/ledger/daily") {
-      return <DailyLedger />;
-    }
-
-    if (path === "/ledger/weekly") {
-      return <WeeklyLedger />;
-    }
-
-    if (path === "/ledger/monthly") {
-      return <MonthlyLedger />;
-    }
-  };
-
   return (
     <div className="max-w-full px-full scrollbar-hidden">
       <LedgerHeader

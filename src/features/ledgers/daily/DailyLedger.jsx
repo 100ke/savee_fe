@@ -2,10 +2,13 @@ import { useEffect, useState } from "react";
 import TransactionCard from "./TransactionCard";
 import "../Ledgers.css";
 import { fetchDailyTransactions, getPersonalLedgerId } from "../TransactionApi";
-import { useNavigate, useOutletContext } from "react-router-dom";
+import { useNavigate, useOutletContext, useParams } from "react-router-dom";
 
 function DailyLedger() {
+  // 개인/공유 가계부 둘 다 daily를 사용해야 하므로 ledgerId 분리
+  // sharedLedgerIdFromURL은 useParams를 사용해 url 파라미터로 오는 ledgerId
   const [ledgerId, setLedgerId] = useState(null);
+  const { ledgerId: sharedLedgerIdFromURL } = useParams();
   const {
     isShared,
     selectedDate,
@@ -17,6 +20,7 @@ function DailyLedger() {
     error,
     setError,
   } = useOutletContext();
+
   const token = localStorage.getItem("accessToken");
   const navigate = useNavigate();
   // LedgerPage에서 전달한 상태, 함수 받아오기
@@ -33,14 +37,19 @@ function DailyLedger() {
           return;
         }
 
-        const peersonalLedgerId = await getPersonalLedgerId(token);
-        setLedgerId(peersonalLedgerId.id);
+        let id;
 
-        const data = await fetchDailyTransactions(
-          ledgerId,
-          selectedDate,
-          token
-        );
+        // 각 LedgerPage, SharedLedgerPage에서 오는 isShared를 사용해 개인/공유 구분
+        if (isShared) {
+          id = Number(sharedLedgerIdFromURL);
+        } else {
+          const personalLedgerId = await getPersonalLedgerId(token);
+          id = personalLedgerId.id;
+        }
+
+        setLedgerId(id);
+
+        const data = await fetchDailyTransactions(id, selectedDate, token);
 
         if (!data || !data.transactions) {
           setError("데이터가 없습니다.");
@@ -71,7 +80,7 @@ function DailyLedger() {
     };
 
     fetchTransactions();
-  }, [selectedDate, ledgerId, token, navigate]);
+  }, [isShared, sharedLedgerIdFromURL, selectedDate, token]);
 
   return (
     // ledgerheader 반응형으로 줄어들도록 상위 요소 크기 설정

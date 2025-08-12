@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 
-export default function SharedLedgerCard({ sharedLedgers, onClick, children }) {
+export default function SharedLedgerCard({ sharedLedgers, children }) {
   // daily에 ledgerId 넘기기
   const navigate = useNavigate();
 
@@ -12,7 +12,7 @@ export default function SharedLedgerCard({ sharedLedgers, onClick, children }) {
         return (
           <div
             key={ledger.id}
-            className="card bg-[var(--main-color)] h-[18rem] rounded-[1.5rem] shadow-lg cursor-pointer hover:bg-[var(--main-color-lightest)] transition-all duration-200"
+            className="card bg-[var(--main-color)] h-[18rem] rounded-[1.5rem] shadow-lg cursor-pointer hover:bg-[var(--color-sub1)] transition-all duration-200"
             onClick={() => navigate(`/sharedLedger/${ledger.id}`)}
           >
             <div className="card-body flex flex-col justify-between items-center p-6">
