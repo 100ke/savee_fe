@@ -213,6 +213,77 @@ const fetchGetLedgersByMembership = async (token) => {
   }
 };
 
+const fetchFindLedger = async (ledgerId, token) => {
+  try {
+    const ledId = Number(ledgerId);
+    const response = await instance.get(
+      `ledgers/${ledId}`,
+      getAuthHeader(token)
+    );
+
+    const ledgerInfo = await response.data.data;
+    return ledgerInfo;
+  } catch (error) {
+    throw error;
+  }
+};
+
+const fetchCreateGoals = async (
+  ledgerId,
+  token,
+  categoryId,
+  title,
+  target_amount,
+  current_amount,
+  start_date,
+  end_date,
+  type,
+  status
+) => {
+  try {
+    const ledId = Number(ledgerId);
+
+    const data = {
+      ledgerId: ledId,
+      categoryId,
+      title,
+      target_amount,
+      current_amount,
+      start_date,
+      end_date,
+      type,
+      status,
+    };
+
+    const response = await instance.post(
+      `ledgers/${ledId}/goals`,
+      data,
+      getAuthHeader(token)
+    );
+
+    const goal = await response.data.data;
+    return goal;
+  } catch (error) {
+    throw error;
+  }
+};
+
+const fetchGetGoal = async (ledgerId, token) => {
+  try {
+    const ledId = Number(ledgerId);
+
+    const response = await instance.get(
+      `ledgers/${ledId}/goals`,
+      getAuthHeader(token)
+    );
+
+    const resultGoal = await response.data.data;
+    return resultGoal;
+  } catch (error) {
+    throw error;
+  }
+};
+
 export {
   getPersonalLedgerId,
   fetchDailyTransactions,
@@ -224,4 +295,7 @@ export {
   fetchInviteLedgerMembers,
   fetchAcceptCodes,
   fetchGetLedgersByMembership,
+  fetchFindLedger,
+  fetchCreateGoals,
+  fetchGetGoal,
 };
