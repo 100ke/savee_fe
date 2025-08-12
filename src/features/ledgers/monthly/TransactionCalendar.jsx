@@ -90,7 +90,6 @@ export default function TransactionCalendar({ monthlyDatas, selectedDate }) {
             );
           })}
         </div>
-        {/* <hr className="m-4 text-[var(--black30)]" /> */}
       </div>
     </div>
   );

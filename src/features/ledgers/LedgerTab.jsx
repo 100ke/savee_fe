@@ -1,13 +1,6 @@
-import { useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 
 function LedgerTab() {
-  // 클릭할 때마다 값이 바뀌어야 함
-  // const [activeTab, setActiveTab] = useState("일일");
-  // const handleTabClick = (tabName) => {
-  //   setActiveTab(tabName);
-  // };
-
   const location = useLocation();
   const navigate = useNavigate();
 

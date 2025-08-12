@@ -2,12 +2,7 @@ import { useEffect, useState } from "react";
 import AddTransactions from "./modal/AddTransactions";
 import { fetchCreateTransactions, fetchGetLedgers } from "./TransactionApi";
 
-export default function LedgerAddButton({
-  ledgers,
-  setLedgers,
-  error,
-  setError,
-}) {
+export default function LedgerAddButton({ ledgers, setLedgers, setError }) {
   const [open, setOpen] = useState(false);
   const token = localStorage.getItem("accessToken");
 

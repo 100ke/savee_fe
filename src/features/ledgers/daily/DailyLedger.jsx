@@ -12,8 +12,6 @@ function DailyLedger() {
   const {
     isShared,
     selectedDate,
-    setSelectedDate,
-    summary,
     setSummary,
     transactions,
     setTransactions,

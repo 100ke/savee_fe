@@ -12,11 +12,7 @@ export default function MonthlyLedger() {
   const {
     isShared,
     selectedDate,
-    setSelectedDate,
-    summary,
     setSummary,
-    transactions,
-    setTransactions,
     error,
     setError,
     monthlyDatas, // 전체 월 데이터
@@ -31,7 +27,6 @@ export default function MonthlyLedger() {
         // 토큰이 없거나 빈 문자열인 경우 에러 메시지 설정
         if (!token || token.trim() === "") {
           navigate("/login");
-          // setTransactions([]);
           setSummary({ totalIncome: 0, totalExpense: 0 });
           return;
         }

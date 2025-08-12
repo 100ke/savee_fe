@@ -2,9 +2,6 @@ import { Outlet, useLocation } from "react-router-dom";
 import LedgerHeader from "../features/ledgers/LedgerHeader";
 import LedgerTab from "../features/ledgers/LedgerTab";
 import { useState } from "react";
-import DailyLedger from "../features/ledgers/daily/DailyLedger";
-import WeeklyLedger from "../features/ledgers/weekly/WeeklyLedger";
-import MonthlyLedger from "../features/ledgers/monthly/MonthlyLedger";
 import LedgerAddButton from "../features/ledgers/LedgerAddButton";
 
 export default function LedgerPage() {

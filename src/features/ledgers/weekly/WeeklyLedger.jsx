@@ -15,17 +15,12 @@ function WeeklyLedger() {
   const {
     isShared,
     selectedDate,
-    setSelectedDate,
-    summary,
     setSummary,
-    transactions,
-    setTransactions,
     error,
     setError,
     weeklyDatas, // 전체 주차 데이터
     setWeeklyDatas,
-    selectedWeeks, // 아코디언 선택 주차
-    setSelectedWeeks,
+    setSelectedWeeks, // 아코디언 선택 주차
   } = useOutletContext();
 
   const navigate = useNavigate();

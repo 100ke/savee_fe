@@ -11,7 +11,7 @@ export default function NavBar() {
   const menuItems = [
     {
       label: "달력",
-      path: "/",
+      path: "monthly",
       icon: (
         <svg
           xmlns="http://www.w3.org/2000/svg"
