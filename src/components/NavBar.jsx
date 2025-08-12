@@ -1,11 +1,16 @@
 import "./NavBar.css";
-import IconCalender from "./../assets/calendar3.svg";
 import Logo from "./../assets/savee.png";
 import { Link, useNavigate } from "react-router-dom";
 export default function NavBar() {
   const navigate = useNavigate();
   const goMainPage = async () => {
     navigate("/");
+  };
+
+  const handleLogout = async () => {
+    localStorage.removeItem("accessToken");
+    alert("로그아웃 되었습니다.");
+    window.location.href = "/login";
   };
 
   const menuItems = [
@@ -162,7 +167,12 @@ export default function NavBar() {
         ))}
       </ul>
       <div className="mt-auto text-center p-4">
-        <a className="cursor-pointer logout text-sm">로그아웃</a>
+        <button
+          className="cursor-pointer logout text-sm"
+          onClick={handleLogout}
+        >
+          로그아웃
+        </button>
       </div>
     </div>
   );
