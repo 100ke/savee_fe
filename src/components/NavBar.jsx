@@ -1,16 +1,20 @@
 import "./NavBar.css";
 import Logo from "./../assets/savee.png";
 import { Link, useNavigate } from "react-router-dom";
+import { useContext } from "react";
+import { AuthContext } from "../context/AuthContext";
+
 export default function NavBar() {
+  const { isLoggedIn, logout } = useContext(AuthContext);
   const navigate = useNavigate();
   const goMainPage = async () => {
     navigate("/");
   };
 
   const handleLogout = async () => {
-    localStorage.removeItem("accessToken");
+    logout();
     alert("로그아웃 되었습니다.");
-    window.location.href = "/login";
+    navigate("/login");
   };
 
   const menuItems = [
@@ -167,12 +171,14 @@ export default function NavBar() {
         ))}
       </ul>
       <div className="mt-auto text-center p-4">
-        <button
-          className="cursor-pointer logout text-sm"
-          onClick={handleLogout}
-        >
-          로그아웃
-        </button>
+        {isLoggedIn && (
+          <button
+            className="cursor-pointer logout text-sm"
+            onClick={handleLogout}
+          >
+            로그아웃
+          </button>
+        )}
       </div>
     </div>
   );
