@@ -27,7 +27,7 @@ export default function TransactionCalendar({ monthlyDatas, selectedDate }) {
   console.log(calendarDates);
 
   return (
-    <div className="monthly-calendar mt-5 max-h-[600px] overflow-y-auto overflow-x-hidden scrollbar-hidden">
+    <div className="monthly-calendar mt-3 max-h-[550px] overflow-y-auto overflow-x-hidden scrollbar-hidden">
       <div className="mt-5">
         {/* 요일 헤더 */}
         <div className="grid grid-cols-7 text-center font-semibold">

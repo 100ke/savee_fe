@@ -18,6 +18,8 @@ export default function LedgerPage() {
 
   const [ledgers, setLedgers] = useState([]);
 
+  const isCalendarRoute = location.pathname.includes("/calendar");
+
   return (
     <div className="max-w-full px-full scrollbar-hidden">
       <LedgerHeader
@@ -25,7 +27,7 @@ export default function LedgerPage() {
         setSelectedDate={setSelectedDate}
         summary={summary}
       />
-      <LedgerTab />
+      {!isCalendarRoute && <LedgerTab />}
 
       <Outlet
         context={{

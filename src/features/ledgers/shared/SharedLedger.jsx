@@ -90,15 +90,6 @@ export default function SharedLedger() {
     fetchMembershipLedgers();
   }, [token, navigate]);
 
-  if (
-    !token ||
-    token.trim() === "" ||
-    token === "null" ||
-    token === "undefined"
-  ) {
-    return null; // 렌더링 차단
-  }
-
   return (
     <div className="shared-ledgers-list p-6">
       <SharedLedgerCard sharedLedgers={sharedLedgers}>
