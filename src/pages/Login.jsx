@@ -2,15 +2,22 @@ import React, { useState } from "react";
 import "../features/user/User.css";
 import FindPassword from "../features/user/modal/FindPassword.jsx";
 import { login } from "../features/user/userApi.js";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 function Login() {
+  const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
+
+  const redirectPath = searchParams.get("redirect") || "/";
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const handleLogin = async () => {
     try {
       await login(email, password);
-      alert("로그인 성공");
+      // alert("로그인 성공");
+      navigate(redirectPath, { replace: true });
     } catch (error) {
       console.log("로그인 실패", error);
       alert("이메일 또는 비밀번호가 올바르지 않습니다.");

@@ -1,10 +1,12 @@
 // src/api/axiosInstance.js
 import axios from "axios";
 
+const baseURL = process.env.REACT_APP_API_URL || "http://localhost:3000";
+// const baseURL = process.env.REACT_APP_API_URL || "https://savee-be.azurewebsites.net";
+
 // Axios 인스턴스 생성
 const instance = axios.create({
-  baseURL: "http://localhost:3000",
-  // baseURL: "https://savee-be.azurewebsites.net",
+  baseURL,
   headers: {
     "Content-Type": "application/json",
   },
@@ -29,7 +31,10 @@ instance.interceptors.response.use(
   (error) => {
     if (error.response?.status === 401) {
       console.warn("토큰 만료 또는 인증 오류");
-      // 리프레시 토큰 처리나 로그아웃 처리 등을 여기에 추가 가능
+      const currentPath = window.location.pathname + window.location.search;
+      window.location.href = `/login?redirect=${encodeURIComponent(
+        currentPath
+      )}`;
     }
     return Promise.reject(error);
   }

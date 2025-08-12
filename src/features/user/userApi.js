@@ -1,31 +1,8 @@
-import axios from "axios";
-
-const baseURL = process.env.REACT_APP_API_URL || "http://localhost:3001";
-// const baseURL = process.env.REACT_APP_API_URL || "https://savee-be.azurewebsites.net";
-
-const axiosInstance = axios.create({
-  baseURL,
-  headers: {
-    "Content-Type": "application/json",
-  },
-  withCredentials: true,
-});
-
-// 인터셉터 추가: 요청 전마다 실행됨
-axiosInstance.interceptors.request.use(
-  (config) => {
-    const token = localStorage.getItem("accessToken"); // 또는 쿠키에서 꺼내기
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`; // 항상 최신 토큰 적용
-    }
-    return config;
-  },
-  (error) => Promise.reject(error)
-);
+import axios from "../../api/axiosInstance";
 
 export const signup = async (email, name, password) => {
   try {
-    const response = await axiosInstance.post("/auth/signup", {
+    const response = await axios.post("/auth/signup", {
       email,
       name,
       password,
@@ -38,7 +15,7 @@ export const signup = async (email, name, password) => {
 
 export const verifyEmail = async (email) => {
   try {
-    const response = await axiosInstance.post("/auth/email/send", { email });
+    const response = await axios.post("/auth/email/send", { email });
     return response.data;
   } catch (error) {
     throw error;
@@ -47,7 +24,7 @@ export const verifyEmail = async (email) => {
 
 export const verifyCode = async (email, code) => {
   try {
-    const response = await axiosInstance.post("/auth/email/verify", {
+    const response = await axios.post("/auth/email/verify", {
       email,
       code,
     });
@@ -59,7 +36,7 @@ export const verifyCode = async (email, code) => {
 
 export const login = async (email, password) => {
   try {
-    const response = await axiosInstance.post("/auth/login", {
+    const response = await axios.post("/auth/login", {
       email,
       password,
     });
@@ -74,13 +51,13 @@ export const login = async (email, password) => {
 };
 
 export const getUserInfo = async () => {
-  const response = await axiosInstance.get("/user/me");
+  const response = await axios.get("/user/me");
   return response.data;
 };
 
 export const findPasswordMail = async (email) => {
   try {
-    const response = await axiosInstance.post("/user/password/send", {
+    const response = await axios.post("/user/password/send", {
       email,
     });
     return response.data;
@@ -91,7 +68,7 @@ export const findPasswordMail = async (email) => {
 
 export const resetPassword = async (email) => {
   try {
-    const response = await axiosInstance.post("/user/password/reset", {
+    const response = await axios.post("/user/password/reset", {
       email,
     });
     return response.data;
@@ -102,7 +79,7 @@ export const resetPassword = async (email) => {
 
 export const changePassword = async (currentPassword, newPassword) => {
   try {
-    const response = await axiosInstance.put("/user/password", {
+    const response = await axios.put("/user/password", {
       currentPassword,
       newPassword,
     });
@@ -114,7 +91,7 @@ export const changePassword = async (currentPassword, newPassword) => {
 
 export const changeName = async (name) => {
   try {
-    const response = await axiosInstance.put("/user/name", { name });
+    const response = await axios.put("/user/name", { name });
     return response.data;
   } catch (error) {
     throw error;
@@ -123,7 +100,7 @@ export const changeName = async (name) => {
 
 export const deleteUser = async (email, password) => {
   try {
-    const response = await axiosInstance.delete("/user", {
+    const response = await axios.delete("/user", {
       data: {
         email,
         password,

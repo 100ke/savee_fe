@@ -11,7 +11,7 @@ function DetailList({ detailData, categoryName }) {
     );
   }
   return (
-    <div className="detail-area rounded-box p-5 mb-3">
+    <div className="detail-area flex-grow overflow-auto rounded-box p-5 mb-3">
       <h3 className="text-2xl mb-2">
         상세 내역 <span>{categoryName ? `- ${categoryName}` : ""}</span>
       </h3>
@@ -22,12 +22,14 @@ function DetailList({ detailData, categoryName }) {
             className="transaction-item flex justify-between py-1"
           >
             <span className="description">{tx.memo || "내역 없음"}</span>
-            <span className="amount text-right font-semibold">
-              {Number(tx.amount).toLocaleString()}원
-            </span>
-            <span className="date text-gray-500 text-sm ml-4">
-              {tx.date ? new Date(tx.date).toLocaleDateString() : ""}
-            </span>
+            <div className="">
+              <span className="amount text-right font-semibold">
+                {Number(tx.amount).toLocaleString()}원
+              </span>
+              <span className="date text-gray-500 text-sm ml-5">
+                {tx.date ? new Date(tx.date).toLocaleDateString() : ""}
+              </span>
+            </div>
           </li>
         ))}
       </ul>
