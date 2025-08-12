@@ -40,10 +40,11 @@ export const login = async (email, password) => {
       email,
       password,
     });
-    const token = response.data.accessToken;
-    if (token) {
-      localStorage.setItem("accessToken", token);
-    }
+    // 전역 상태관리로 이동
+    // const token = response.data.accessToken;
+    // if (token) {
+    //   localStorage.setItem("accessToken", token);
+    // }
     return response.data;
   } catch (error) {
     throw error;

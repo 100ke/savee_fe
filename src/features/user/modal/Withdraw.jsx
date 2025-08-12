@@ -11,6 +11,7 @@ function Withdraw() {
   const handleWithdraw = async () => {
     try {
       await deleteUser(email, password);
+      localStorage.removeItem("accessToken");
       alert("회원 탈퇴가 완료되었습니다.");
       navigate("/");
     } catch (error) {

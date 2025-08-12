@@ -28,7 +28,7 @@ export default function Pagination({ totalPages, currentPage, onPageChange }) {
   const end = Math.min(start + 4, totalPages);
   const pages = Array.from({ length: end - start + 1 }, (_, i) => start + i);
   return (
-    <div className="join justify-center">
+    <div className="join justify-center mt-2">
       <button
         className="join-item btn"
         onClick={handlePrevGroup}
