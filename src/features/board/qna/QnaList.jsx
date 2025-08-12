@@ -40,16 +40,7 @@ export default function QnaList({
   };
   return (
     <section className="flex flex-col gap-3 overflow-auto scrollbar-hidden max-h-[500px]">
-      <div className="join gap-2 justify-center">
-        {admin && (
-          <button
-            className="btn join-item custom-search-btn rounded-box text-white"
-            onClick={() => navigate(`/qna/add`)}
-          >
-            등록
-          </button>
-        )}
-      </div>
+      
 
       <div>
         <table className="table">
@@ -72,7 +63,8 @@ export default function QnaList({
                   </td>
                   <td>{post.title}</td>
                   <td>{post.createdAt?.split("T")[0]}</td>
-                  <td>{post.iscommpleted ? "답변완료" : "답변없음"}</td>
+                  {/* {console.log(post.iscompleted)} */}
+                  <td>{post?.iscompleted ? "답변완료" : "답변없음"}</td>
                 </tr>
 
                 <tr>
