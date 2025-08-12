@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 
-export default function QnaTab() {
+export default function QnaTab({ category }) {
   // 클릭할 때마다 값이 바뀌어야 함
   // const [activeTab, setActiveTab] = useState("일일");
   // const handleTabClick = (tabName) => {
