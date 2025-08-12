@@ -59,7 +59,7 @@ function Login() {
       <div className="flex flex-col items-center">
         <div className="flex justify-center items-center text-sm">
           <button
-            className="text-gray-400"
+            className="text-gray-400 cursor-pointer"
             onClick={() => document.getElementById("find-pw-modal").showModal()}
           >
             비밀번호 찾기
