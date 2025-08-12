@@ -1,17 +1,26 @@
 import "./NavBar.css";
-import IconCalender from "./../assets/calendar3.svg";
 import Logo from "./../assets/savee.png";
 import { Link, useNavigate } from "react-router-dom";
+import { useContext } from "react";
+import { AuthContext } from "../context/AuthContext";
+
 export default function NavBar() {
+  const { isLoggedIn, logout } = useContext(AuthContext);
   const navigate = useNavigate();
   const goMainPage = async () => {
     navigate("/");
   };
 
+  const handleLogout = async () => {
+    logout();
+    alert("로그아웃 되었습니다.");
+    navigate("/login");
+  };
+
   const menuItems = [
     {
       label: "달력",
-      path: "/",
+      path: "/ledger/calendar",
       icon: (
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -162,7 +171,14 @@ export default function NavBar() {
         ))}
       </ul>
       <div className="mt-auto text-center p-4">
-        <a className="cursor-pointer logout text-sm">로그아웃</a>
+        {isLoggedIn && (
+          <button
+            className="cursor-pointer logout text-sm"
+            onClick={handleLogout}
+          >
+            로그아웃
+          </button>
+        )}
       </div>
     </div>
   );

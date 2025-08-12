@@ -174,7 +174,7 @@ function InfoStep({ onBack, onNext, onSignupSuccess }) {
               onChange={(e) => setCode(e.target.value)}
             />
           </label>
-          <p className="text-error text-sm mt-1 min-h-[1.25rem]">
+          <p className="text-error text-xs mt-1 min-h-[1.25rem]">
             {verifyErrorMsg ? "인증번호가 일치하지 않습니다." : ""}
           </p>
         </div>
@@ -263,7 +263,7 @@ function InfoStep({ onBack, onNext, onSignupSuccess }) {
               }}
             />
           </label>
-          <p className="text-error text-sm mt-1 min-h-[1.25rem]">
+          <p className="text-error text-xs mt-1 min-h-[1.25rem]">
             {isPasswordMismatch ? "비밀번호가 일치하지 않습니다." : ""}
           </p>
         </div>

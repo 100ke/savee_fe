@@ -54,16 +54,16 @@ export default function SharedLedger() {
   };
 
   useEffect(() => {
-    if (
-      !token ||
-      token.trim() === "" ||
-      token === "null" ||
-      token === "undefined"
-    ) {
-      navigate("/login");
-      setSharedLedgers(null);
-      return;
-    }
+    // if (
+    //   !token ||
+    //   token.trim() === "" ||
+    //   token === "null" ||
+    //   token === "undefined"
+    // ) {
+    //   navigate("/login");
+    //   setSharedLedgers(null);
+    //   return;
+    // }
 
     // 공유 가계부 생성 및 초대 시 사용 - owner 전용
     const fetchSharedLedgers = async () => {
@@ -90,25 +90,9 @@ export default function SharedLedger() {
     fetchMembershipLedgers();
   }, [token, navigate]);
 
-  if (
-    !token ||
-    token.trim() === "" ||
-    token === "null" ||
-    token === "undefined"
-  ) {
-    return null; // 렌더링 차단
-  }
-
-  const handleLedgerClick = (ledgerId) => {
-    navigate(`/sharedLedger/${ledgerId}/daily`);
-  };
-
   return (
     <div className="shared-ledgers-list p-6">
-      <SharedLedgerCard
-        sharedLedgers={sharedLedgers}
-        onClick={handleLedgerClick}
-      >
+      <SharedLedgerCard sharedLedgers={sharedLedgers}>
         <div
           onClick={() => {
             document.getElementById("add-shared-ledger-modal").showModal();

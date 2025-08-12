@@ -1,10 +1,16 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { changePassword } from "../userApi";
 
-function ChangePassword({ onSuccess }) {
+function ChangePassword({ isOpen, onSuccess, onClose }) {
   const [currentPw, setCurrentPw] = useState("");
   const [newPw, setNewPw] = useState("");
   const [confirmPw, setConfirmPw] = useState("");
+
+  useEffect(() => {
+    setCurrentPw("");
+    setNewPw("");
+    setConfirmPw("");
+  }, []);
 
   const handleChangePw = async () => {
     if (
@@ -29,19 +35,27 @@ function ChangePassword({ onSuccess }) {
       alert("비밀번호가 변경되었습니다.");
       onSuccess();
     } catch (error) {
-      const message = error.response?.data?.error || "오류가 발생했습니다.";
-      console.log("비밀번호 변경 오류: ", message);
-      alert(message);
+      const code = error.response.data.code;
+      if (code === "PASSWORD_SAME") {
+        alert("기존 비밀번호와 동일합니다. 새로운 비밀번호로 변경해주세요.");
+      } else {
+        const message = error.response?.data?.error || "오류가 발생했습니다.";
+        console.log("비밀번호 변경 오류: ", message);
+        alert(message);
+      }
     }
   };
 
   return (
     <div className="change-pw">
       {/* 현재 비밀번호 입력(버튼 확인), 새 비밀번호, 재입력, 변경버튼 */}
-      <dialog id="change-pw-modal" className="modal">
+      <dialog id="change-pw-modal" className="modal" open={isOpen}>
         <div className="modal-box">
           <form method="dialog">
-            <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
+            <button
+              className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
+              onClick={onClose}
+            >
               ✕
             </button>
           </form>

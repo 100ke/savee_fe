@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import TransactionCalendar from "./TransactionCalendar";
-import { useNavigate, useOutletContext } from "react-router-dom";
+import { useNavigate, useOutletContext, useParams } from "react-router-dom";
 import {
   fetchMonthlyTransactions,
   getPersonalLedgerId,
@@ -8,13 +8,11 @@ import {
 
 export default function MonthlyLedger() {
   const [ledgerId, setLedgerId] = useState(null);
+  const { ledgerId: sharedLedgerIdFromURL } = useParams();
   const {
+    isShared,
     selectedDate,
-    setSelectedDate,
-    summary,
     setSummary,
-    transactions,
-    setTransactions,
     error,
     setError,
     monthlyDatas, // 전체 월 데이터
@@ -29,16 +27,24 @@ export default function MonthlyLedger() {
         // 토큰이 없거나 빈 문자열인 경우 에러 메시지 설정
         if (!token || token.trim() === "") {
           navigate("/login");
-          // setTransactions([]);
           setSummary({ totalIncome: 0, totalExpense: 0 });
           return;
         }
 
-        const peersonalLedgerId = await getPersonalLedgerId(token);
-        setLedgerId(peersonalLedgerId.id);
+        let id;
+
+        // 각 LedgerPage, SharedLedgerPage에서 오는 isShared를 사용해 개인/공유 구분
+        if (isShared) {
+          id = Number(sharedLedgerIdFromURL);
+        } else {
+          const personalLedgerId = await getPersonalLedgerId(token);
+          id = personalLedgerId.id;
+        }
+
+        setLedgerId(id);
 
         const { data, monthlyTotalExpense, monthlyTotalIncome } =
-          await fetchMonthlyTransactions(ledgerId, selectedDate, token);
+          await fetchMonthlyTransactions(id, selectedDate, token);
 
         if (!data) {
           setError("데이터가 없습니다.");
@@ -71,7 +77,7 @@ export default function MonthlyLedger() {
     };
 
     fetchTransactions();
-  }, [selectedDate, ledgerId, token, navigate]);
+  }, [isShared, sharedLedgerIdFromURL, selectedDate, token]);
 
   return (
     // ledgerheader 반응형으로 줄어들도록 상위 요소 크기 설정

@@ -1,10 +1,12 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import "../features/user/User.css";
 import FindPassword from "../features/user/modal/FindPassword.jsx";
 import { login } from "../features/user/userApi.js";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import { AuthContext } from "../context/AuthContext.js";
 
 function Login() {
+  const { setLoginState } = useContext(AuthContext);
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
 
@@ -13,10 +15,13 @@ function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleLogin = async () => {
+  const handleLogin = async (event) => {
+    event.preventDefault();
+
     try {
-      await login(email, password);
+      const { accessToken } = await login(email, password);
       // alert("로그인 성공");
+      setLoginState(accessToken);
       navigate(redirectPath, { replace: true });
     } catch (error) {
       console.log("로그인 실패", error);
@@ -26,33 +31,35 @@ function Login() {
   return (
     <div className="login-page">
       <h3 className="text-2xl text-center mb-4">로그인</h3>
-      <fieldset className="fieldset rounded-box w-xs lg:w-md p-4 mx-auto">
-        <label className="label text-base">아이디</label>
-        <input
-          type="email"
-          className="input mb-2 w-full"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
+      <form onSubmit={handleLogin}>
+        <fieldset className="fieldset rounded-box w-xs lg:w-md p-4 mx-auto">
+          <label className="label text-base">아이디</label>
+          <input
+            type="email"
+            className="input mb-2 w-full"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
 
-        <label className="label text-base">비밀번호</label>
-        <input
-          type="password"
-          className="input w-full"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
+          <label className="label text-base">비밀번호</label>
+          <input
+            type="password"
+            className="input w-full"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
 
-        <button className="btn btn-primary mt-4" onClick={handleLogin}>
-          Login
-        </button>
-      </fieldset>
+          <button type="submit" className="btn btn-primary mt-4">
+            Login
+          </button>
+        </fieldset>
+      </form>
       <div className="flex flex-col items-center">
         <div className="flex justify-center items-center text-sm">
           <button
-            className="text-gray-400"
+            className="text-gray-400 cursor-pointer"
             onClick={() => document.getElementById("find-pw-modal").showModal()}
           >
             비밀번호 찾기
