@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useOutletContext, useParams } from "react-router-dom";
 import {
+  fetchDailyTransactions,
   fetchFindLedger,
   fetchGetGoal,
   getPersonalLedgerId,
@@ -41,8 +42,19 @@ export default function GoalLedger() {
         if (isShared) {
           id = Number(sharedLedgerIdFromURL);
 
+          // 현재 로그인한 사용자가 owner인지 member인지 알아내서 role에 저장
           const owner = await fetchFindLedger(id, token);
-          const role = owner?.ledger_ledgermembers?.role;
+          const members = owner.ledger_ledgermembers || [];
+
+          const personalLedgerInfo = await getPersonalLedgerId(token);
+          const currentUserId = personalLedgerInfo.userId;
+
+          const memberInfo = members.find(
+            (member) => member.userId === currentUserId
+          );
+          const role = memberInfo?.role;
+
+          setRole(role);
 
           if (role !== "owner") {
             setError("권한이 없습니다.");
@@ -64,7 +76,20 @@ export default function GoalLedger() {
           setError(null);
           setGoals(data);
         }
+
+        // summary 값 받아오기
+        const { summary } = await fetchDailyTransactions(
+          id,
+          selectedDate,
+          token
+        );
+
+        setSummary({
+          totalIncome: summary?.totalIncome ?? 0,
+          totalExpense: summary?.totalExpense ?? 0,
+        });
       } catch (error) {
+        setSummary({ totalIncome: 0, totalExpense: 0 });
         const message = error.response?.data?.message;
 
         // axios response status를 사용해 토큰이 없는 상태에 따른 에러 메시지 설정
@@ -72,7 +97,7 @@ export default function GoalLedger() {
           navigate("/login");
         } else if (error.response?.status === 404) {
           if (message.includes("입력한 내역이 없습니다.")) {
-            setError("데이터가 없습니다.");
+            setError("아직 목표가 설정되지 않았습니다.");
           } else {
             setError("데이터를 불러오는 데 실패했습니다.");
           }
@@ -95,7 +120,7 @@ export default function GoalLedger() {
         </div>
       ) : (
         <>
-          <GoalRange goals={goals} />
+          <GoalRange goals={goals} role={role} />
           <GoalInfo goals={goals} setGoals={setGoals} role={role} />
         </>
       )}
