@@ -82,8 +82,8 @@ export default function QnaInput({ onRegistered, closeModal }) {
     }
   };
   return (
-    <div>
-      <div className="flex items-center">
+    <div className="w-full">
+      <div className="flex items-center w-3/4">
         <fieldset className="fieldset flex-1">
           <legend className="fieldset-legend text-base font-normal">
             제목

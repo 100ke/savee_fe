@@ -17,12 +17,12 @@ export default function QnaTab({ category }) {
 
   const tabs = [
     { name: "전체", qna_type: "" },
-    { name: "로그인", qna_type: "login" },
-    { name: "가계부", qna_type: "ledger" },
-    { name: "소비분석", qna_type: "analysis" },
-    { name: "에러", qna_type: "error" },
-    { name: "유저", qna_type: "user" },
-    { name: "기타", qna_type: "etc" },
+    { name: "로그인", qna_type: "로그인" },
+    { name: "가계부", qna_type: "가계부" },
+    { name: "소비분석", qna_type: "소비분석" },
+    { name: "에러", qna_type: "에러" },
+    { name: "유저", qna_type: "유저" },
+    { name: "기타", qna_type: "기타" },
   ];
   const currentQnaType = searchParams.get("qna_type") || "";
   const onTabClick = (qna_type) => {
@@ -33,6 +33,7 @@ export default function QnaTab({ category }) {
     } else {
       newParams.delete("qna_type");
     }
+    newParams.set("page", "1");
     setSearchParams(newParams);
   };
   return (

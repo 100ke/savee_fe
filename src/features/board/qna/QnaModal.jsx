@@ -14,7 +14,7 @@ export default function QnaModal({ onRegistered }) {
       </button>
 
       <dialog id="my_modal_2" className="modal">
-        <div className="modal-box relative">
+        <div className="modal-box relative w-[800px] max-w-none h-[600px]">
           <h3 className="font-bold text-lg">문의 작성하기</h3>
 
           {/* QnaInput이 form과 제출 로직을 가집니다. closeModal도 prop으로 넘김 */}
