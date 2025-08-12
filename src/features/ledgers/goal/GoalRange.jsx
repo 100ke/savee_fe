@@ -1,11 +1,32 @@
+import { useRef, useEffect, useState } from "react";
+
 export default function GoalRange({ goals }) {
-  // 먼저 goals 존재 여부 확인
+  const goal = Array.isArray(goals) ? goals[0] : goals;
+  const rangeRef = useRef(null);
+  const [thumbPosition, setThumbPosition] = useState(0);
+
+  const current_amount = Number(goal.current_amount);
+  const target_amount = Number(goal.target_amount);
+  const percentage = Math.min(
+    Math.round((current_amount / target_amount) * 100),
+    100
+  );
+
+  useEffect(() => {
+    if (rangeRef.current) {
+      const rangeWidth = rangeRef.current.offsetWidth;
+      const percent = current_amount / target_amount;
+      const offset = percent * rangeWidth;
+      setThumbPosition(offset);
+    }
+  }, [current_amount, target_amount]);
+
   if (
-    !goals ||
-    goals.current_amount == null ||
-    goals.target_amount == null ||
-    isNaN(goals.current_amount) ||
-    isNaN(goals.target_amount)
+    !goal ||
+    goal.current_amount == null ||
+    goal.target_amount == null ||
+    isNaN(goal.current_amount) ||
+    isNaN(goal.target_amount)
   ) {
     return (
       <div className="goal-null-message mt-5 text-base text-[var(--black70)] text-center">
@@ -14,44 +35,44 @@ export default function GoalRange({ goals }) {
     );
   }
 
-  const current_amount = Number(goals.current_amount);
-  const target_amount = Number(goals.target_amount);
-
-  // 목표가 0이면 division by zero 방지
-  if (target_amount === 0) {
-    return (
-      <div className="goal-null-message mt-5 text-base text-[var(--black70)] text-center">
-        목표 금액이 0원으로 설정되어 있습니다.
-      </div>
-    );
-  }
-
-  const percentage = Math.min(
-    Math.round((current_amount / target_amount) * 100),
-    100
-  );
-
   return (
-    <div className="goal-range-bar p-4 flex flex-col justify-center items-center mt-5">
-      <div className="goals-title">{goals.title}</div>
-      <input
-        type="range"
-        min={0}
-        value={current_amount}
-        max={target_amount}
-        className="range w-[80%] range-[var(--accent-color)]"
-      />
-
-      <div className="goals-amount">
-        <span className="current-amount">
-          {current_amount.toLocaleString()}원
-        </span>
-        <span className="target-amount">
-          {target_amount.toLocaleString()}원
-        </span>
+    <div className="goal-range-bar p-4 flex flex-col items-center mt-5 w-full relative">
+      <div className="goals-title text-lg font-semibold mb-2">
+        {goal.title}
+        <span className="goal-category">{goal.category_goals.name}</span>
       </div>
 
-      <p className="text-right text-sm mt-1 text-green-600">
+      {/* 바와 current_amount 따라다니는 값 */}
+      <div className="relative w-[80%]">
+        <input
+          ref={rangeRef}
+          type="range"
+          min={0}
+          max={target_amount}
+          value={current_amount}
+          className="range w-full accent-[var(--accent-color)] pointer-events-none"
+          readOnly
+        />
+
+        {/* 따라다니는 금액 표시 */}
+        <div
+          className="absolute -bottom-6 text-xs text-[var(--accent-color)] font-medium whitespace-nowrap"
+          style={{
+            left: `calc(${(current_amount / target_amount) * 100}% - 30px)`, // 중간 정렬
+            transition: "left 0.3s ease",
+          }}
+        >
+          {current_amount.toLocaleString()}원
+        </div>
+      </div>
+
+      {/* 아래 min/max 표시 */}
+      <div className="goals-amount flex justify-between w-[80%] mt-2 text-sm text-[var(--black90)]">
+        <span>0원</span>
+        <span>{target_amount.toLocaleString()}원</span>
+      </div>
+
+      <p className="text-right text-sm mt-1 text-[var(--main-color)]">
         {percentage}% 달성
       </p>
     </div>
