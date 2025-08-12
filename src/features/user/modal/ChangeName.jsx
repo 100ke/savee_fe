@@ -1,23 +1,35 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { changeName } from "../userApi";
 
-function ChangeName({ onSuccess }) {
+function ChangeName({ isOpen, onSuccess, onClose }) {
   const [name, setName] = useState("");
+
+  useEffect(() => {
+    setName("");
+  }, []);
 
   const handleChangeName = async () => {
     try {
       await changeName(name);
       alert("이름이 변경되었습니다.");
+      const dialog = document.getElementById("change-name-modal");
+      dialog?.close();
       onSuccess();
-    } catch (error) {}
+    } catch (error) {
+      const message = error.response?.data?.error || "오류가 발생했습니다.";
+      alert(message);
+    }
   };
   return (
     <div className="change-name">
       {/* 이름 입력란, 변경 버튼 */}
-      <dialog id="change-name-modal" className="modal">
+      <dialog open={isOpen} id="change-name-modal" className="modal">
         <div className="modal-box">
           <form method="dialog">
-            <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
+            <button
+              className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
+              onClick={onClose}
+            >
               ✕
             </button>
           </form>

@@ -3,7 +3,6 @@ import LedgerHeader from "../features/ledgers/LedgerHeader";
 import LedgerTab from "../features/ledgers/LedgerTab";
 import { useState } from "react";
 import LedgerAddButton from "../features/ledgers/LedgerAddButton";
-import SharedLedger from "../features/ledgers/shared/SharedLedger";
 
 export default function SharedLedgerPage() {
   const location = useLocation();
@@ -20,9 +19,6 @@ export default function SharedLedgerPage() {
   const [monthlyDatas, setMonthlyDatas] = useState(null);
 
   const [ledgers, setLedgers] = useState([]);
-
-  // 선택된 공유 가계부 id
-  const [selectedSharedLedgerId, setSelectedSharedLedgerId] = useState(null);
 
   // 공유 가계부 id가 있을 때만 탭 렌더링
   const { ledgerId } = useParams();

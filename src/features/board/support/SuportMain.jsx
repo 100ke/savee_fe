@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import SupportList from "./SupportList";
 export default function SupportMain() {
   return (
-    <div className="pb-10">
+    <div className="pb-10 overflow-auto scrollbar-hidden">
       <section className="flex flex-col gap-6 mb-7">
         <h1 className="text-xl text-center">고객센터</h1>
         <div className="flex flex-col gap-6">

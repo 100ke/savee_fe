@@ -1,7 +1,6 @@
 import { Route, Routes } from "react-router-dom";
 import DailyLedger from "../features/ledgers/daily/DailyLedger";
 import WeeklyLedger from "../features/ledgers/weekly/WeeklyLedger";
-import LedgerPage from "./LedgerPage";
 import MonthlyLedger from "../features/ledgers/monthly/MonthlyLedger";
 import SharedLedger from "../features/ledgers/shared/SharedLedger";
 import SharedLedgerPage from "./SharedLedgerPage";

@@ -105,5 +105,6 @@ export default function useSearch(fetchFunction, refreshFlag) {
     totalPages,
     pageParam,
     category: categoryParam,
+    setSearchParams,
   };
 }

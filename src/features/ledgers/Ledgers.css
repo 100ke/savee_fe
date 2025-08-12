@@ -116,7 +116,7 @@
 
 /* 그래프 */
 .ledgers-transaction .weekly-chart {
-  height: clamp(150px, 40vw, 360px);
+  height: clamp(150px, 40vw, 330px);
 }
 
 /* 아코디언 */
