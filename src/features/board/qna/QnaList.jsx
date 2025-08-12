@@ -83,7 +83,7 @@ export default function QnaList({
                       }`}
                     >
                       <QnaDetail
-                        data={data}
+                        post={post}
                         admin={admin}
                         onAnswerSubmit={handleAnswerSubmit}
                       />

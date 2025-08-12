@@ -1,12 +1,13 @@
 import { useState } from "react";
-export default function QnaDetail({ question, admin, onAnswerSubmit }) {
-  const questionContent = question;
+import QnaAnswerForm from "./AnswerInput";
+export default function QnaDetail({ post, admin, onAnswerSubmit }) {
   // const answerContent = answer;
+  console.log({ post }.post);
   const [isEditing, setIsEditing] = useState(false);
   return (
     <div className="flex gap-2 flex-col">
       <div className="break-words whitespace-normal max-h-60 overflow-auto whitespace-pre-wrap">
-        {questionContent}
+        {post.question}
       </div>
       <hr className="border-[var(--black30)]" />
       <div className="flex">
@@ -14,7 +15,7 @@ export default function QnaDetail({ question, admin, onAnswerSubmit }) {
         <div className="mt-1 break-words whitespace-normal">
           {/* {answerContent} */}
         </div>
-        {/* {isEditing ? (
+        {isEditing ? (
           <QnaAnswerForm
             onSubmit={(answer) => {
               onAnswerSubmit(post.id, answer);
@@ -34,7 +35,7 @@ export default function QnaDetail({ question, admin, onAnswerSubmit }) {
               </button>
             )}
           </>
-        )} */}
+        )}
         {/* {admin && (
           <div className="mt-3">
             {post.iscommpleted ? (
