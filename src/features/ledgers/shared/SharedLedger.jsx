@@ -4,13 +4,16 @@ import {
   fetchAcceptCodes,
   fetchCreateSharedLedgers,
   fetchGetLedgers,
+  fetchGetLedgersByMembership,
   fetchInviteLedgerMembers,
 } from "../TransactionApi";
 import AddSharedLedger from "../modal/AddSahredLedger";
+import SharedLedgerCard from "./SharedLedgerCard";
 
 export default function SharedLedger() {
   const [sharedLedgers, setSharedLedgers] = useState([]);
   const token = localStorage.getItem("accessToken");
+
   const navigate = useNavigate();
   const { error, setError } = useOutletContext();
   const [open, setOpen] = useState(false);
@@ -21,6 +24,10 @@ export default function SharedLedger() {
         await fetchCreateSharedLedgers(formData.name, formData.token);
         alert("공유 가계부 생성 완료");
         setOpen(true);
+
+        const updatedLedgers = await fetchGetLedgers(formData.token);
+        const shared = updatedLedgers.filter((ledger) => ledger.is_shared);
+        setSharedLedgers(shared);
       }
 
       if (formData.email) {
@@ -58,6 +65,7 @@ export default function SharedLedger() {
       return;
     }
 
+    // 공유 가계부 생성 및 초대 시 사용 - owner 전용
     const fetchSharedLedgers = async () => {
       try {
         const ledgers = await fetchGetLedgers(token);
@@ -68,7 +76,18 @@ export default function SharedLedger() {
       }
     };
 
+    // 공유 가계부에 참여한 멤버 전용
+    const fetchMembershipLedgers = async () => {
+      try {
+        const memberLedgers = await fetchGetLedgersByMembership(token);
+        setSharedLedgers(memberLedgers);
+      } catch (error) {
+        setError("공유 가계부 목록을 가져오지 못했습니다.");
+      }
+    };
+
     fetchSharedLedgers();
+    fetchMembershipLedgers();
   }, [token, navigate]);
 
   if (
@@ -81,32 +100,26 @@ export default function SharedLedger() {
   }
 
   const handleLedgerClick = (ledgerId) => {
-    navigate(`/sharedLedger/${ledgerId}`);
+    navigate(`/sharedLedger/${ledgerId}/daily`);
   };
 
   return (
     <div className="shared-ledgers-list p-6">
-      <div className="shared-ledger grid grid-cols-3 gap-4">
-        {sharedLedgers.map((ledger) => (
-          <div
-            key={ledger.id}
-            className="p-4 border rounded-lg cursor-pointer hover:bg-gray-100"
-            onClick={() => handleLedgerClick(ledger.id)}
-          >
-            <h3 className="font-bold text-lg">{ledger.name}</h3>
-          </div>
-        ))}
-      </div>
-      <div
-        onClick={() => {
-          document.getElementById("add-shared-ledger-modal").showModal();
-        }}
-        className="add-shared-ledger bg-[var(--color-sub3-40)] w-50 h-70 rounded-[1rem] cursor-pointer flex justify-center items-center"
+      <SharedLedgerCard
+        sharedLedgers={sharedLedgers}
+        onClick={handleLedgerClick}
       >
-        <button className="add-ledgers text-3xl text-[var(--main-color-dark)] bg-[var(--color-sub3)] p-4 rounded-full w-17 cursor-pointer">
-          +
-        </button>
-      </div>
+        <div
+          onClick={() => {
+            document.getElementById("add-shared-ledger-modal").showModal();
+          }}
+          className="add-shared-ledger bg-[var(--color-sub3-40)] w-50 h-70 rounded-[1rem] cursor-pointer flex justify-center items-center"
+        >
+          <button className="add-ledgers text-3xl text-[var(--main-color-dark)] bg-[var(--color-sub3)] p-4 rounded-full w-17 cursor-pointer">
+            +
+          </button>
+        </div>
+      </SharedLedgerCard>
       <AddSharedLedger onSave={handleSave} sharedLedgers={sharedLedgers} />
     </div>
   );
