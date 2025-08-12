@@ -3,6 +3,7 @@ import Pagination from "../Pagination";
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import QnaDetail from "./QnaDetail";
+import { updateanswer } from "../QnaApi";
 
 export default function QnaList({
   data,
@@ -16,11 +17,8 @@ export default function QnaList({
   onRefresh,
 }) {
   const [openIndex, setOpenIndex] = useState(null);
-  const navigate = useNavigate();
 
-  const handleAfterChange = () => {
-    if (onRefresh) onRefresh();
-  };
+  const navigate = useNavigate();
 
   if (loading) return <div>로딩중...</div>;
   if (error) return <div className="alert alert-danger">{error}</div>;
@@ -32,8 +30,16 @@ export default function QnaList({
   const toggle = (index) =>
     setOpenIndex((prev) => (prev === index ? null : index));
 
+  const handleAnswerSubmit = async (id, answer) => {
+    try {
+      await updateanswer(id, answer);
+      onRefresh();
+    } catch (error) {
+      console.error();
+    }
+  };
   return (
-    <section className="flex flex-col gap-5">
+    <section className="flex flex-col gap-3 overflow-auto scrollbar-hidden max-h-[500px]">
       <div className="join gap-2 justify-center">
         {admin && (
           <button
@@ -54,7 +60,7 @@ export default function QnaList({
                   className="accordion-title cursor-pointer accordion-item"
                   onClick={() => toggle(idx)}
                 >
-                  <td>
+                  <td className="break-words max-w-xs">
                     <span className="text-[var(--accent-color)] text-lg">
                       Q
                     </span>
@@ -70,29 +76,17 @@ export default function QnaList({
                 </tr>
 
                 <tr>
-                  <td colSpan={5} className="p-0">
+                  <td colSpan={5} className="p-0 break-words max-w-[200px]">
                     <div
                       className={`overflow-hidden transition-all duration-200 ${
                         openIndex === idx ? "max-h-96 p-5" : "max-h-0 p-0"
                       }`}
                     >
                       <QnaDetail
-                        question={post.question}
-                        answer={post.answer}
+                        data={data}
+                        admin={admin}
+                        onAnswerSubmit={handleAnswerSubmit}
                       />
-                      {/* {admin && (
-                        <div className="mt-3">
-                          {post.iscommpleted ? (
-                            <button onClick={() => handleDeleteAnswer(post.id)}>
-                              답변 삭제
-                            </button>
-                          ) : (
-                            <button onClick={() => handleRegister(post.id)}>
-                              답변 등록(완료 처리)
-                            </button>
-                          )}
-                        </div>
-                      )} */}
                     </div>
                   </td>
                 </tr>

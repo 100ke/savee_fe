@@ -5,7 +5,7 @@ import { jwtDecode } from "jwt-decode";
 export const getQnaPosts = async (page, pageSize, keyword, qnaType) => {
   try {
     const response = await axios.get(
-      `/qna/?page=${page}&pageSize=${pageSize}&qna_type=${qnaType}&&keyword=${encodeURIComponent(
+      `/qna/?page=${page}&pageSize=${pageSize}&qna_type=${qnaType}&keyword=${encodeURIComponent(
         keyword
       )}`
     );
