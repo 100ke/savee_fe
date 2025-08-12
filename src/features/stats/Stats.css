@@ -11,23 +11,47 @@
   color: var(--main-color-dark);
 }
 
+.statspage .stats-area2 {
+  height: 300px;
+}
+
+.statspage .right {
+  max-height: 610px;
+}
+
 .category-stats,
 .monthly-trend,
 .weekly-trend {
   background-color: var(--black10);
 }
 
-.daily-trend {
-  border-color: var(--main-color-dark);
-}
-
-.detail-area {
-  background-color: var(--color-sub3-40);
-}
-
 /* 카테고리별 지출 */
+.category-stats {
+  max-height: 600px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
 .category-stats .badge {
-  width: 3rem;
+  width: 2.5rem;
   border-color: var(--black20);
   background-color: var(--black20);
+}
+
+/* 지출 상세 내역 */
+.detail-area {
+  min-height: 205px;
+  background-color: var(--color-sub3-40);
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.detail-area .date {
+  display: inline-block;
+  width: 80px;
+}
+
+/* 일일 지출 추이 */
+.daily-trend {
+  border-color: var(--main-color-dark);
 }
