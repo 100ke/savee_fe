@@ -1,7 +1,7 @@
 import "./../Board.css";
 import Pagination from "../Pagination";
-import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState } from "react";
+// import { useNavigate } from "react-router-dom";
 import QnaDetail from "./QnaDetail";
 import { updateanswer } from "../QnaApi";
 
@@ -18,7 +18,7 @@ export default function QnaList({
 }) {
   const [openIndex, setOpenIndex] = useState(null);
 
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   if (loading) return <div>로딩중...</div>;
   if (error) return <div className="alert alert-danger">{error}</div>;
@@ -40,8 +40,6 @@ export default function QnaList({
   };
   return (
     <section className="flex flex-col gap-3 overflow-auto scrollbar-hidden max-h-[500px]">
-      
-
       <div>
         <table className="table">
           <tbody>

@@ -1,5 +1,4 @@
-import { useState } from "react";
-import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
+import { useLocation, useSearchParams } from "react-router-dom";
 
 export default function QnaTab({ category }) {
   // 클릭할 때마다 값이 바뀌어야 함
@@ -9,10 +8,10 @@ export default function QnaTab({ category }) {
   // };
 
   const location = useLocation();
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   // 현재 경로에 따라 active 탭 설정
-  const activeTab = location.pathname;
+  // const activeTab = location.pathname;
   const [searchParams, setSearchParams] = useSearchParams();
 
   const tabs = [

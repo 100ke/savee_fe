@@ -12,7 +12,7 @@ export default function SupportList() {
     setSearchKeyword,
     admin,
     currentPage,
-    loading,
+    // loading,
     error,
     handleSearch,
     handlePageChange,
