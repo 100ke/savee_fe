@@ -1,4 +1,3 @@
-import axios from "axios";
 import instance from "../../api/axiosInstance";
 
 const getAuthHeader = (token) => ({
@@ -29,11 +28,11 @@ const fetchDailyTransactions = async (ledgerId, selectedDate, token) => {
     const month = String(selectedDate.getMonth() + 1).padStart(2, "0");
     const reDate = `${year}-${month}`;
 
-    const response = await axios.get(
+    const response = await instance.get(
       `/ledgers/${ledId}/transactions/daily?month=${reDate}`,
       getAuthHeader(token)
     );
-
+    console.log(response.data);
     const { transactions, summary } = await response?.data?.data;
     return { transactions, summary };
   } catch (error) {
@@ -228,6 +227,22 @@ const fetchFindLedger = async (ledgerId, token) => {
   }
 };
 
+const fetchCreatePersoalLedger = async (token, name) => {
+  try {
+    const data = {
+      name,
+      is_shared: false,
+    };
+
+    const response = await instance.post(`ledgers`, data, getAuthHeader(token));
+    const ledger = await response.data.data;
+
+    return ledger;
+  } catch (error) {
+    throw error;
+  }
+};
+
 const fetchCreateGoals = async (
   ledgerId,
   token,
@@ -298,4 +313,5 @@ export {
   fetchFindLedger,
   fetchCreateGoals,
   fetchGetGoal,
+  fetchCreatePersoalLedger,
 };
