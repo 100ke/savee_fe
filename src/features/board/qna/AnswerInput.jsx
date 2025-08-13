@@ -1,3 +1,4 @@
+import { useState } from "react";
 export default function QnaAnswerForm({ onSubmit, onCancel }) {
   const [answer, setAnswer] = useState("");
 

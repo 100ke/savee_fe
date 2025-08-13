@@ -74,7 +74,8 @@ export const updatePost = async (id, updateData) => {
 //답변 등록
 export const updateanswer = async (id, updateAnswer) => {
   try {
-    const response = await axios.patch(`qna/${id}/answer`, updateAnswer);
+    console.log("updateAnswer:", updateAnswer);
+    const response = await axios.patch(`/answer/${id}`, {answer:updateAnswer});
     return response.data;
   } catch (error) {
     console.error("답변 등록 실패", error);
