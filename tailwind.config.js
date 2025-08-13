@@ -1,5 +1,8 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
+  corePlugins: {
+    preflight: false, // reset만 끔
+  },
   content: [
     "./src/**/*.{js,jsx,ts,tsx}", // CRA 프로젝트 내에서 Tailwind 적용할 파일 경로
     "./public/index.html", // HTML 포함
