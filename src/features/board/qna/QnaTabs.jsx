@@ -40,7 +40,7 @@ export default function QnaTab({ category }) {
       <div role="tablist" className="tabs tabs-border mt-[1rem]">
         {tabs.map((tab) => {
           return (
-            <a
+            <button
               key={tab.name}
               role="tab"
               className={`tab ${
@@ -49,7 +49,7 @@ export default function QnaTab({ category }) {
               onClick={() => onTabClick(tab.qna_type)}
             >
               {tab.name}
-            </a>
+            </button>
           );
         })}
       </div>
