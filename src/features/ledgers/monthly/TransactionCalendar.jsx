@@ -23,8 +23,6 @@ export default function TransactionCalendar({ monthlyDatas, selectedDate }) {
 
   // 해당 달 1일 요일 구하기 -> 0 : 일 ~ 6 : 토
   const firstDayOfMonth = calendarDates[0].getDay();
-  console.log(monthlyDatas);
-  console.log(calendarDates);
 
   return (
     <div className="monthly-calendar mt-3 max-h-[550px] overflow-y-auto overflow-x-hidden scrollbar-hidden">
