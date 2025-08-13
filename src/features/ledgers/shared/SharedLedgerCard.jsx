@@ -5,7 +5,7 @@ export default function SharedLedgerCard({ sharedLedgers, children }) {
   const navigate = useNavigate();
 
   return (
-    <div className="flex flex-row gap-6">
+    <div className="flex flex-row flex-wrap gap-6">
       {sharedLedgers.map((ledger) => {
         const members = ledger.ledger_ledgermembers || [];
 

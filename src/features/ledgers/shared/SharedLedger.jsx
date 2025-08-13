@@ -91,7 +91,7 @@ export default function SharedLedger() {
   }, [token, navigate]);
 
   return (
-    <div className="shared-ledgers-list p-6">
+    <div className="shared-ledgers-list p-6 flex">
       <SharedLedgerCard sharedLedgers={sharedLedgers}>
         <div
           onClick={() => {

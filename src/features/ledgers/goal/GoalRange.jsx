@@ -65,7 +65,7 @@ export default function GoalRange({
   return (
     <div className="goal-range-container">
       {!isValidGoal || !hasGoal ? (
-        <div className="text-center mt-10 text-gray-500 flex flex-col justify-center items-center">
+        <div className="text-center mt-10 text-[var(--black70)] flex flex-col justify-center items-center">
           아직 목표가 설정되지 않았습니다.
           {(role === null || role === "owner") && (
             <button
