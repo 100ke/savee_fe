@@ -6,7 +6,38 @@ export default function Main() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const btns = [{ color: "--accent-color", label: "지출 입력", icon: "+" }];
+  const btns = [
+    {
+      bgColor: "var(--accent-color)",
+      borderColor: "var(--accent-color)",
+      label: "지출 입력",
+      icon: "+",
+      color: "white",
+    },
+    {
+      bgColor: "var(--main-color)",
+      borderColor: "var(--main-color)",
+      label: "소비 입력",
+      icon: "+",
+      color: "white",
+    },
+    {
+      bgColor: "white",
+      borderColor: "var(--main-color)",
+      label: "내 가계부",
+      icon: ">",
+      color: "var(--main-color)",
+      amount: "1000",
+    },
+    {
+      bgColor: "white",
+      borderColor: "var(--accent-color)",
+      label: "소비 입력",
+      icon: ">",
+      color: "var(--accent-color)",
+      amount: "1000",
+    },
+  ];
   useEffect(() => {
     const token = localStorage.getItem("accessToken");
 
@@ -43,13 +74,16 @@ export default function Main() {
         )}
       </h1>
       <hr className="w-full" />
-      <div>
+      <div className="w-2/4 flex flex-wrap">
         {btns.map((btn, idx) => (
           <MainButton
             key={idx}
-            color={btn.color}
+            bgColor={btn.bgColor}
+            borderColor={btn.borderColor}
             label={btn.label}
             icon={btn.icon}
+            color={btn.color}
+            amount={btn.amount}
           ></MainButton>
         ))}
       </div>
