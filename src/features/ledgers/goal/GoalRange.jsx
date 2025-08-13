@@ -34,6 +34,7 @@ export default function GoalRange({ goals, role, ledgerId, setError }) {
     try {
       await fetchCreateGoals(
         formData.ledgerId,
+        formData.token,
         formData.categoryId,
         formData.title,
         formData.target_amount,
@@ -45,7 +46,12 @@ export default function GoalRange({ goals, role, ledgerId, setError }) {
       );
       alert("저장 완료");
     } catch (error) {
-      setError("내역을 저장하지 못했습니다.");
+      const message = error.response?.data?.message;
+      if (message.includes("목표가 설정되어 있습니다.")) {
+        alert("이미 해당 가계부에 목표가 설정되어 있습니다.");
+      } else {
+        setError("내역을 저장하지 못했습니다.");
+      }
     }
   };
 

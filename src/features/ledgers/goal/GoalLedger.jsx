@@ -69,9 +69,9 @@ export default function GoalLedger() {
         setLedgerId(id);
 
         const data = await fetchGetGoal(id, token);
-
+        console.log(data);
         if (!data) {
-          setError("데이터가 없습니다.");
+          setError("목표가 없습니다.");
           setGoals([]);
         } else {
           setError(null);
@@ -79,11 +79,7 @@ export default function GoalLedger() {
         }
 
         // summary 값 받아오기
-        const { summary } = await fetchDailyTransactions(
-          id,
-          selectedDate,
-          token
-        );
+        const summary = await fetchDailyTransactions(id, selectedDate, token);
 
         setSummary({
           totalIncome: summary?.totalIncome ?? 0,
@@ -98,14 +94,12 @@ export default function GoalLedger() {
           navigate("/login");
         } else if (error.response?.status === 404) {
           if (message.includes("입력한 내역이 없습니다.")) {
-            setGoals([]);
+            // setGoals([]);
             setError(null);
           } else {
             setError("데이터를 불러오는 데 실패했습니다.");
           }
         }
-
-        setGoals([]);
       }
     };
     fetchGoals();

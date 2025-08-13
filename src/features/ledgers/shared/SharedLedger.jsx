@@ -97,7 +97,7 @@ export default function SharedLedger() {
           onClick={() => {
             document.getElementById("add-shared-ledger-modal").showModal();
           }}
-          className="add-shared-ledger bg-[var(--color-sub3-40)] w-50 h-70 rounded-[1rem] cursor-pointer flex justify-center items-center"
+          className="add-shared-ledger bg-[var(--color-sub3-40)] w-50 h-70 rounded-[1.5rem] shadow-lg cursor-pointer flex justify-center items-center"
         >
           <button className="add-ledgers text-3xl text-[var(--main-color-dark)] bg-[var(--color-sub3)] p-4 rounded-full w-17 cursor-pointer">
             +
