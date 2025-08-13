@@ -2,7 +2,13 @@ import { useRef, useEffect, useState } from "react";
 import AddGoal from "../modal/AddGoal";
 import { fetchCreateGoals } from "../TransactionApi";
 
-export default function GoalRange({ goals, role, ledgerId, setError }) {
+export default function GoalRange({
+  goals,
+  role,
+  ledgerId,
+  setError,
+  setGoals,
+}) {
   const goal = Array.isArray(goals) ? goals[0] : goals;
   const rangeRef = useRef(null);
   const [thumbPosition, setThumbPosition] = useState(0);
@@ -32,7 +38,7 @@ export default function GoalRange({ goals, role, ledgerId, setError }) {
 
   const handleSave = async (formData) => {
     try {
-      await fetchCreateGoals(
+      const newGoals = await fetchCreateGoals(
         formData.ledgerId,
         formData.token,
         formData.categoryId,
@@ -44,6 +50,7 @@ export default function GoalRange({ goals, role, ledgerId, setError }) {
         formData.type,
         formData.status
       );
+      setGoals([newGoals]);
       alert("저장 완료");
     } catch (error) {
       const message = error.response?.data?.message;

@@ -121,6 +121,7 @@ export default function GoalLedger() {
             role={role}
             ledgerId={ledgerId}
             setError={setError}
+            setGoals={setGoals}
           />
           <GoalInfo goals={goals} setGoals={setGoals} role={role} />
         </>
