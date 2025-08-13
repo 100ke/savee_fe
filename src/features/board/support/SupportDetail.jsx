@@ -1,5 +1,4 @@
 import "./../Board.css";
-import Pagination from "../Pagination";
 import PostHeader from "./SupportHeader";
 import { useEffect, useState } from "react";
 import { fetchPostById, isAdmin, deletePost } from "../SupportApi";

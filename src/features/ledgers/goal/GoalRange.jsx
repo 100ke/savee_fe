@@ -1,6 +1,8 @@
 import { useRef, useEffect, useState } from "react";
+import AddGoal from "../modal/AddGoal";
+import { fetchCreateGoals } from "../TransactionApi";
 
-export default function GoalRange({ goals, role }) {
+export default function GoalRange({ goals, role, ledgerId, setError }) {
   const goal = Array.isArray(goals) ? goals[0] : goals;
   const rangeRef = useRef(null);
   const [thumbPosition, setThumbPosition] = useState(0);
@@ -18,8 +20,7 @@ export default function GoalRange({ goals, role }) {
     ? Math.min(Math.round((current_amount / target_amount) * 100), 100)
     : 0;
 
-  const hasGoal = goals && goals.length > 0;
-  console.log("hasGoal:", hasGoal, "role:", role);
+  const hasGoal = Array.isArray(goals) && goals.length > 0;
 
   useEffect(() => {
     if (!isValidGoal || !rangeRef.current) return;
@@ -29,9 +30,42 @@ export default function GoalRange({ goals, role }) {
     setThumbPosition(offset);
   }, [isValidGoal, current_amount, target_amount]);
 
+  const handleSave = async (formData) => {
+    try {
+      await fetchCreateGoals(
+        formData.ledgerId,
+        formData.categoryId,
+        formData.title,
+        formData.target_amount,
+        formData.current_amount,
+        formData.start_date,
+        formData.end_date,
+        formData.type,
+        formData.status
+      );
+      alert("저장 완료");
+    } catch (error) {
+      setError("내역을 저장하지 못했습니다.");
+    }
+  };
+
   return (
     <div className="goal-range-container">
-      {isValidGoal && hasGoal ? (
+      {!isValidGoal || !hasGoal ? (
+        <div className="text-center mt-10 text-gray-500 flex flex-col justify-center items-center">
+          아직 목표가 설정되지 않았습니다.
+          {(role === null || role === "owner") && (
+            <button
+              onClick={() => {
+                document.getElementById("add-goal-modal").showModal();
+              }}
+              className="mt-4 px-4 py-2 bg-[var(--accent-color)] text-white rounded cursor-pointer"
+            >
+              목표 설정하기
+            </button>
+          )}
+        </div>
+      ) : (
         <div className="goal-range-bar p-4 flex flex-col items-center mt-5 w-full relative">
           <div className="goals-title text-lg font-semibold mb-2">
             {goal.title}
@@ -65,16 +99,8 @@ export default function GoalRange({ goals, role }) {
             {percentage}% 달성
           </p>
         </div>
-      ) : (
-        <div className="text-center mt-10 text-gray-500">
-          아직 목표가 설정되지 않았습니다.
-          {(!role || role === "owner") && (
-            <button className="mt-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
-              목표 설정하기
-            </button>
-          )}
-        </div>
       )}
+      <AddGoal onSave={handleSave} ledgerId={ledgerId} />
     </div>
   );
 }
