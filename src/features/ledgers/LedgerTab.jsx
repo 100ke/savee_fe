@@ -29,14 +29,14 @@ function LedgerTab() {
       <div role="tablist" className="ledger-tab tabs tabs-border mt-[1rem]">
         {tabs.map((tab) => {
           return (
-            <a
+            <button
               key={tab.name}
               role="tab"
               className={`tab ${activeTab === tab.path ? "tab-active" : ""}`}
               onClick={() => navigate(tab.path)}
             >
               {tab.name}
-            </a>
+            </button>
           );
         })}
       </div>

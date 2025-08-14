@@ -79,7 +79,9 @@ export default function SupportDetail() {
       {/* </div> */}
 
       <div className="container flex m-auto flex-wrap justify-between p-5 mt-3">
-        <a className="">이전글</a>
+        <a href="#" className="">
+          이전글
+        </a>
         <button
           className="btn join-item rounded-box w-20 support-submit"
           onClick={() =>
@@ -106,7 +108,7 @@ export default function SupportDetail() {
             삭제
           </button>
         )}
-        <a>다음글</a>
+        <a href="#">다음글</a>
       </div>
     </div>
   );

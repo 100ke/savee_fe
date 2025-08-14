@@ -5,8 +5,8 @@ export default function QnaInput({ onRegistered, closeModal }) {
   const [title, setTitle] = useState("");
   const [question, setQuestion] = useState("");
   const [error, setError] = useState("");
-  const [files, setFiles] = useState([]);
-  const [previews, setPreviews] = useState([]);
+  // const [files, setFiles] = useState([]);
+  // const [previews, setPreviews] = useState([]);
   const navigate = useNavigate();
   const [qna_type, setType] = useState("로그인");
   const { id } = useParams(); // id가 있으면 수정, 없으면 등록
@@ -33,7 +33,7 @@ export default function QnaInput({ onRegistered, closeModal }) {
   //포커싱
   const titleRef = useRef(null); // 제목 input 참조
   const contentRef = useRef(null); // 내용 textarea 참조
-  const MAX = 10;
+  // const MAX = 10;
 
   //제출
   const handleSubmit = async (e) => {
