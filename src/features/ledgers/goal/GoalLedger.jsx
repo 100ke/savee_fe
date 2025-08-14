@@ -90,16 +90,11 @@ export default function GoalLedger() {
 
         // goal range bar & summary를 위한 데이터 가져오기
         const goalsTrs = await fetchGetGoalsTransactions(
-          token,
           id,
+          token,
           data[0].start_date,
           data[0].end_date
         );
-        console.log("id:", id); // ledgerId
-        console.log("data:", data); // fetchGetGoal 결과
-        console.log("categoryId:", data?.[0]?.categoryId);
-        console.log("start_date:", data?.[0]?.start_date);
-        console.log("end_date:", data?.[0]?.end_date);
 
         setGoalsTransactions(goalsTrs);
       } catch (error) {
@@ -108,19 +103,19 @@ export default function GoalLedger() {
         console.log(error);
 
         // axios response status를 사용해 토큰이 없는 상태에 따른 에러 메시지 설정
-        // if (error.response?.status === 401) {
-        //   navigate("/login");
-        // } else if (error.response?.status === 404) {
-        //   if (message.includes("입력한 내역이 없습니다.")) {
-        //     setError("해당 기간에 내역이 없습니다.");
-        //   } else {
-        //     if (ledgerId === null) {
-        //       setError("아직 가계부가 없습니다. 가계부를 만들어 주세요.");
-        //     } else {
-        //       setError("데이터를 불러오는 데 실패했습니다.");
-        //     }
-        //   }
-        // }
+        if (error.response?.status === 401) {
+          navigate("/login");
+        } else if (error.response?.status === 404) {
+          if (message.includes("입력한 내역이 없습니다.")) {
+            setError("해당 기간에 내역이 없습니다.");
+          } else {
+            if (ledgerId === null) {
+              setError("아직 가계부가 없습니다. 가계부를 만들어 주세요.");
+            } else {
+              setError("데이터를 불러오는 데 실패했습니다.");
+            }
+          }
+        }
       }
     };
     fetchGoals();

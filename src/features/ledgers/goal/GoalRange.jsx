@@ -20,7 +20,7 @@ export default function GoalRange({
       setError("아직 등록된 수입/지출 내역이 없습니다.");
     }
   }, [goalsTransactions]);
-  console.log(ledgerId, typeof ledgerId);
+
   const goal = Array.isArray(goals) ? goals[0] : goals;
   const rangeRef = useRef(null);
   const [thumbPosition, setThumbPosition] = useState(0);
@@ -33,7 +33,12 @@ export default function GoalRange({
 
   const current_amount = isValidGoal ? Number(goal.current_amount) : 0;
   const target_amount = isValidGoal ? Number(goal.target_amount) : 1;
-  const current = goalsTransactions?.totalIncome ?? 0;
+  const current =
+    goalsTransactions && goal?.type === "saving"
+      ? goalsTransactions.totalIncome
+      : goal?.type === "spending_cut"
+      ? goalsTransactions.totalExpense
+      : 0;
   const target = isValidGoal ? Number(goal.target_amount) : 1;
 
   const percentage =

@@ -323,17 +323,15 @@ const fetchGetGoalsTransactions = async (
   try {
     const ledId = Number(ledgerId);
 
-    const data = {
-      token,
-      ledgerId: ledId,
-      start_date,
-      end_date,
-    };
-
     const response = await instance.get(
-      `ledgers/${ledId}/transactions/goals_progress?start_date=${start_date}&end_date=${end_date}`,
-      data,
-      getAuthHeader(token)
+      `ledgers/${ledId}/transactions/goals-progress`,
+      {
+        headers: { Authorization: `Bearer ${token}` },
+        params: {
+          start_date,
+          end_date,
+        },
+      }
     );
 
     const goalsTrs = await response.data.data;
