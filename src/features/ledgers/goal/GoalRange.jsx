@@ -2,7 +2,13 @@ import { useRef, useEffect, useState } from "react";
 import AddGoal from "../modal/AddGoal";
 import { fetchCreateGoals } from "../TransactionApi";
 
-export default function GoalRange({ goals, role, ledgerId, setError }) {
+export default function GoalRange({
+  goals,
+  role,
+  ledgerId,
+  setError,
+  setGoals,
+}) {
   const goal = Array.isArray(goals) ? goals[0] : goals;
   const rangeRef = useRef(null);
   const [thumbPosition, setThumbPosition] = useState(0);
@@ -32,8 +38,9 @@ export default function GoalRange({ goals, role, ledgerId, setError }) {
 
   const handleSave = async (formData) => {
     try {
-      await fetchCreateGoals(
+      const newGoals = await fetchCreateGoals(
         formData.ledgerId,
+        formData.token,
         formData.categoryId,
         formData.title,
         formData.target_amount,
@@ -43,16 +50,22 @@ export default function GoalRange({ goals, role, ledgerId, setError }) {
         formData.type,
         formData.status
       );
+      setGoals([newGoals]);
       alert("저장 완료");
     } catch (error) {
-      setError("내역을 저장하지 못했습니다.");
+      const message = error.response?.data?.message;
+      if (message.includes("목표가 설정되어 있습니다.")) {
+        alert("이미 해당 가계부에 목표가 설정되어 있습니다.");
+      } else {
+        setError("내역을 저장하지 못했습니다.");
+      }
     }
   };
 
   return (
     <div className="goal-range-container">
       {!isValidGoal || !hasGoal ? (
-        <div className="text-center mt-10 text-gray-500 flex flex-col justify-center items-center">
+        <div className="text-center mt-10 text-[var(--black70)] flex flex-col justify-center items-center">
           아직 목표가 설정되지 않았습니다.
           {(role === null || role === "owner") && (
             <button

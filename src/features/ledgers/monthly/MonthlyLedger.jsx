@@ -67,7 +67,11 @@ export default function MonthlyLedger() {
           if (message.includes("입력한 내역이 없습니다.")) {
             setError("데이터가 없습니다.");
           } else {
-            setError("데이터를 불러오는 데 실패했습니다.");
+            if (ledgerId === null) {
+              setError("아직 가계부가 없습니다. 가계부를 만들어 주세요.");
+            } else {
+              setError("데이터를 불러오는 데 실패했습니다.");
+            }
           }
         }
 
