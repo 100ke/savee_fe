@@ -24,7 +24,7 @@ export default function SharedLedgerPage() {
   const { ledgerId } = useParams();
 
   return (
-    <div className="max-w-full px-full scrollbar-hidden">
+    <div className="w-3/4 px-full scrollbar-hidden">
       {/* ledgerId가 있을 때만 헤더와 탭을 렌더링 */}
       {ledgerId && (
         <>

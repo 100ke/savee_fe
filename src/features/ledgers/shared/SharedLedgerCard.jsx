@@ -5,14 +5,14 @@ export default function SharedLedgerCard({ sharedLedgers, children }) {
   const navigate = useNavigate();
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+    <div className="flex flex-row flex-wrap gap-6">
       {sharedLedgers.map((ledger) => {
         const members = ledger.ledger_ledgermembers || [];
 
         return (
           <div
             key={ledger.id}
-            className="card bg-[var(--main-color)] h-[18rem] rounded-[1.5rem] shadow-lg cursor-pointer hover:bg-[var(--color-sub1)] transition-all duration-200"
+            className="card w-50 h-70 bg-[var(--main-color)] h-[18rem] rounded-[1.5rem] shadow-lg cursor-pointer hover:bg-[var(--color-sub1)] transition-all duration-200"
             onClick={() => navigate(`/sharedLedger/${ledger.id}`)}
           >
             <div className="card-body flex flex-col justify-between items-center p-6">

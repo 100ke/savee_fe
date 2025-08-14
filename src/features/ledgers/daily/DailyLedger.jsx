@@ -120,13 +120,13 @@ function DailyLedger() {
     <div className="max-w-full px-full scrollbar-hidden">
       {/* 에러 상황에 맞게 메시지 출력 */}
       {!hasLedger ? (
-        <div className="text-center text-[var(--black70)] mt-10">
+        <div className="text-center text-[var(--black70)] mt-10 flex flex-col gap-4 justify-center items-center">
           개인 가계부가 없습니다.
           <button
             onClick={() => {
               document.getElementById("add-personal-ledger-modal").showModal();
             }}
-            className="create-ledger px-4 py-2 bg-[var(--main-color)] cursor-pointer text-white rounded-md hover:bg-[var(--main-color-dark)] transition"
+            className="create-ledger px-4 py-2 bg-[var(--accent-color)] cursor-pointer text-white rounded-md transition"
           >
             가계부 만들기
           </button>

@@ -21,7 +21,7 @@ export default function LedgerPage() {
   const isCalendarRoute = location.pathname.includes("/calendar");
 
   return (
-    <div className="max-w-full px-full scrollbar-hidden">
+    <div className="w-3/4 px-full scrollbar-hidden">
       <LedgerHeader
         selectedDate={selectedDate}
         setSelectedDate={setSelectedDate}
