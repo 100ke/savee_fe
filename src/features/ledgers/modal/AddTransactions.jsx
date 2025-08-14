@@ -206,7 +206,6 @@ export default function AddTransactions({ ledgers, onSave }) {
               </label>
               <input
                 type="datetime-local"
-                defaultValue={localDatetime}
                 className="input input-bordered focus:outline-none w-full border-0 border-b border-[var(--black30)] rounded-none"
                 value={date}
                 onChange={(e) => setDate(e.target.value)}
