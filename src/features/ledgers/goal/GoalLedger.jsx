@@ -4,6 +4,7 @@ import {
   fetchDailyTransactions,
   fetchFindLedger,
   fetchGetGoal,
+  fetchGetGoalsTransactions,
   getPersonalLedgerId,
 } from "../TransactionApi";
 import GoalRange from "./GoalRange";
@@ -23,6 +24,7 @@ export default function GoalLedger() {
   } = useOutletContext();
   const [goals, setGoals] = useState(null);
   const [role, setRole] = useState(null);
+  const [goalsTransactions, setGoalsTransactions] = useState(null);
 
   const token = localStorage.getItem("accessToken");
   const navigate = useNavigate();
@@ -69,7 +71,7 @@ export default function GoalLedger() {
         setLedgerId(id);
 
         const data = await fetchGetGoal(id, token);
-        console.log(data);
+
         if (!data) {
           setError("목표가 없습니다.");
           setGoals([]);
@@ -85,29 +87,44 @@ export default function GoalLedger() {
           totalIncome: summary?.totalIncome ?? 0,
           totalExpense: summary?.totalExpense ?? 0,
         });
+
+        // goal range bar & summary를 위한 데이터 가져오기
+        const goalsTrs = await fetchGetGoalsTransactions(
+          token,
+          id,
+          data[0].start_date,
+          data[0].end_date
+        );
+        console.log("id:", id); // ledgerId
+        console.log("data:", data); // fetchGetGoal 결과
+        console.log("categoryId:", data?.[0]?.categoryId);
+        console.log("start_date:", data?.[0]?.start_date);
+        console.log("end_date:", data?.[0]?.end_date);
+
+        setGoalsTransactions(goalsTrs);
       } catch (error) {
         setSummary({ totalIncome: 0, totalExpense: 0 });
         const message = error.response?.data?.message;
         console.log(error);
+
         // axios response status를 사용해 토큰이 없는 상태에 따른 에러 메시지 설정
-        if (error.response?.status === 401) {
-          navigate("/login");
-        } else if (error.response?.status === 404) {
-          if (message.includes("입력한 내역이 없습니다.")) {
-            // setGoals([]);
-            setError(null);
-          } else {
-            if (ledgerId === null) {
-              setError("아직 가계부가 없습니다. 가계부를 만들어 주세요.");
-            } else {
-              setError("데이터를 불러오는 데 실패했습니다.");
-            }
-          }
-        }
+        // if (error.response?.status === 401) {
+        //   navigate("/login");
+        // } else if (error.response?.status === 404) {
+        //   if (message.includes("입력한 내역이 없습니다.")) {
+        //     setError("해당 기간에 내역이 없습니다.");
+        //   } else {
+        //     if (ledgerId === null) {
+        //       setError("아직 가계부가 없습니다. 가계부를 만들어 주세요.");
+        //     } else {
+        //       setError("데이터를 불러오는 데 실패했습니다.");
+        //     }
+        //   }
+        // }
       }
     };
     fetchGoals();
-  }, [isShared, sharedLedgerIdFromURL, selectedDate, token]);
+  }, [isShared, sharedLedgerIdFromURL, selectedDate, token, goalsTransactions]);
 
   return (
     <div className="max-w-full px-full scrollbar-hidden">
@@ -124,9 +141,12 @@ export default function GoalLedger() {
             goals={goals}
             role={role}
             ledgerId={ledgerId}
+            error={error}
             setError={setError}
             setGoals={setGoals}
+            goalsTransactions={goalsTransactions}
           />
+
           <GoalInfo goals={goals} setGoals={setGoals} role={role} />
         </>
       )}

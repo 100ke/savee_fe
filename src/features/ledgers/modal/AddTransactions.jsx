@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { BiRefresh } from "react-icons/bi";
 
 const expenseCategories = [
@@ -40,14 +40,18 @@ const localDatetime = new Date(now.getTime() - now.getTimezoneOffset() * 60000)
   .toISOString()
   .slice(0, 16);
 
-export default function AddTransactions({ ledgers, onSave }) {
-  const [tab, setTab] = useState("expense");
+export default function AddTransactions({ ledgers, onSave, tabType }) {
+  console.log(tabType);
+  const [tab, setTab] = useState(tabType || "expense");
   const [amount, setAmount] = useState("");
   const [memo, setMemo] = useState("");
   const [date, setDate] = useState(localDatetime);
   const [selectedLedgerId, setSelectedLedgerId] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState("");
 
+  useEffect(() => {
+    setTab(tabType || "expense");
+  }, [tabType]);
   // 숫자 입력 시 0,000 형태로 보이게 포맷
   const formatNumber = (value) => {
     const onlyNumbers = value.replace(/[^0-9]/g, "");
@@ -66,7 +70,7 @@ export default function AddTransactions({ ledgers, onSave }) {
     setAmount("");
     setSelectedLedgerId(null);
     setSelectedCategory("");
-    setTab("expense");
+    setTab(tabType ? tabType : "expense");
     setDate(
       new Date(new Date().getTime() - new Date().getTimezoneOffset() * 60000)
         .toISOString()
@@ -206,7 +210,6 @@ export default function AddTransactions({ ledgers, onSave }) {
               </label>
               <input
                 type="datetime-local"
-                defaultValue={localDatetime}
                 className="input input-bordered focus:outline-none w-full border-0 border-b border-[var(--black30)] rounded-none"
                 value={date}
                 onChange={(e) => setDate(e.target.value)}
