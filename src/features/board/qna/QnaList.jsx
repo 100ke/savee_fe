@@ -1,7 +1,7 @@
 import "./../Board.css";
 import Pagination from "../Pagination";
 import React, { useState } from "react";
-// import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import QnaDetail from "./QnaDetail";
 import { updateanswer } from "../QnaApi";
 

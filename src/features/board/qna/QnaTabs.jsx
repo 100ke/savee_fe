@@ -1,4 +1,4 @@
-import { useLocation, useSearchParams } from "react-router-dom";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 
 export default function QnaTab({ category }) {
   // 클릭할 때마다 값이 바뀌어야 함

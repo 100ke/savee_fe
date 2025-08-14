@@ -63,14 +63,15 @@ export default function GoalLedger() {
         } else {
           const personalLedgerId = await getPersonalLedgerId(token);
           id = personalLedgerId.id;
+          setRole("owner");
         }
 
         setLedgerId(id);
 
         const data = await fetchGetGoal(id, token);
-
+        console.log(data);
         if (!data) {
-          setError("데이터가 없습니다.");
+          setError("목표가 없습니다.");
           setGoals([]);
         } else {
           setError(null);
@@ -78,11 +79,7 @@ export default function GoalLedger() {
         }
 
         // summary 값 받아오기
-        const { summary } = await fetchDailyTransactions(
-          id,
-          selectedDate,
-          token
-        );
+        const summary = await fetchDailyTransactions(id, selectedDate, token);
 
         setSummary({
           totalIncome: summary?.totalIncome ?? 0,
@@ -91,19 +88,22 @@ export default function GoalLedger() {
       } catch (error) {
         setSummary({ totalIncome: 0, totalExpense: 0 });
         const message = error.response?.data?.message;
-
+        console.log(error);
         // axios response status를 사용해 토큰이 없는 상태에 따른 에러 메시지 설정
         if (error.response?.status === 401) {
           navigate("/login");
         } else if (error.response?.status === 404) {
           if (message.includes("입력한 내역이 없습니다.")) {
-            setError("아직 목표가 설정되지 않았습니다.");
+            // setGoals([]);
+            setError(null);
           } else {
-            setError("데이터를 불러오는 데 실패했습니다.");
+            if (ledgerId === null) {
+              setError("아직 가계부가 없습니다. 가계부를 만들어 주세요.");
+            } else {
+              setError("데이터를 불러오는 데 실패했습니다.");
+            }
           }
         }
-
-        setGoals([]);
       }
     };
     fetchGoals();
@@ -120,7 +120,13 @@ export default function GoalLedger() {
         </div>
       ) : (
         <>
-          <GoalRange goals={goals} role={role} />
+          <GoalRange
+            goals={goals}
+            role={role}
+            ledgerId={ledgerId}
+            setError={setError}
+            setGoals={setGoals}
+          />
           <GoalInfo goals={goals} setGoals={setGoals} role={role} />
         </>
       )}

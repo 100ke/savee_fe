@@ -3,12 +3,21 @@ import QnaInput from "./QnaInput";
 export default function QnaModal({ onRegistered }) {
   const openModal = () => document.getElementById("my_modal_2")?.showModal();
   const closeModal = () => document.getElementById("my_modal_2")?.close();
+  const token = localStorage.getItem("accessToken");
+  const handleQnaModal = () => {
+    if (!token) {
+      alert("로그인이 필요합니다.");
+      window.location.href = "/login";
+      return;
+    }
+    openModal();
+  };
 
   return (
     <div>
       <button
         className="btn bg-[var(--accent-color)] text-white rounded-box"
-        onClick={openModal}
+        onClick={handleQnaModal}
       >
         문의 접수
       </button>

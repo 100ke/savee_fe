@@ -1,8 +1,13 @@
 import { useEffect, useState } from "react";
 import TransactionCard from "./TransactionCard";
 import "../Ledgers.css";
-import { fetchDailyTransactions, getPersonalLedgerId } from "../TransactionApi";
+import {
+  fetchCreatePersoalLedger,
+  fetchDailyTransactions,
+  getPersonalLedgerId,
+} from "../TransactionApi";
 import { useNavigate, useOutletContext, useParams } from "react-router-dom";
+import AddPeronalLedger from "../modal/AddPersonalLedger";
 
 function DailyLedger() {
   // 개인/공유 가계부 둘 다 daily를 사용해야 하므로 ledgerId 분리
@@ -18,6 +23,8 @@ function DailyLedger() {
     error,
     setError,
   } = useOutletContext();
+  const [hasLedger, setHasLedger] = useState(true);
+  const [open, setOpen] = useState(false);
 
   const token = localStorage.getItem("accessToken");
   const navigate = useNavigate();
@@ -41,12 +48,25 @@ function DailyLedger() {
         if (isShared) {
           id = Number(sharedLedgerIdFromURL);
         } else {
-          const personalLedgerId = await getPersonalLedgerId(token);
-          id = personalLedgerId.id;
+          try {
+            const personalLedgerId = await getPersonalLedgerId(token);
+            id = personalLedgerId.id;
+            setHasLedger(true);
+          } catch (error) {
+            if (error.response?.status === 404) {
+              // 가계부 없음
+              setHasLedger(false);
+              setTransactions([]);
+              setSummary({ totalIncome: 0, totalExpense: 0 });
+              return;
+            } else {
+              throw error;
+            }
+          }
         }
 
         setLedgerId(id);
-
+        console.log(ledgerId);
         const data = await fetchDailyTransactions(id, selectedDate, token);
 
         if (!data || !data.transactions) {
@@ -80,12 +100,38 @@ function DailyLedger() {
     fetchTransactions();
   }, [isShared, sharedLedgerIdFromURL, selectedDate, token]);
 
+  const handleCreateLedger = async (formData) => {
+    try {
+      const newLedger = await fetchCreatePersoalLedger(
+        formData.token,
+        formData.name
+      );
+      setHasLedger(true);
+      setLedgerId(newLedger.id);
+      alert("생성 완료");
+      setOpen(false);
+    } catch (error) {
+      setError("가계부 생성에 실패했습니다.");
+    }
+  };
+
   return (
     // ledgerheader 반응형으로 줄어들도록 상위 요소 크기 설정
     <div className="max-w-full px-full scrollbar-hidden">
       {/* 에러 상황에 맞게 메시지 출력 */}
-      {error ? (
-        <div className="text-center text-[var(--black70)] mt-10">{error}</div>
+      {!hasLedger ? (
+        <div className="text-center text-[var(--black70)] mt-10 flex flex-col gap-4 justify-center items-center">
+          개인 가계부가 없습니다.
+          <button
+            onClick={() => {
+              document.getElementById("add-personal-ledger-modal").showModal();
+            }}
+            className="create-ledger px-4 py-2 bg-[var(--accent-color)] cursor-pointer text-white rounded-md transition"
+          >
+            가계부 만들기
+          </button>
+          <AddPeronalLedger onSave={handleCreateLedger} />
+        </div>
       ) : transactions === null ? (
         <div className="text-center text-[var(--black70)] mt-10">
           로딩 중 ...{" "}
