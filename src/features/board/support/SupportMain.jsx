@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
-import SupportList from "./SupportList";
+import SupportList from "./SupportListMain";
+import SupportListMain from "./SupportListMain";
 export default function SupportMain() {
   return (
     <div className="pb-10 overflow-auto scrollbar-hidden">
@@ -89,7 +90,7 @@ export default function SupportMain() {
           </div>
         </div>
       </section>
-      <SupportList></SupportList>
+      <SupportListMain></SupportListMain>
     </div>
   );
 }

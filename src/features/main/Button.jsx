@@ -1,8 +1,6 @@
 import { useState } from "react";
 import { fetchCreateTransactions } from "../ledgers/TransactionApi";
-import { useOutletContext } from "react-router-dom";
 
-import AddTransactions from "../ledgers/modal/AddTransactions";
 export default function MainButton({
   bgColor,
   borderColor,
@@ -12,37 +10,9 @@ export default function MainButton({
   amount,
   color,
   handleClick,
-  tabType,
-  ledgers,
 }) {
-  const [open, setOpen] = useState(false);
-  const [error, setError] = useState(null);
-
-  const handleSave = async (formData) => {
-    try {
-      await fetchCreateTransactions(
-        formData.ledgerId,
-        formData.token,
-        formData.type,
-        formData.memo,
-        formData.amount,
-        formData.date,
-        formData.categoryId
-      );
-      alert("저장 완료");
-      setOpen(false);
-    } catch (error) {
-      setError("내역을 저장하지 못했습니다.");
-    }
-  };
   return (
     <>
-      <AddTransactions
-        ledgers={ledgers}
-        // onSave={handleSave}
-        tabType={tabType}
-        // onClose={() => setModalOpen(false)}
-      />
       <div className="card p-1 card flex-col w-2/4 ">
         <button
           style={{
