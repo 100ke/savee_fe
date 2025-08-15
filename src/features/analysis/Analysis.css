@@ -1,0 +1,12 @@
+/* 소비요약 페이지 */
+.summary .blue {
+  color: var(--main-color-dark);
+}
+
+.summary .red {
+  color: var(--error-color);
+}
+
+.summary .accent {
+  color: var(--accent-color);
+}

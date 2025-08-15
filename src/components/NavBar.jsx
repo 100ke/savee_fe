@@ -88,7 +88,7 @@ export default function NavBar() {
     },
     {
       label: "소비 분석",
-      path: "/",
+      path: "/analysis",
       icon: (
         <svg
           xmlns="http://www.w3.org/2000/svg"
