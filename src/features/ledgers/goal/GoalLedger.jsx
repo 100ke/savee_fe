@@ -8,6 +8,7 @@ import {
   getPersonalLedgerId,
 } from "../TransactionApi";
 import GoalRange from "./GoalRange";
+import { jwtDecode } from "jwt-decode";
 
 export default function GoalLedger() {
   const [ledgerId, setLedgerId] = useState(null);
@@ -44,11 +45,11 @@ export default function GoalLedger() {
           id = Number(sharedLedgerIdFromURL);
 
           // 현재 로그인한 사용자가 owner인지 member인지 알아내서 role에 저장
-          const owner = await fetchFindLedger(id, token);
-          const members = owner.ledger_ledgermembers || [];
+          const ledgerInfo = await fetchFindLedger(id, token);
+          const members = ledgerInfo.ledger_ledgermembers || [];
 
           const personalLedgerInfo = await getPersonalLedgerId(token);
-          const currentUserId = personalLedgerInfo.userId;
+          const currentUserId = personalLedgerInfo.id;
 
           const memberInfo = members.find(
             (member) => member.userId === currentUserId
@@ -56,11 +57,6 @@ export default function GoalLedger() {
           const role = memberInfo?.role;
 
           setRole(role);
-
-          if (role !== "owner") {
-            setError("권한이 없습니다.");
-            alert("목표는 가계부의 소유자만 관리할 수 있습니다.");
-          }
         } else {
           const personalLedgerId = await getPersonalLedgerId(token);
           id = personalLedgerId.id;
@@ -71,8 +67,8 @@ export default function GoalLedger() {
 
         const data = await fetchGetGoal(id, token);
 
-        if (!data) {
-          setError("목표가 없습니다.");
+        if (!data || data.length === 0) {
+          // setError("목표가 없습니다.");
           setGoals([]);
         } else {
           setError(null);
@@ -97,9 +93,9 @@ export default function GoalLedger() {
         setSummary({ totalIncome: 0, totalExpense: 0 });
         const message = error.response?.data?.message;
         console.log(error);
-        if (ledgerId === null) {
-          setError("아직 가계부가 없습니다. 가계부를 만들어 주세요.");
-        }
+        // if (ledgerId === null) {
+        //   setError("아직 가계부가 없습니다. 가계부를 만들어 주세요.");
+        // }
 
         setSummary({ totalIncome: 0, totalExpense: 0 });
       }

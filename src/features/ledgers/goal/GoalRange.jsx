@@ -127,12 +127,17 @@ export default function GoalRange({
       setGoals([newGoals]);
       alert("저장 완료");
     } catch (error) {
-      const message = error.response?.data?.message;
-      if (message.includes("목표가 설정되어 있습니다.")) {
-        alert("이미 해당 가계부에 목표가 설정되어 있습니다.");
-      } else {
-        setError("내역을 저장하지 못했습니다.");
-      }
+      const message = error.response?.data?.message ?? "";
+
+      // if (message.includes("목표가 설정되어 있습니다.")) {
+      //   alert("이미 해당 가계부에 목표가 설정되어 있습니다.");
+      // } else if (message) {
+      //   alert(message);
+      // } else {
+      //   alert("내역을 저장하지 못했습니다.");
+      // }
+
+      console.error(error);
     }
   };
 
@@ -196,7 +201,7 @@ export default function GoalRange({
           </p>
         </div>
       )}
-      {showStatusSelect && (
+      {showStatusSelect && role === "owner" && (
         <div className="show-status flex flex-row gap-1 mt-5 justify-center items-center text-align">
           <label htmlFor="mr-2 text-sm font-medium">목표 상태 설정</label>
           <select

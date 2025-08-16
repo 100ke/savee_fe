@@ -359,6 +359,18 @@ const fetchUpdateGoal = async (ledgerId, token, goalId, newStatus, current) => {
   }
 };
 
+// 개인 + 공유(참여중 포함) 가계부 모두 가져오기
+const fetchGetAllAccessLedgers = async (token) => {
+  try {
+    const response = await instance.get(`ledgers/all`, getAuthHeader(token));
+
+    const allLedgers = await response.data.data;
+    return allLedgers;
+  } catch (error) {
+    throw error;
+  }
+};
+
 export {
   getPersonalLedgerId,
   fetchDailyTransactions,
@@ -376,4 +388,5 @@ export {
   fetchCreatePersoalLedger,
   fetchGetGoalsTransactions,
   fetchUpdateGoal,
+  fetchGetAllAccessLedgers,
 };
