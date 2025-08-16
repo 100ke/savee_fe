@@ -7,6 +7,18 @@
   color: var(--error-color);
 }
 
+.summary .green {
+  color: var(--success-color);
+}
+
 .summary .accent {
   color: var(--accent-color);
+}
+
+.summary .exclamation {
+  color: var(--black70);
+}
+
+.summary .card {
+  border-color: var(--black10);
 }
