@@ -24,10 +24,36 @@
 }
 
 /* 코칭 전략 구간 */
+.strategy hr {
+  color: var(--black20);
+}
+
 .strategy .card {
   border-color: var(--black10);
 }
 
 .strategy .accent {
   color: var(--accent-color);
+}
+
+.strategy .caution {
+  border-color: var(--color-sub3-40);
+  background: var(--color-sub3-40);
+}
+
+.strategy .positive {
+  border-color: var(--color-sub2-40);
+  background: var(--color-sub2-40);
+}
+
+.strategy .red {
+  color: var(--error-color);
+}
+
+.strategy .blue {
+  color: var(--main-color-dark);
+}
+
+.strategy .tooltip p {
+  font-size: large;
 }
