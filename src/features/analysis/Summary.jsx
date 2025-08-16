@@ -52,9 +52,9 @@ function Summary({ data }) {
         <p>
           주별로 보면,{" "}
           <span className="green font-semibold">
-            {data.summary.maxSpendingWeek.week}주차에
-          </span>{" "}
-          소비가 가장 많았습니다.
+            {data.summary.maxSpendingWeek.week}주차
+          </span>
+          에 소비가 가장 많았습니다.
         </p>
         <p>
           최근 7일 중에는{" "}

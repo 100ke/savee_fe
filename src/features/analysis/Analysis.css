@@ -1,4 +1,4 @@
-/* 소비요약 페이지 */
+/* 소비요약 구간 */
 .summary .blue {
   color: var(--main-color-dark);
 }
@@ -21,4 +21,13 @@
 
 .summary .card {
   border-color: var(--black10);
+}
+
+/* 코칭 전략 구간 */
+.strategy .card {
+  border-color: var(--black10);
+}
+
+.strategy .accent {
+  color: var(--accent-color);
 }

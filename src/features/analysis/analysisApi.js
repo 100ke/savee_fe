@@ -8,3 +8,14 @@ export const getSummary = async () => {
     throw error;
   }
 };
+
+export const getStrategy = async (summary) => {
+  try {
+    const response = await axios.post("/analysis/strategy", {
+      summary,
+    });
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
