@@ -342,13 +342,13 @@ const fetchGetGoalsTransactions = async (
 };
 
 // 목표 수정(상태 변경)
-const fetchUpdateGoal = async (ledgerId, token, goalId, newStatus) => {
+const fetchUpdateGoal = async (ledgerId, token, goalId, newStatus, current) => {
   try {
     const ledId = Number(ledgerId);
 
     const response = await instance.put(
       `ledgers/${ledId}/goals/${goalId}`,
-      { status: newStatus },
+      { status: newStatus, current_amount: current },
       getAuthHeader(token)
     );
 

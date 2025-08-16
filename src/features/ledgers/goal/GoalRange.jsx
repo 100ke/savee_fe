@@ -34,12 +34,18 @@ export default function GoalRange({
 
   const current_amount = isValidGoal ? Number(goal.current_amount) : 0;
   const target_amount = isValidGoal ? Number(goal.target_amount) : 1;
-  const current =
-    goalsTransactions && goal?.type === "saving"
-      ? goalsTransactions?.totalIncome ?? 0
-      : goal?.type === "spending_cut"
-      ? goalsTransactions?.totalExpense ?? 0
-      : 0;
+
+  // status 가 성공 혹은 실패일 때 고정값 사용, 변동x
+  const isGoalCompleted =
+    goal?.status === "achieved" || goal?.status === "failed";
+
+  const current = isGoalCompleted
+    ? Number(goal.current_amount ?? 0)
+    : goal?.type === "saving"
+    ? goalsTransactions?.totalIncome ?? 0
+    : goal?.type === "spending_cut"
+    ? goalsTransactions?.totalExpense ?? 0
+    : 0;
 
   const target = isValidGoal ? Number(goal.target_amount) : 1;
 
@@ -67,12 +73,21 @@ export default function GoalRange({
     const newStatus = e.target.value;
     setGoalStatus(newStatus);
 
+    // 성공/실패일 때 현재 수입/지출 금액을 고정값으로 저장
+    const fixedCurrent =
+      goal?.type === "saving"
+        ? goalsTransactions?.totalIncome ?? 0
+        : goal?.type === "spending_cut"
+        ? goalsTransactions?.totalExpense ?? 0
+        : 0;
+    console.log(fixedCurrent);
     try {
       const updateGoal = await fetchUpdateGoal(
         ledgerId,
         localStorage.getItem("accessToken"),
         goal.id,
-        newStatus
+        newStatus,
+        fixedCurrent
       );
       console.log(goal);
       setGoals((prevGoals) =>
