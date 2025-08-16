@@ -192,7 +192,23 @@ export default function AddGoal({ onSave, ledgerId }) {
               </span>
             </div>
 
-            <div className="form-control relative w-full">
+            <div className="form-control col-span-1">
+              <label className="label font-semibold text-base">타입</label>
+              <select
+                name="type"
+                value={selectedType}
+                onChange={(e) => setSelectedType(e.target.value)}
+                className="select w-full border-0 border-b outline-none border-[var(--black30)] rounded-none"
+              >
+                <option disabled value="">
+                  목표 타입 선택
+                </option>
+                <option value="saving">저축</option>
+                <option value="spending_cut">절약</option>
+              </select>
+            </div>
+
+            {/* <div className="form-control relative w-full">
               <label className="label font-semibold text-base">현재 금액</label>
               <input
                 type="text"
@@ -205,7 +221,7 @@ export default function AddGoal({ onSave, ledgerId }) {
               <span className="absolute right-3 bottom-2 text-base text-[var(--black70)] pointer-events-none select-none">
                 원
               </span>
-            </div>
+            </div> */}
 
             <div className="form-control col-span-1">
               <label className="label font-semibold text-base">시작일</label>
@@ -232,37 +248,44 @@ export default function AddGoal({ onSave, ledgerId }) {
             </div>
 
             <div className="form-control col-span-1">
-              <label className="label font-semibold text-base">타입</label>
-              <select
-                name="type"
-                value={selectedType}
-                onChange={(e) => setSelectedType(e.target.value)}
-                className="select w-full border-0 border-b outline-none border-[var(--black30)] rounded-none"
-              >
-                <option disabled value="">
-                  목표 타입 선택
-                </option>
-                <option value="saving">저축</option>
-                <option value="spending_cut">절약</option>
-                <option value="custom">기타</option>
-              </select>
-            </div>
-
-            <div className="form-control col-span-1">
               <label className="label font-semibold text-base">상태</label>
-              <select
-                name="status"
-                value={selectedStatus}
-                onChange={(e) => setSelectedStatus(e.target.value)}
-                className="select w-full border-0 border-b outline-none border-[var(--black30)] rounded-none"
-              >
-                <option disabled value="">
-                  진행 상태 선택
-                </option>
-                <option value="ongoing">진행중</option>
-                <option value="achieved">성공</option>
-                <option value="failed">실패</option>
-              </select>
+              <div className="flex flex-row gap-2 mt-2">
+                <label className="inline-flex items-center gap-2 cursor-pointer">
+                  <input
+                    type="radio"
+                    name="status"
+                    value="ongoing"
+                    checked={selectedStatus === "ongoing"}
+                    onChange={(e) => setSelectedStatus(e.target.value)}
+                    className="radio radio-sm accent-[var(--accent-color)]"
+                  />
+                  <span className="text-sm">진행중</span>
+                </label>
+
+                <label className="inline-flex items-center gap-2 cursor-pointer">
+                  <input
+                    type="radio"
+                    name="status"
+                    value="achieved"
+                    checked={selectedStatus === "achieved"}
+                    onChange={(e) => setSelectedStatus(e.target.value)}
+                    className="radio radio-sm accent-[var(--accent-color)]"
+                  />
+                  <span className="text-sm">성공</span>
+                </label>
+
+                <label className="inline-flex items-center gap-2 cursor-pointer">
+                  <input
+                    type="radio"
+                    name="status"
+                    value="failed"
+                    checked={selectedStatus === "failed"}
+                    onChange={(e) => setSelectedStatus(e.target.value)}
+                    className="radio radio-sm accent-[var(--accent-color)]"
+                  />
+                  <span className="text-sm">실패</span>
+                </label>
+              </div>
             </div>
           </form>
 

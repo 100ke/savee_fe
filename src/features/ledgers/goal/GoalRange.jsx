@@ -1,6 +1,7 @@
 import { useRef, useEffect, useState } from "react";
 import AddGoal from "../modal/AddGoal";
-import { fetchCreateGoals } from "../TransactionApi";
+import { fetchCreateGoals, fetchUpdateGoal } from "../TransactionApi";
+import { isAfter } from "date-fns";
 
 export default function GoalRange({
   goals,
@@ -35,19 +36,56 @@ export default function GoalRange({
   const target_amount = isValidGoal ? Number(goal.target_amount) : 1;
   const current =
     goalsTransactions && goal?.type === "saving"
-      ? goalsTransactions.totalIncome
+      ? goalsTransactions?.totalIncome ?? 0
       : goal?.type === "spending_cut"
-      ? goalsTransactions.totalExpense
+      ? goalsTransactions?.totalExpense ?? 0
       : 0;
+
   const target = isValidGoal ? Number(goal.target_amount) : 1;
 
   const percentage =
     isValidGoal && target > 0
-      ? Math.min(Math.round((current / target) * 100), 100)
+      ? goal?.type === "spending_cut"
+        ? Math.max(100 - Math.round((current / target) * 100), 0)
+        : Math.min(Math.round((current / target) * 100), 100)
       : 0;
 
   const hasGoal = Array.isArray(goals) && goals.length > 0;
 
+  // 기간 만료 혹은 퍼센테이지 달성률에 따른 목표 상태 변경
+  const [goalStatus, setGoalStatus] = useState(goal?.status || "");
+  const goalEndDate = new Date(goal?.end_date);
+  const today = new Date();
+  const isGoalEnded = isAfter(today, goalEndDate);
+
+  const showStatusSelect =
+    isGoalEnded ||
+    (goal?.type !== "spending_cut" && percentage === 100) ||
+    (goal?.type === "spending_cut" && percentage === 0);
+
+  const handleStatusChange = async (e) => {
+    const newStatus = e.target.value;
+    setGoalStatus(newStatus);
+
+    try {
+      const updateGoal = await fetchUpdateGoal(
+        ledgerId,
+        localStorage.getItem("accessToken"),
+        goal.id,
+        newStatus
+      );
+      console.log(goal);
+      setGoals((prevGoals) =>
+        prevGoals.map((g) => (g.id === updateGoal.id ? updateGoal : g))
+      );
+      alert("목표 상태가 변경되었습니다.");
+    } catch (error) {
+      setError("목표 상태를 변경하지 못했습니다.");
+      console.log(error);
+    }
+  };
+
+  // current 값에 따라 range thumb 이동
   useEffect(() => {
     if (!isValidGoal || !rangeRef.current) return;
     const rangeWidth = rangeRef.current.offsetWidth;
@@ -56,6 +94,7 @@ export default function GoalRange({
     setThumbPosition(offset);
   }, [isValidGoal, current_amount, target_amount, goals]);
 
+  // 목표 생성
   const handleSave = async (formData) => {
     try {
       const newGoals = await fetchCreateGoals(
@@ -100,7 +139,7 @@ export default function GoalRange({
         </div>
       ) : (
         <div className="goal-range-bar p-4 flex flex-col items-center mt-5 w-full relative">
-          <div className="goal-title flex flex-row gap-2 text-align justify-center items-center w-full">
+          <div className="goal-title mb-6 flex flex-row gap-2 text-align justify-center items-center w-full">
             <div className="goals-title text-lg font-semibold mb-2">
               {goal.title}
             </div>
@@ -115,7 +154,7 @@ export default function GoalRange({
               min={0}
               max={target}
               value={Math.min(current, target)}
-              className="range w-full accent-[var(--accent-color)] pointer-events-none"
+              className="range range-primary goal-range w-full accent-[var(--accent-color)] pointer-events-none"
               readOnly
             />
             <div
@@ -125,6 +164,7 @@ export default function GoalRange({
                   target !== 0 ? (current / target) * 100 : 0
                 }% - 30px)`,
                 transition: "left 0.3s ease",
+                top: "-1.5rem",
               }}
             >
               {current.toLocaleString()}원
@@ -134,14 +174,30 @@ export default function GoalRange({
             <span>0원</span>
             <span>{target_amount.toLocaleString()}원</span>
           </div>
-          <p className="text-right text-sm mt-1 text-[var(--main-color)]">
-            {percentage}% 달성
+          <p className="text-right text-sm mt-1 text-[var(--main-color-dark)]">
+            {goal?.type === "spending_cut"
+              ? `${percentage}% 절약 성공`
+              : `${percentage}% 달성`}
           </p>
         </div>
       )}
-      {/* {error && (
-        <div className="text-center text-[var(--black70)] mt-5">{error}</div>
-      )} */}
+      {showStatusSelect && (
+        <div className="show-status flex flex-row gap-1 mt-5 justify-center items-center text-align">
+          <label htmlFor="mr-2 text-sm font-medium">목표 상태 설정</label>
+          <select
+            name="goalStatus"
+            id="goal-status"
+            value={goalStatus}
+            onChange={handleStatusChange}
+            className="p-1 text-sm outline-none border-0 border-b border-[var(--black30)] "
+          >
+            <option value="">상태 선택</option>
+            <option value="achieved">성공</option>
+            <option value="failed">실패</option>
+            <option value="ongoing">진행중</option>
+          </select>
+        </div>
+      )}
       <AddGoal onSave={handleSave} ledgerId={ledgerId} />
     </div>
   );

@@ -341,6 +341,24 @@ const fetchGetGoalsTransactions = async (
   }
 };
 
+// 목표 수정(상태 변경)
+const fetchUpdateGoal = async (ledgerId, token, goalId, newStatus) => {
+  try {
+    const ledId = Number(ledgerId);
+
+    const response = await instance.put(
+      `ledgers/${ledId}/goals/${goalId}`,
+      { status: newStatus },
+      getAuthHeader(token)
+    );
+
+    const newGoalStatus = await response.data.data;
+    return newGoalStatus;
+  } catch (error) {
+    throw error;
+  }
+};
+
 export {
   getPersonalLedgerId,
   fetchDailyTransactions,
@@ -357,4 +375,5 @@ export {
   fetchGetGoal,
   fetchCreatePersoalLedger,
   fetchGetGoalsTransactions,
+  fetchUpdateGoal,
 };

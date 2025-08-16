@@ -8,7 +8,6 @@ import {
   getPersonalLedgerId,
 } from "../TransactionApi";
 import GoalRange from "./GoalRange";
-import GoalInfo from "./GoalInfo";
 
 export default function GoalLedger() {
   const [ledgerId, setLedgerId] = useState(null);
@@ -83,10 +82,7 @@ export default function GoalLedger() {
         // summary 값 받아오기
         const summary = await fetchDailyTransactions(id, selectedDate, token);
 
-        setSummary({
-          totalIncome: summary?.totalIncome ?? 0,
-          totalExpense: summary?.totalExpense ?? 0,
-        });
+        setSummary(summary.summary);
 
         // goal range bar & summary를 위한 데이터 가져오기
         const goalsTrs = await fetchGetGoalsTransactions(
@@ -101,21 +97,11 @@ export default function GoalLedger() {
         setSummary({ totalIncome: 0, totalExpense: 0 });
         const message = error.response?.data?.message;
         console.log(error);
-
-        // axios response status를 사용해 토큰이 없는 상태에 따른 에러 메시지 설정
-        if (error.response?.status === 401) {
-          navigate("/login");
-        } else if (error.response?.status === 404) {
-          if (message.includes("입력한 내역이 없습니다.")) {
-            setError("해당 기간에 내역이 없습니다.");
-          } else {
-            if (ledgerId === null) {
-              setError("아직 가계부가 없습니다. 가계부를 만들어 주세요.");
-            } else {
-              setError("데이터를 불러오는 데 실패했습니다.");
-            }
-          }
+        if (ledgerId === null) {
+          setError("아직 가계부가 없습니다. 가계부를 만들어 주세요.");
         }
+
+        setSummary({ totalIncome: 0, totalExpense: 0 });
       }
     };
     fetchGoals();
@@ -141,8 +127,6 @@ export default function GoalLedger() {
             setGoals={setGoals}
             goalsTransactions={goalsTransactions}
           />
-
-          <GoalInfo goals={goals} setGoals={setGoals} role={role} />
         </>
       )}
     </div>
