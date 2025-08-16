@@ -33,7 +33,7 @@ export default function SharedLedgerPage() {
             setSelectedDate={setSelectedDate}
             summary={summary}
           />
-          <LedgerTab />
+          <LedgerTab isShared={true} />
         </>
       )}
 
