@@ -21,7 +21,11 @@ function WeeklyTotal({ onSelectedFilter }) {
         const result = await weeklyTotal();
         setWeeklyData(result);
       } catch (error) {
-        console.log(error);
+        if (error.response?.status === 404) {
+          setWeeklyData([]);
+        } else {
+          console.log(error);
+        }
       }
     };
     fetchData();

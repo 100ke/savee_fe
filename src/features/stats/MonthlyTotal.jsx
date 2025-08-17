@@ -21,7 +21,11 @@ function MonthlyTotal({ onSelectedFilter }) {
         const result = await monthlyTotal();
         setMonthlyData(result);
       } catch (error) {
-        console.log(error);
+        if (error.response?.status === 404) {
+          setMonthlyData([]);
+        } else {
+          console.log(error);
+        }
       }
     };
     fetchData();

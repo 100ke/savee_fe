@@ -100,8 +100,8 @@ function Withdraw() {
                   type="password"
                   required
                   placeholder="Password"
-                  minlength="6"
-                  maxlength="20"
+                  minLength="6"
+                  maxLength="20"
                   value={password}
                   onChange={(e) => {
                     setPassword(e.target.value);

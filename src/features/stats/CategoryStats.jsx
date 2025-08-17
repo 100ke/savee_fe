@@ -20,14 +20,48 @@ function CategoryStats({ type, onSelectedFilter }) {
         const result = await categoryTotal(type);
         setCateData(result);
       } catch (error) {
-        console.log(error);
+        if (error.response?.status === 404) {
+          // 데이터가 없는 경우 빈 배열로 처리하기
+          setCateData([]);
+        } else {
+          console.log(error);
+        }
       }
     };
     fetchData();
   }, [type]);
 
-  if (!cateData || cateData.length === 0) {
+  if (!cateData) {
     return <div className="p-5">데이터 로딩중...</div>;
+  } else if (cateData.length === 0) {
+    return (
+      <div
+        role="alert"
+        className="alert alert-vertical sm:alert-horizontal lg:alert-vertical mb-4"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          className="stroke-info h-6 w-6 shrink-0"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="2"
+            d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+          ></path>
+        </svg>
+        <span className="lg:text-xl">
+          데이터가 없습니다. 가계부를 작성해보세요!
+        </span>
+        <div>
+          <a className="btn btn-sm btn-primary" href="/ledger">
+            가계부 작성하기
+          </a>
+        </div>
+      </div>
+    );
   }
 
   // 차트 데이터

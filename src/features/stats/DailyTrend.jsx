@@ -30,7 +30,11 @@ function DailyTrend() {
         const result = await last7DaysTrend();
         setDailyData(result);
       } catch (error) {
-        console.log(error);
+        if (error.response?.status === 404) {
+          setDailyData([]);
+        } else {
+          console.log(error);
+        }
       }
     };
     fetchData();
@@ -85,7 +89,13 @@ function DailyTrend() {
     <div className="daily-trend rounded-box border p-5 mb-3">
       <h3 className="text-2xl mb-2">일일 지출 추이</h3>
       <p className="mb-2 sub-title">최근 7일간의 지출액 추이를 표시합니다.</p>
-      <Line data={data} options={options} />
+      {dailyData.length === 0 ? (
+        <div className="text-center text-gray-500 py-10">
+          최근 7일간 지출 데이터가 없습니다.
+        </div>
+      ) : (
+        <Line data={data} options={options} />
+      )}
     </div>
   );
 }
