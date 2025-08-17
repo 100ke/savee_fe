@@ -85,7 +85,12 @@ function CategoryStats({ type, onSelectedFilter }) {
 
   return (
     <div className="category-stats rounded-box p-5 mb-3">
-      <h3 className="text-2xl mb-2">카테고리별 지출</h3>
+      <h3 className="text-2xl mb-2 flex justify-between">
+        카테고리별 지출
+        <span className="blue">
+          {type === "weekly" ? "이번 주" : "이번 달"}
+        </span>
+      </h3>
       <div className="dnchart w-2/3 mx-auto">
         <Doughnut
           data={data}
