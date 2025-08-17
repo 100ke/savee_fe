@@ -13,31 +13,31 @@ export default function MainButton({
 }) {
   return (
     <>
-      <div className="card p-1 card flex-col w-2/4 ">
+      <div className="card p-1 card flex-col w-1/2 min-w-[154px]">
         <button
           style={{
             "--btn-color": `${bgColor}`,
             "--border-color": `${borderColor}`,
             "--border": `${border}`,
           }}
-          className="h-[120px] rounded-[12px] bg-[var(--btn-color)] border-[var(--border-color)] btn flex flex-col text-lg gap-2 w-full h-40 font-bold"
+          className="h-32 rounded-[12px] bg-[var(--btn-color)] border-[var(--border-color)] btn flex flex-col text-lg w-full font-bold"
           onClick={handleClick}
         >
           <span
             style={{ "--text-color": `${color}` }}
-            className="self-end text-[var(--text-color)]"
+            className="self-end text-[var(--text-color)] flex-1"
           >
             {icon}
           </span>
-          <div className="bt-1 self-start">
+          <div className="bt-1 self-start flex-1 mb-5 ml-1 text-left">
             <p
               style={{ "--text-color": `${color}` }}
-              className="self-start ml-1 mb-2 text-[var(--text-color)]"
+              className="mb-2 text-[var(--text-color)]"
             >
               {label}
             </p>
             {amount && (
-              <p className="text-basic font-normal pl-2">총 지출 : {amount}</p>
+              <p className="text-basic font-normal">총 지출 : {amount}</p>
             )}
           </div>
         </button>

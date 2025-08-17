@@ -1,10 +1,11 @@
 import "./NavBar.css";
 import Logo from "./../assets/savee.png";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
 
 export default function NavBar() {
+  const location = useLocation();
   const { isLoggedIn, logout } = useContext(AuthContext);
   const navigate = useNavigate();
   const goMainPage = async () => {
@@ -16,7 +17,7 @@ export default function NavBar() {
     alert("로그아웃 되었습니다.");
     navigate("/login");
   };
-
+  const activeTab = location.pathname;
   const menuItems = [
     {
       label: "달력",
@@ -88,7 +89,7 @@ export default function NavBar() {
     },
     {
       label: "소비 분석",
-      path: "/",
+      path: "",
       icon: (
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -159,7 +160,10 @@ export default function NavBar() {
       </div>
       <ul className="menu [&_li>*]:rounded-none p-0 w-48 custom-side-menu">
         {menuItems.map((item, idx) => (
-          <li key={idx}>
+          <li
+            key={idx}
+            className={`${activeTab === item.path ? "menu-tab-active" : ""}`}
+          >
             <Link
               to={item.path}
               className="p-4 text-base flex items-center gap-2"

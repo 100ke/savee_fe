@@ -22,7 +22,7 @@ export default function SupportListMain() {
     pageParam,
   } = useSearch(getSupportPosts, undefined, ITEMS_PER_PAGE);
   if (error) return <div className="alert alert-danger">{error}</div>;
-  console.log(data);
+  // console.log(data);
   return (
     <section className="flex flex-col gap-5">
       <h1 className="text-xl text-center">공지사항</h1>

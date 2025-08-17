@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { getUserInfo } from "../user/userApi";
 import MainButton from "./Button";
 import MainStats from "./MainStats";
@@ -21,7 +21,6 @@ export default function Main() {
   const [modalOpen, setModalOpen] = useState(false);
   const [modalTabType, setModalTabType] = useState("expense");
   const [open, setOpen] = useState(false);
-
   const token = localStorage.getItem("accessToken");
   const [ledgers, setLedgers] = useState(null);
 
@@ -56,7 +55,11 @@ export default function Main() {
 
     load();
   }, []);
-
+  useEffect(() => {
+    if (open) {
+      document.getElementById("add-transactions-modal")?.showModal();
+    }
+  }, [open]);
   const handleAddTransactions = async (tabType) => {
     console.log("a");
     setModalTabType(tabType); // 버튼에서 tabType 전달
@@ -124,7 +127,7 @@ export default function Main() {
   return (
     <div className="flex flex-col justify-center gap-6 w-3/4">
       <div>
-        <h1>
+        <h1 className="mb-1">
           {isLoggedIn ? (
             <p>
               <span className="text-[var(--accent-color)] font-bold">
@@ -148,8 +151,8 @@ export default function Main() {
         </h1>
         <hr className="w-full" />
       </div>
-      <div className="flex flex-row gap-5">
-        <div className="w-2/4 flex flex-wrap">
+      <div className="flex flex-row gap-1">
+        <div className="w-1/2 flex flex-wrap">
           {btns.map((btn, idx) => (
             <MainButton
               key={idx}
@@ -180,6 +183,7 @@ export default function Main() {
           onSave={handleSave}
           tabType={modalTabType}
           onClose={() => setModalOpen(false)}
+          open={modalOpen}
         />
       )}
     </div>

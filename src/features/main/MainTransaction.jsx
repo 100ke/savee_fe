@@ -7,13 +7,19 @@ import {
 } from "../ledgers/TransactionApi";
 export default function MainTransaction() {
   const [ledgerId, setLedgerId] = useState("");
+  const [data, setData] = useState(null);
+  const [date, setDate] = useState("");
   const token = localStorage.getItem("accessToken");
-  const today = new Date();
+  useEffect(() => {
+    const now = new Date().toLocaleDateString("sv-SE").split("T")[0];
+    console.log(now);
+    setDate(now);
+  }, []);
   useEffect(() => {
     const getLedger = async (token) => {
       const ledger = await getPersonalLedgerId(token);
 
-      console.log(ledger.id);
+      // console.log(ledger.id);
       setLedgerId(ledger.id);
     };
     getLedger(token);
@@ -22,15 +28,30 @@ export default function MainTransaction() {
   useEffect(() => {
     if (!ledgerId) return;
     const getTransactions = async () => {
-      const data = await fetchDailyTransactions(ledgerId, today, token);
-      console.log(data);
+      try {
+        const currentDate = new Date(date);
+        console.log(date);
+        const { transactions, summary } = await fetchDailyTransactions(
+          ledgerId,
+          currentDate,
+          token
+        );
+        const todaysTransactions = transactions.filter((t) => t.date === date);
+        setData(todaysTransactions);
+        // console.log(transactions);
+        // console.log(todaysTransactions);
+      } catch (err) {
+        console.error("트랜잭션 불러오기 실패:", err);
+      }
     };
     getTransactions();
-  }, [ledgerId, today, token]);
+  }, [ledgerId, date, token]);
 
   return (
-    <div className="w-2/4">
-      <TransactionCard></TransactionCard>
+    <div className="w-2/4 h-[200px]">
+      <div className="w-full h-full overflow-auto">
+        <TransactionCard transactions={data} />
+      </div>
     </div>
   );
 }

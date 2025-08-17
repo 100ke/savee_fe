@@ -40,8 +40,14 @@ const localDatetime = new Date(now.getTime() - now.getTimezoneOffset() * 60000)
   .toISOString()
   .slice(0, 16);
 
-export default function AddTransactions({ ledgers, onSave, tabType, onClose }) {
-  console.log(tabType);
+export default function AddTransactions({
+  ledgers,
+  onSave,
+  tabType,
+  onClose,
+  open,
+}) {
+  // console.log(tabType);
   const dialogRef = useRef(null);
   const [tab, setTab] = useState(tabType || "expense");
   const [amount, setAmount] = useState("");
@@ -51,11 +57,10 @@ export default function AddTransactions({ ledgers, onSave, tabType, onClose }) {
   const [selectedCategory, setSelectedCategory] = useState("");
 
   useEffect(() => {
-    if (dialogRef.current) {
+    if (open && dialogRef.current) {
       dialogRef.current.showModal();
     }
-  }, []);
-
+  }, [open]);
   const handleClose = () => {
     if (dialogRef.current) dialogRef.current.close();
     if (onClose) onClose(); // 부모(Main)에게 modalOpen false 알리기
@@ -64,6 +69,7 @@ export default function AddTransactions({ ledgers, onSave, tabType, onClose }) {
   useEffect(() => {
     setTab(tabType || "expense");
   }, [tabType]);
+
   // 숫자 입력 시 0,000 형태로 보이게 포맷
   const formatNumber = (value) => {
     const onlyNumbers = value.replace(/[^0-9]/g, "");
