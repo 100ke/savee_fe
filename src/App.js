@@ -11,6 +11,7 @@ import Statistic from "./pages/Statistic.jsx";
 import SharedLedgerMain from "./pages/SharedLedgerMain.jsx";
 import MainPage from "./pages/MainPage.jsx";
 import Analysis from "./pages/Analysis.jsx";
+import MyQnAList from "./features/user/mypage/MyQnAList.jsx";
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
         <Route path="Qna/*" element={<Qna />} />
         <Route path="statistics" element={<Statistic />} />
         <Route path="analysis" element={<Analysis />} />
+        <Route path="myqna" element={<MyQnAList />} />
       </Route>
     </Routes>
   );

@@ -29,7 +29,7 @@ function Summary({ data }) {
         있습니다.
       </p>
       <div className="content text-xl card bg-base-100 shadow-md border p-5 flex flex-cols gap-2 mb-3">
-        <p>
+        <p className="xl:mb-5">
           이번 달은{" "}
           <span className="blue font-semibold">
             {data.summary.biggestChange.category}
@@ -41,7 +41,7 @@ function Summary({ data }) {
           </span>
           했습니다.
         </p>
-        <p>
+        <p className="xl:mb-5">
           <span className="red font-semibold">총 지출</span>이 지난 달 대비{" "}
           <span className={type2 === "증가" ? "red" : "blue"}>
             {data.summary.totalChange.percentChange}%{" "}
@@ -49,7 +49,7 @@ function Summary({ data }) {
           </span>
           했습니다.
         </p>
-        <p>
+        <p className="xl:mb-5">
           주별로 보면,{" "}
           <span className="green font-semibold">
             {data.summary.maxSpendingWeek.week}주차

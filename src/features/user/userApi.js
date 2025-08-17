@@ -112,3 +112,13 @@ export const deleteUser = async (email, password) => {
     throw error;
   }
 };
+
+// 내가 작성한 QnA 게시글 조회
+export const getMyQnAList = async () => {
+  try {
+    const response = await axios.get("/qna/my");
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
