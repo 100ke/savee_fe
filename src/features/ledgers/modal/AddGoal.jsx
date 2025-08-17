@@ -208,21 +208,6 @@ export default function AddGoal({ onSave, ledgerId }) {
               </select>
             </div>
 
-            {/* <div className="form-control relative w-full">
-              <label className="label font-semibold text-base">현재 금액</label>
-              <input
-                type="text"
-                name="current-amount"
-                value={currentAmount}
-                onChange={(e) => handleAmountChange(e, "current")}
-                placeholder="현재 금액을 입력해 주세요"
-                className="input input-bordered w-full focus:outline-none border-0 border-b border-[var(--black30)] rounded-none"
-              />
-              <span className="absolute right-3 bottom-2 text-base text-[var(--black70)] pointer-events-none select-none">
-                원
-              </span>
-            </div> */}
-
             <div className="form-control col-span-1">
               <label className="label font-semibold text-base">시작일</label>
               <input

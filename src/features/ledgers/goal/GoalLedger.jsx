@@ -8,20 +8,12 @@ import {
   getPersonalLedgerId,
 } from "../TransactionApi";
 import GoalRange from "./GoalRange";
-import { jwtDecode } from "jwt-decode";
 
 export default function GoalLedger() {
   const [ledgerId, setLedgerId] = useState(null);
   const { ledgerId: sharedLedgerIdFromURL } = useParams();
-  const {
-    isShared,
-    selectedDate,
-    setSummary,
-    transactions,
-    setTransactions,
-    error,
-    setError,
-  } = useOutletContext();
+  const { isShared, selectedDate, setSummary, error, setError } =
+    useOutletContext();
   const [goals, setGoals] = useState(null);
   const [role, setRole] = useState(null);
   const [goalsTransactions, setGoalsTransactions] = useState(null);

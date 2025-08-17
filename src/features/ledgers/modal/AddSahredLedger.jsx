@@ -187,16 +187,6 @@ export default function AddSharedLedger({ onSave, sharedLedgers }) {
             >
               보내기
             </button>
-
-            <div className="form-control relative w-full col-span-3">
-              <label className="label font-semibold text-base">
-                초대한 멤버 목록
-              </label>
-              <input
-                type="text"
-                className="input input-bordered w-full focus:outline-none border-0 rounded-none"
-              ></input>
-            </div>
           </form>
         )}
 

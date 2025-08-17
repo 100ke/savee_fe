@@ -371,6 +371,41 @@ const fetchGetAllAccessLedgers = async (token) => {
   }
 };
 
+// 공유 가계부의 내역 + 코멘트 불러오기
+const fetchGetCommentsAndTransactions = async (ledgerId, totalDate, token) => {
+  try {
+    const ledId = Number(ledgerId);
+
+    const response = await instance.get(
+      `ledgers/${ledId}/comments?date=${totalDate}`,
+      getAuthHeader(token)
+    );
+
+    const comments = await response.data.data;
+    return comments;
+  } catch (error) {
+    throw error;
+  }
+};
+
+// 댓글 추가
+const fetchCreateComment = async (ledgerId, commentDate, content, token) => {
+  try {
+    const ledId = Number(ledgerId);
+
+    const response = await instance.post(
+      `ledgers/${ledId}/comments`,
+      { content, comment_date: commentDate },
+      getAuthHeader(token)
+    );
+
+    const result = await response.data.data;
+    return result;
+  } catch (error) {
+    throw error;
+  }
+};
+
 export {
   getPersonalLedgerId,
   fetchDailyTransactions,
@@ -389,4 +424,6 @@ export {
   fetchGetGoalsTransactions,
   fetchUpdateGoal,
   fetchGetAllAccessLedgers,
+  fetchGetCommentsAndTransactions,
+  fetchCreateComment,
 };

@@ -7,7 +7,6 @@ export default function GoalRange({
   goals,
   role,
   ledgerId,
-  error,
   setError,
   setGoals,
   goalsTransactions,
@@ -129,14 +128,7 @@ export default function GoalRange({
     } catch (error) {
       const message = error.response?.data?.message ?? "";
 
-      // if (message.includes("목표가 설정되어 있습니다.")) {
-      //   alert("이미 해당 가계부에 목표가 설정되어 있습니다.");
-      // } else if (message) {
-      //   alert(message);
-      // } else {
-      //   alert("내역을 저장하지 못했습니다.");
-      // }
-
+      console.log(message);
       console.error(error);
     }
   };
@@ -160,10 +152,16 @@ export default function GoalRange({
       ) : (
         <div className="goal-range-bar p-4 flex flex-col items-center mt-5 w-full relative">
           <div className="goal-title mb-6 flex flex-row gap-2 text-align justify-center items-center w-full">
-            <div className="goals-title text-lg font-semibold mb-2">
-              {goal.title}
+            <div className="goal-titles-date flex flex-col justify-center items-center text-center">
+              <div className="goal-date text-sm mb-1 text-[var(--black70)]">
+                {goal.start_date} ~ {goal.end_date}
+              </div>
+              <div className="goals-title text-lg font-semibold mb-2">
+                {goal.title}
+              </div>
             </div>
-            <div className="goal-category font-normal mb-1.5 text-sm text-[var(--main-color)]">
+
+            <div className="goal-category font-normal mt-3.5 text-sm text-[var(--main-color)]">
               {goal.category_goals?.name}
             </div>
           </div>
