@@ -18,6 +18,10 @@ const getPersonalLedgerId = async (token) => {
     const peersonalLedgerId = await response.data.data;
     return peersonalLedgerId;
   } catch (error) {
+    // 가계부가 없어도 null 반환
+    if (error.response?.status === 404) {
+      return null;
+    }
     throw error;
   }
 };

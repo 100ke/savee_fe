@@ -215,7 +215,6 @@ export default function AddGoal({ onSave, ledgerId }) {
                 name="start-date"
                 value={startDate}
                 onChange={(e) => setStartDate(e.target.value)}
-                defaultValue={localDatetime}
                 className="input input-bordered focus:outline-none w-full border-0 border-b border-[var(--black30)] rounded-none"
               />
             </div>
@@ -227,7 +226,6 @@ export default function AddGoal({ onSave, ledgerId }) {
                 name="end-date"
                 value={endDate}
                 onChange={(e) => setEndDate(e.target.value)}
-                defaultValue={localDatetime}
                 className="input input-bordered focus:outline-none w-full border-0 border-b border-[var(--black30)] rounded-none"
               />
             </div>
