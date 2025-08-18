@@ -10,11 +10,10 @@ import { useNavigate } from "react-router-dom";
 import AddTransactions from "../ledgers/modal/AddTransactions";
 
 import {
-  fetchCreatePersoalLedger,
   fetchCreateTransactions,
   fetchGetLedgers,
 } from "../ledgers/TransactionApi";
-import AddPeronalLedger from "../ledgers/modal/AddPersonalLedger";
+
 export default function Main() {
   const [userName, setUserName] = useState("");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -68,8 +67,12 @@ export default function Main() {
     }
   }, [open]);
   const handleAddTransactions = async (tabType) => {
-    setModalTabType(tabType); // 버튼에서 tabType 전달
-    setModalOpen(true);
+    if (!token) {
+      alert("로그인 후 이용해주세요.");
+    } else {
+      setModalTabType(tabType); // 버튼에서 tabType 전달
+      setModalOpen(true);
+    }
   };
 
   const handleSave = async (formData) => {
@@ -87,20 +90,6 @@ export default function Main() {
       setOpen(false);
     } catch (error) {
       setError("내역을 저장하지 못했습니다.");
-    }
-  };
-
-  const handleCreateLedger = async (formData) => {
-    try {
-      const newLedger = await fetchCreatePersoalLedger(
-        formData.token,
-        formData.name
-      );
-
-      setHasLedger(true);
-      alert("생성 완료");
-    } catch (error) {
-      setError("가계부 생성에 실패했습니다.");
     }
   };
 
