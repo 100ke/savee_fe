@@ -6,6 +6,7 @@ import {
   fetchGetCommentsAndTransactions,
   getPersonalLedgerId,
 } from "../TransactionApi";
+import { jwtDecode } from "jwt-decode";
 
 export default function CommentLedger() {
   const { isShared, selectedDate, setSummary, error, setError } =
@@ -33,8 +34,21 @@ export default function CommentLedger() {
       const ledgerInfo = await fetchFindLedger(id, token);
       const members = ledgerInfo.ledger_ledgermembers || [];
 
-      const personalLedgerInfo = await getPersonalLedgerId(token);
-      const currentUserId = personalLedgerInfo.id;
+      let currentUserId;
+      let personalLedgerInfo = null;
+
+      try {
+        personalLedgerInfo = await getPersonalLedgerId(token); // 404 발생 가능
+      } catch (err) {
+        console.error("개인가계부 요청 실패:", err.message);
+      }
+
+      if (!personalLedgerInfo) {
+        const decoded = jwtDecode(token);
+        currentUserId = decoded.userId || decoded.id || decoded.sub; // 구조에 맞게 조정
+      } else {
+        currentUserId = personalLedgerInfo.id;
+      }
 
       setUserId(currentUserId);
       setLedgerId(id);
@@ -52,6 +66,23 @@ export default function CommentLedger() {
       } else {
         setComments(data || []);
 
+        const totalIncome = data.reduce((sum, tx) => {
+          const incomes = tx.users
+            .flatMap((user) => user.transactions)
+            .filter((t) => t.type === "income")
+            .reduce((s, t) => s + t.amount, 0);
+          return sum + incomes;
+        }, 0);
+
+        const totalExpense = data.reduce((sum, tx) => {
+          const expenses = tx.users
+            .flatMap((user) => user.transactions)
+            .filter((t) => t.type === "expense")
+            .reduce((s, t) => s + t.amount, 0);
+          return sum + expenses;
+        }, 0);
+
+        setSummary({ totalIncome, totalExpense });
         setError(null);
       }
     } catch (error) {

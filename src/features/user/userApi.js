@@ -45,7 +45,8 @@ export const login = async (email, password) => {
     // if (token) {
     //   localStorage.setItem("accessToken", token);
     // }
-    return response.data;
+    const { accessToken, user } = response.data;
+    return { accessToken, user };
   } catch (error) {
     throw error;
   }
@@ -114,9 +115,13 @@ export const deleteUser = async (email, password) => {
 };
 
 // 내가 작성한 QnA 게시글 조회
-export const getMyQnAList = async () => {
+export const getMyQnAList = async (page, pageSize, keyword, qnaType) => {
   try {
-    const response = await axios.get("/qna/my");
+    const response = await axios.get(
+      `/qna/my?page=${page}&pageSize=${pageSize}&qna_type=${qnaType}&keyword=${encodeURIComponent(
+        keyword
+      )}`
+    );
     return response.data;
   } catch (error) {
     throw error;

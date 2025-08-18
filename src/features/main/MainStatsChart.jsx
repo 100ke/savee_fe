@@ -5,27 +5,41 @@ import {
   Tooltip,
   elements,
 } from "chart.js";
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState, useEffect, useContext } from "react";
 import { Doughnut } from "react-chartjs-2";
 import { categoryTotal } from "../stats/statsApi";
+import { AuthContext } from "../../context/AuthContext";
+
 ChartJS.register(ArcElement, Tooltip, Legend, elements);
+
 export default function MainChart({ type, onSelectedFilter }) {
   const chartRef = useRef();
   const [cateData, setCateData] = useState([]);
+  const { isLoggedIn } = useContext(AuthContext);
 
   useEffect(() => {
+    if (!isLoggedIn) return; // 비로그인 시 api 호출 X
     const fetchData = async () => {
       try {
         const result = await categoryTotal(type);
-        setCateData(result);
+        setCateData(Array.isArray(result) ? result : []);
       } catch (error) {
         console.log(error);
       }
     };
     fetchData();
-  }, [type]);
+  }, [type, isLoggedIn]);
+
+  if (!isLoggedIn) {
+    return (
+      <div className="text-center mt-10">로그인 후 확인할 수 있습니다.</div>
+    );
+  }
+
   if (!cateData || cateData.length === 0) {
-    return <div className="p-5">데이터 로딩중...</div>;
+    return (
+      <div className="text-center mt-10">가계부 내역이 존재하지 않습니다.</div>
+    );
   }
   // 차트 데이터
   const data = {
@@ -91,33 +105,34 @@ export default function MainChart({ type, onSelectedFilter }) {
         />
       </div>
       <div className="legend-area mt-5 flex flex-col items-center sm:mx-5">
-        {cateData.slice(0, 4).map((item, i) => {
-          const percent = ((item.total / total) * 100).toFixed(0) + "%";
-          return (
-            <div
-              className="legend-item w-full flex justify-between my-1"
-              key={item.category + i}
-            >
-              <div className="area flex gap-4 items-center ">
-                <span className="legend-label">{item.category}</span>
-                <div
-                  className="legend-color rounded-full w-10 h-10 flex items-center justify-center"
-                  style={{
-                    backgroundColor: data.datasets[0].backgroundColor[i],
-                  }}
-                >
-                  <span className=" text-sm text-white rounded-[999px]">
-                    {percent}
+        {Array.isArray(cateData) &&
+          cateData.slice(0, 4).map((item, i) => {
+            const percent = ((item.total / total) * 100).toFixed(0) + "%";
+            return (
+              <div
+                className="legend-item w-full flex justify-between my-1"
+                key={item.category + i}
+              >
+                <div className="area flex gap-4 items-center ">
+                  <span className="legend-label">{item.category}</span>
+                  <div
+                    className="legend-color rounded-full w-10 h-10 flex items-center justify-center"
+                    style={{
+                      backgroundColor: data.datasets[0].backgroundColor[i],
+                    }}
+                  >
+                    <span className=" text-sm text-white rounded-[999px]">
+                      {percent}
+                    </span>
+                  </div>
+
+                  <span className="legend-amount text-xs bg-[var(--black20)] rounded-box p-1">
+                    {item.total.toLocaleString()}원
                   </span>
                 </div>
-
-                <span className="legend-amount text-xs bg-[var(--black20)] rounded-box p-1">
-                  {item.total.toLocaleString()}원
-                </span>
               </div>
-            </div>
-          );
-        })}
+            );
+          })}
       </div>
     </div>
   );

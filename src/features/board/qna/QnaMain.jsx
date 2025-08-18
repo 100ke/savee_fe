@@ -5,7 +5,7 @@ import { useState } from "react";
 import QnaModal from "./QnaModal";
 import { getQnaPosts } from "../QnaApi";
 import useSearch from "../Search";
-
+const ITEMS_PER_PAGE = 6;
 export default function QnaMain() {
   const [refreshFlag, setRefreshFlag] = useState(false);
   // 커스텀 훅은 무조건 최상단에서 호출
@@ -23,7 +23,7 @@ export default function QnaMain() {
     pageParam,
     category,
     setSearchParams,
-  } = useSearch(getQnaPosts, refreshFlag);
+  } = useSearch(getQnaPosts, refreshFlag, ITEMS_PER_PAGE);
 
   const handleRefresh = () => {
     setSearchParams({

@@ -57,8 +57,9 @@ export default function useSearch(fetchFunction, refreshFlag, items_amount) {
         category
       );
       const { pagination, data } = response.data;
-      console.log(response);
+
       setData(Array.isArray(data) ? data : []);
+
       // console.log(pagination);
       // 페이지네이션 총 페이지 수 업데이트
       setTotalPages((pagination && pagination.totalPages) || 1);
