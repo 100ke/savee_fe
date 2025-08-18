@@ -147,85 +147,68 @@ export default function Main() {
   if (error) return <p>에러: {error}</p>;
   return (
     <div className="flex flex-col justify-center gap-6 w-3/4">
-      {!hasLedger ? (
-        <div className="no-personal-ledger-error text-center mt-10">
-          <div className="mb-4 text-lg text-[var(--black70)]">
-            개인 가계부가 없습니다.
-          </div>
-          <button
-            onClick={() => {
-              document.getElementById("add-personal-ledger-modal")?.showModal();
-            }}
-            className="create-ledger px-4 py-2 bg-[var(--accent-color)] cursor-pointer text-white rounded-md transition"
-          >
-            가계부 만들기
-          </button>
-          <AddPeronalLedger onSave={handleCreateLedger} />
+      <>
+        <div>
+          <h1 className="mb-1">
+            {isLoggedIn ? (
+              <p>
+                <span className="text-[var(--accent-color)] font-bold">
+                  {userName}
+                </span>{" "}
+                님의 가계부
+              </p>
+            ) : (
+              <button
+                className="font-semibold cursor-pointer ml-2 mb-2"
+                onClick={() => {
+                  navigate("/login");
+                }}
+              >
+                환영합니다. Savee 입니다. 로그인 후 이용해주세요.{" "}
+                <span className="text-[var(--main-color)] font-bold ml-1">
+                  &gt;
+                </span>
+              </button>
+            )}
+          </h1>
+          <hr className="w-full" />
         </div>
-      ) : (
-        <>
-          <div>
-            <h1 className="mb-1">
-              {isLoggedIn ? (
-                <p>
-                  <span className="text-[var(--accent-color)] font-bold">
-                    {userName}
-                  </span>{" "}
-                  님의 가계부
-                </p>
-              ) : (
-                <button
-                  className="font-semibold cursor-pointer ml-2 mb-2"
-                  onClick={() => {
-                    navigate("/login");
-                  }}
-                >
-                  환영합니다. Savee 입니다. 로그인 후 이용해주세요.{" "}
-                  <span className="text-[var(--main-color)] font-bold ml-1">
-                    &gt;
-                  </span>
-                </button>
-              )}
-            </h1>
-            <hr className="w-full" />
+        <div className="flex flex-row gap-1">
+          <div className="w-1/2 flex flex-wrap">
+            {btns.map((btn, idx) => (
+              <MainButton
+                key={idx}
+                bgColor={btn.bgColor}
+                borderColor={btn.borderColor}
+                label={btn.label}
+                icon={btn.icon}
+                color={btn.color}
+                amount={btn.amount}
+                handleClick={
+                  btn.tabType
+                    ? () => handleAddTransactions(btn.tabType)
+                    : () => navigate(btn.link)
+                }
+              />
+            ))}
           </div>
-          <div className="flex flex-row gap-1">
-            <div className="w-1/2 flex flex-wrap">
-              {btns.map((btn, idx) => (
-                <MainButton
-                  key={idx}
-                  bgColor={btn.bgColor}
-                  borderColor={btn.borderColor}
-                  label={btn.label}
-                  icon={btn.icon}
-                  color={btn.color}
-                  amount={btn.amount}
-                  handleClick={
-                    btn.tabType
-                      ? () => handleAddTransactions(btn.tabType)
-                      : () => navigate(btn.link)
-                  }
-                />
-              ))}
-            </div>
-            <MainStats />
-          </div>
-          <MainAnalysis />
-          <div className="flex flex-wrap">
-            <MainSurpports />
-            <MainTransaction setHasLedgerInParent={setHasLedger} />
-          </div>
-          {modalOpen && (
-            <AddTransactions
-              ledgers={ledgers}
-              onSave={handleSave}
-              tabType={modalTabType}
-              onClose={() => setModalOpen(false)}
-              open={modalOpen}
-            />
-          )}
-        </>
-      )}
+          <MainStats />
+        </div>
+        <MainAnalysis />
+        <div className="flex flex-wrap">
+          <MainSurpports />
+          <MainTransaction setHasLedgerInParent={setHasLedger} />
+        </div>
+        {modalOpen && (
+          <AddTransactions
+            ledgers={ledgers}
+            onSave={handleSave}
+            tabType={modalTabType}
+            onClose={() => setModalOpen(false)}
+            open={modalOpen}
+          />
+        )}
+      </>
     </div>
   );
 }

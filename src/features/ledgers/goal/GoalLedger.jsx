@@ -60,7 +60,6 @@ export default function GoalLedger() {
         const data = await fetchGetGoal(id, token);
 
         if (!data || data.length === 0) {
-          // setError("목표가 없습니다.");
           setGoals([]);
         } else {
           setError(null);
@@ -85,9 +84,6 @@ export default function GoalLedger() {
         setSummary({ totalIncome: 0, totalExpense: 0 });
         const message = error.response?.data?.message;
         console.log(error);
-        // if (ledgerId === null) {
-        //   setError("아직 가계부가 없습니다. 가계부를 만들어 주세요.");
-        // }
 
         setSummary({ totalIncome: 0, totalExpense: 0 });
       }

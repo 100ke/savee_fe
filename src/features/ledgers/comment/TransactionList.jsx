@@ -66,7 +66,7 @@ export default function TransactionList({
             key={comment.date}
             className="comment-list-container shadow-md rounded-lg p-4 space-y-4"
           >
-            {/* 날짜 헤더 */}
+            {/* 날짜 */}
             <div className="comment-date text-sm font-semibold border-b border-[var(--black70)] pb-2 tracking-wide">
               {comment.date}
             </div>
@@ -102,13 +102,14 @@ export default function TransactionList({
               <div className="chat chat-start w-full relative">
                 <div className="chat-bubble w-full h-auto p-5 whitespace-pre-wrap text-sm leading-relaxed bg-[var(--accent-color)] text-white">
                   {comment.users.some((user) => user.comments.length > 0) ? (
-                    comment.users
-                      .flatMap((user) =>
-                        user.comments.map(
-                          (cmt) => `${user.user.name} : ${cmt.content}`
-                        )
-                      )
-                      .join("\n")
+                    comment.users.flatMap((user) =>
+                      user.comments.map((cmt, idx) => (
+                        <div key={`${user.user.id}-${idx}`} className="mb-2">
+                          <div className="font-semibold">{user.user.name}</div>
+                          <div>{cmt.content}</div>
+                        </div>
+                      ))
+                    )
                   ) : (
                     <span>아직 댓글이 없습니다.</span>
                   )}
