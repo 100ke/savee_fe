@@ -14,7 +14,6 @@ export default function LedgerMain() {
         <Route path="weekly" element={<WeeklyLedger />} />
         <Route path="monthly" element={<MonthlyLedger />} />
         <Route path="goals" element={<GoalLedger />} />
-        <Route path="comments" element={<WeeklyLedger />} />
         <Route path="calendar" element={<MonthlyLedger />} />
       </Route>
     </Routes>

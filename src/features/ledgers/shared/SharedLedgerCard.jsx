@@ -6,8 +6,12 @@ export default function SharedLedgerCard({ sharedLedgers, children }) {
 
   return (
     <div className="flex flex-row flex-wrap gap-6">
-      {sharedLedgers.map((ledger) => {
+      {sharedLedgers.map((ledger, idx) => {
         const members = ledger.ledger_ledgermembers || [];
+        // 목표가 없을 때를 대비해 첫 번째 목표만 보여주고 목표가 없을 때는 메시지 출력
+        const firstGoal = Array.isArray(ledger.ledger_goals)
+          ? ledger.ledger_goals[0]
+          : null;
 
         return (
           <div
@@ -22,15 +26,16 @@ export default function SharedLedgerCard({ sharedLedgers, children }) {
               </h2>
 
               {/* 목표 금액 정보 */}
-              <p className="text-white text-sm text-center mb-4">
-                목표 금액 :{" "}
-                {ledger.ledger_goals?.target_amount?.toLocaleString() || "0"} 원
-                <br />
-                현재 금액 : -{" "}
-                {ledger.ledger_goals?.current_amount?.toLocaleString() ||
-                  "0"}{" "}
-                원
-              </p>
+              {firstGoal ? (
+                <p className="text-white text-sm text-center mt-4">
+                  목표 금액 : {firstGoal.target_amount?.toLocaleString() || "0"}{" "}
+                  원
+                </p>
+              ) : (
+                <p className="text-white text-sm text-center mt-4">
+                  설정된 목표가 없습니다.
+                </p>
+              )}
 
               {/* 고정된 흰색 카드 안에 멤버 아바타 표시 */}
               <div className="card-body-member bg-white w-40 h-20 rounded-xl px-3 py-2 flex items-center justify-center">

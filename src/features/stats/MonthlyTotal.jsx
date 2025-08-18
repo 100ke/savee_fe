@@ -21,7 +21,11 @@ function MonthlyTotal({ onSelectedFilter }) {
         const result = await monthlyTotal();
         setMonthlyData(result);
       } catch (error) {
-        console.log(error);
+        if (error.response?.status === 404) {
+          setMonthlyData([]);
+        } else {
+          console.log(error);
+        }
       }
     };
     fetchData();
@@ -85,7 +89,9 @@ function MonthlyTotal({ onSelectedFilter }) {
 
   return (
     <div className="monthly-trend rounded-box p-5 mb-3">
-      <h3 className="text-2xl mb-2">월별 지출 총합</h3>
+      <h3 className="text-2xl mb-2">
+        <span className="blue font-semibold">월별</span> 지출 총합
+      </h3>
       <Bar data={data} options={options} onClick={handleClick} ref={chartRef} />
     </div>
   );
