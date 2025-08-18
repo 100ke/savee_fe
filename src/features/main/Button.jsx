@@ -1,6 +1,3 @@
-import { useState } from "react";
-import { fetchCreateTransactions } from "../ledgers/TransactionApi";
-
 export default function MainButton({
   bgColor,
   borderColor,
@@ -13,7 +10,7 @@ export default function MainButton({
 }) {
   return (
     <>
-      <div className="card p-1 card flex-col w-1/2 min-w-[154px]">
+      <div className="card p-1 flex-col w-1/2 min-w-[154px]">
         <button
           style={{
             "--btn-color": `${bgColor}`,

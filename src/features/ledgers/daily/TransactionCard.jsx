@@ -1,11 +1,11 @@
 import "../Ledgers.css";
 
-function TransactionCard({ transactions }) {
+function TransactionCard({ transactions, compact = false }) {
+  const maxWidth = compact ? "max-w-[400px]" : "";
   function formatDate(days) {
     const date = new Date(days);
     const month = (date.getMonth() + 1).toString();
     const day = date.getDate().toString().padStart(2, "0");
-
     // 요일
     const weeks = ["일", "월", "화", "수", "목", "금", "토"];
     const dayOfWeek = weeks[date.getDay()];
@@ -54,7 +54,7 @@ function TransactionCard({ transactions }) {
           return (
             <table
               key={date}
-              className="table-auto w-full max-w-[304px] bg-base-100 rounded-3xl shadow-md p-4 scrollbar-hidden"
+              className={`table-auto w-full ${maxWidth} bg-base-100 rounded-3xl shadow-md p-4 scrollbar-hidden`}
             >
               <thead>
                 <tr>
