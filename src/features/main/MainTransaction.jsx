@@ -60,7 +60,7 @@ export default function MainTransaction({ setHasLedgerInParent }) {
   return (
     <div className="w-2/4 h-[200px]">
       <div className="w-full h-full overflow-auto">
-        {token && <TransactionCard transactions={data} />}
+        {token && <TransactionCard transactions={data} compact={false} />}
       </div>
     </div>
   );

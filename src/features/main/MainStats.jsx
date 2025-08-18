@@ -15,7 +15,7 @@ export default function MainStats() {
   const year = now.getFullYear();
   const month = now.getMonth() + 1;
   return (
-    <div className="card border w-2/4 p-3">
+    <div className="card grid w-1/2 border p-3">
       <div className="flex flex-row justify-between">
         <div className="">
           <a
