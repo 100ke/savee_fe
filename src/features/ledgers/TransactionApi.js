@@ -388,6 +388,9 @@ const fetchGetCommentsAndTransactions = async (ledgerId, totalDate, token) => {
     const comments = await response.data.data;
     return comments;
   } catch (error) {
+    if (error.response?.status === 404) {
+      return [];
+    }
     throw error;
   }
 };
