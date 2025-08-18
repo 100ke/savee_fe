@@ -18,7 +18,7 @@ export default function QnaList({
 }) {
   const [openIndex, setOpenIndex] = useState(null);
 
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   if (loading) return <div>로딩중...</div>;
   if (error) return <div className="alert alert-danger">{error}</div>;

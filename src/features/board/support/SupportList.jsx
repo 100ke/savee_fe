@@ -8,6 +8,7 @@ export default function SupportList({
 }) {
   const navigate = useNavigate();
   const cellPadding = compact ? "px-2 py-1.5" : "px-4 py-2";
+
   return (
     <div className="">
       <table className="table">

@@ -8,10 +8,10 @@ export default function QnaTab({ category }) {
   // };
 
   const location = useLocation();
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   // 현재 경로에 따라 active 탭 설정
-  const activeTab = location.pathname;
+  // const activeTab = location.pathname;
   const [searchParams, setSearchParams] = useSearchParams();
 
   const tabs = [
@@ -40,7 +40,7 @@ export default function QnaTab({ category }) {
       <div role="tablist" className="tabs tabs-border mt-[1rem]">
         {tabs.map((tab) => {
           return (
-            <a
+            <button
               key={tab.name}
               role="tab"
               className={`tab ${
@@ -49,7 +49,7 @@ export default function QnaTab({ category }) {
               onClick={() => onTabClick(tab.qna_type)}
             >
               {tab.name}
-            </a>
+            </button>
           );
         })}
       </div>
