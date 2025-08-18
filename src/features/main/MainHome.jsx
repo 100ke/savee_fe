@@ -10,9 +10,11 @@ import { useNavigate } from "react-router-dom";
 import AddTransactions from "../ledgers/modal/AddTransactions";
 
 import {
+  fetchCreatePersoalLedger,
   fetchCreateTransactions,
   fetchGetLedgers,
 } from "../ledgers/TransactionApi";
+import AddPeronalLedger from "../ledgers/modal/AddPersonalLedger";
 export default function Main() {
   const [userName, setUserName] = useState("");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -23,6 +25,7 @@ export default function Main() {
   const [open, setOpen] = useState(false);
   const token = localStorage.getItem("accessToken");
   const [ledgers, setLedgers] = useState(null);
+  const [hasLedger, setHasLedger] = useState(true);
 
   const navigate = useNavigate();
 
@@ -84,6 +87,20 @@ export default function Main() {
     }
   };
 
+  const handleCreateLedger = async (formData) => {
+    try {
+      const newLedger = await fetchCreatePersoalLedger(
+        formData.token,
+        formData.name
+      );
+
+      setHasLedger(true);
+      alert("생성 완료");
+    } catch (error) {
+      setError("가계부 생성에 실패했습니다.");
+    }
+  };
+
   const btns = [
     {
       bgColor: "var(--accent-color)",
@@ -126,65 +143,84 @@ export default function Main() {
   if (error) return <p>에러: {error}</p>;
   return (
     <div className="flex flex-col justify-center gap-6 w-3/4">
-      <div>
-        <h1 className="mb-1">
-          {isLoggedIn ? (
-            <p>
-              <span className="text-[var(--accent-color)] font-bold">
-                {userName}
-              </span>{" "}
-              님의 가계부
-            </p>
-          ) : (
-            <button
-              className="font-semibold cursor-pointer ml-2 mb-2"
-              onClick={() => {
-                navigate("/login");
-              }}
-            >
-              환영합니다. Savee 입니다. 로그인 후 이용해주세요.{" "}
-              <span className="text-[var(--main-color)] font-bold ml-1">
-                &gt;
-              </span>
-            </button>
-          )}
-        </h1>
-        <hr className="w-full" />
-      </div>
-      <div className="flex flex-row gap-1">
-        <div className="w-1/2 flex flex-wrap">
-          {btns.map((btn, idx) => (
-            <MainButton
-              key={idx}
-              bgColor={btn.bgColor}
-              borderColor={btn.borderColor}
-              label={btn.label}
-              icon={btn.icon}
-              color={btn.color}
-              amount={btn.amount}
-              handleClick={
-                btn.tabType
-                  ? () => handleAddTransactions(btn.tabType)
-                  : () => navigate(btn.link)
-              }
-            ></MainButton>
-          ))}
+      {!hasLedger ? (
+        <div className="no-personal-ledger-error text-center mt-10">
+          <div className="mb-4 text-lg text-[var(--black70)]">
+            개인 가계부가 없습니다.
+          </div>
+          <button
+            onClick={() => {
+              document.getElementById("add-personal-ledger-modal")?.showModal();
+            }}
+            className="create-ledger px-4 py-2 bg-[var(--accent-color)] cursor-pointer text-white rounded-md transition"
+          >
+            가계부 만들기
+          </button>
+          <AddPeronalLedger onSave={handleCreateLedger} />
         </div>
-        <MainStats></MainStats>
-      </div>
-      <MainAnalysis></MainAnalysis>
-      <div className="flex flex-wrap">
-        <MainSurpports></MainSurpports>
-        <MainTransaction></MainTransaction>
-      </div>
-      {modalOpen && (
-        <AddTransactions
-          ledgers={ledgers}
-          onSave={handleSave}
-          tabType={modalTabType}
-          onClose={() => setModalOpen(false)}
-          open={modalOpen}
-        />
+      ) : (
+        <>
+          <div>
+            <h1 className="mb-1">
+              {isLoggedIn ? (
+                <p>
+                  <span className="text-[var(--accent-color)] font-bold">
+                    {userName}
+                  </span>{" "}
+                  님의 가계부
+                </p>
+              ) : (
+                <button
+                  className="font-semibold cursor-pointer ml-2 mb-2"
+                  onClick={() => {
+                    navigate("/login");
+                  }}
+                >
+                  환영합니다. Savee 입니다. 로그인 후 이용해주세요.{" "}
+                  <span className="text-[var(--main-color)] font-bold ml-1">
+                    &gt;
+                  </span>
+                </button>
+              )}
+            </h1>
+            <hr className="w-full" />
+          </div>
+          <div className="flex flex-row gap-1">
+            <div className="w-1/2 flex flex-wrap">
+              {btns.map((btn, idx) => (
+                <MainButton
+                  key={idx}
+                  bgColor={btn.bgColor}
+                  borderColor={btn.borderColor}
+                  label={btn.label}
+                  icon={btn.icon}
+                  color={btn.color}
+                  amount={btn.amount}
+                  handleClick={
+                    btn.tabType
+                      ? () => handleAddTransactions(btn.tabType)
+                      : () => navigate(btn.link)
+                  }
+                />
+              ))}
+            </div>
+            <MainStats />
+          </div>
+          <MainAnalysis />
+          <div className="flex flex-wrap">
+            <MainSurpports />
+            <MainTransaction setHasLedgerInParent={setHasLedger} />
+          </div>
+          {modalOpen && (
+            <AddTransactions
+              ledgers={ledgers}
+              onSave={handleSave}
+              tabType={modalTabType}
+              onClose={() => setModalOpen(false)}
+              open={modalOpen}
+            />
+          )}
+        </>
       )}
     </div>
   );

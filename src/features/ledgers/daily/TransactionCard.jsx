@@ -93,7 +93,9 @@ function TransactionCard({ transactions }) {
           );
         })
       ) : (
-        <div className="p-4 col-span-full text-center">데이터가 없습니다.</div>
+        <div className="p-4 col-span-full text-center text-[var(--black70)]">
+          내역이 없습니다.
+        </div>
       )}
     </div>
   );
