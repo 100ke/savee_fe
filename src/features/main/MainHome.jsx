@@ -52,7 +52,11 @@ export default function Main() {
         const data = await fetchGetLedgers(token);
         setLedgers(data);
       } catch (error) {
-        setError("내역을 저장하지 못했습니다.");
+        if (error.response?.status === 401) {
+          console.log("Savee를 이용하시려면 로그인이 필요합니다.");
+        } else {
+          setError("내역을 저장하지 못했습니다.");
+        }
       }
     };
 
@@ -64,7 +68,6 @@ export default function Main() {
     }
   }, [open]);
   const handleAddTransactions = async (tabType) => {
-    console.log("a");
     setModalTabType(tabType); // 버튼에서 tabType 전달
     setModalOpen(true);
   };
@@ -125,7 +128,6 @@ export default function Main() {
       icon: ">",
       color: "var(--main-color)",
       tabType: "",
-      amount: "1000",
       link: "/ledger",
     },
     {
@@ -135,7 +137,6 @@ export default function Main() {
       icon: ">",
       color: "var(--accent-color)",
       tabType: "",
-      amount: "1000",
       link: "/sharedLedger",
     },
   ];
