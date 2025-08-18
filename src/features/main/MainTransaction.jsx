@@ -5,11 +5,14 @@ import {
   fetchDailyTransactions,
   getPersonalLedgerId,
 } from "../ledgers/TransactionApi";
-export default function MainTransaction() {
+
+export default function MainTransaction({ setHasLedgerInParent }) {
   const [ledgerId, setLedgerId] = useState("");
   const [data, setData] = useState(null);
   const [date, setDate] = useState("");
   const token = localStorage.getItem("accessToken");
+  const [hasLedger, setHasLedger] = useState(true);
+
   useEffect(() => {
     const now = new Date().toLocaleDateString("sv-SE").split("T")[0];
     setDate(now);
@@ -18,7 +21,15 @@ export default function MainTransaction() {
     const getLedger = async (token) => {
       const ledger = await getPersonalLedgerId(token);
 
+      if (!ledger) {
+        setHasLedger(false);
+        setHasLedgerInParent(false);
+        return;
+      }
+
       // console.log(ledger.id);
+      setHasLedger(true);
+      setHasLedgerInParent(true);
       setLedgerId(ledger.id);
     };
     getLedger(token);

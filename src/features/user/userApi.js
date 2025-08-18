@@ -45,7 +45,8 @@ export const login = async (email, password) => {
     // if (token) {
     //   localStorage.setItem("accessToken", token);
     // }
-    return response.data;
+    const { accessToken, user } = response.data;
+    return { accessToken, user };
   } catch (error) {
     throw error;
   }

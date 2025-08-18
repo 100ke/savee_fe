@@ -25,8 +25,8 @@ function Footer() {
         <a className="link link-hover" href="/analysis">
           소비 분석
         </a>
-        <a className="link link-hover" href="/mypage">
-          내 정보
+        <a className="link link-hover" href="/support">
+          고객 센터
         </a>
       </nav>
       <nav>

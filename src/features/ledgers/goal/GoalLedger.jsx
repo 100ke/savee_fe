@@ -8,6 +8,7 @@ import {
   getPersonalLedgerId,
 } from "../TransactionApi";
 import GoalRange from "./GoalRange";
+import { jwtDecode } from "jwt-decode";
 
 export default function GoalLedger() {
   const [ledgerId, setLedgerId] = useState(null);
@@ -39,9 +40,21 @@ export default function GoalLedger() {
           // 현재 로그인한 사용자가 owner인지 member인지 알아내서 role에 저장
           const ledgerInfo = await fetchFindLedger(id, token);
           const members = ledgerInfo.ledger_ledgermembers || [];
+          let currentUserId;
+          let personalLedgerInfo = null;
 
-          const personalLedgerInfo = await getPersonalLedgerId(token);
-          const currentUserId = personalLedgerInfo.id;
+          try {
+            personalLedgerInfo = await getPersonalLedgerId(token); // 404 발생 가능
+          } catch (err) {
+            console.error("개인가계부 요청 실패:", err.message);
+          }
+
+          if (!personalLedgerInfo) {
+            const decoded = jwtDecode(token);
+            currentUserId = decoded.userId || decoded.id || decoded.sub; // 구조에 맞게 조정
+          } else {
+            currentUserId = personalLedgerInfo.id;
+          }
 
           const memberInfo = members.find(
             (member) => member.userId === currentUserId
@@ -57,20 +70,18 @@ export default function GoalLedger() {
 
         setLedgerId(id);
 
+        // summary 값 받아오기
+        const dailyData = await fetchDailyTransactions(id, selectedDate, token);
+        setSummary(dailyData.summary);
+
         const data = await fetchGetGoal(id, token);
 
         if (!data || data.length === 0) {
-          // setError("목표가 없습니다.");
           setGoals([]);
         } else {
           setError(null);
           setGoals(data);
         }
-
-        // summary 값 받아오기
-        const summary = await fetchDailyTransactions(id, selectedDate, token);
-
-        setSummary(summary.summary);
 
         // goal range bar & summary를 위한 데이터 가져오기
         const goalsTrs = await fetchGetGoalsTransactions(
@@ -82,14 +93,8 @@ export default function GoalLedger() {
 
         setGoalsTransactions(goalsTrs);
       } catch (error) {
-        setSummary({ totalIncome: 0, totalExpense: 0 });
         const message = error.response?.data?.message;
         console.log(error);
-        // if (ledgerId === null) {
-        //   setError("아직 가계부가 없습니다. 가계부를 만들어 주세요.");
-        // }
-
-        setSummary({ totalIncome: 0, totalExpense: 0 });
       }
     };
     fetchGoals();

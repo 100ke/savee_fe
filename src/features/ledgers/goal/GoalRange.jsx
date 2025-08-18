@@ -79,7 +79,7 @@ export default function GoalRange({
         : goal?.type === "spending_cut"
         ? goalsTransactions?.totalExpense ?? 0
         : 0;
-    console.log(fixedCurrent);
+
     try {
       const updateGoal = await fetchUpdateGoal(
         ledgerId,

@@ -54,7 +54,7 @@ function TransactionCard({ transactions }) {
           return (
             <table
               key={date}
-              className="table-auto w-full bg-base-100 rounded-3xl shadow-md p-4 scrollbar-hidden"
+              className="table-auto w-full max-w-[304px] bg-base-100 rounded-3xl shadow-md p-4 scrollbar-hidden"
             >
               <thead>
                 <tr>
@@ -93,7 +93,9 @@ function TransactionCard({ transactions }) {
           );
         })
       ) : (
-        <div className="p-4 col-span-full text-center">데이터가 없습니다.</div>
+        <div className="p-4 col-span-full text-center text-[var(--black70)]">
+          내역이 없습니다.
+        </div>
       )}
     </div>
   );

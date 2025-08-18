@@ -14,6 +14,8 @@ ChartJS.register(ArcElement, Tooltip, Legend, elements);
 function CategoryStats({ type, onSelectedFilter }) {
   const chartRef = useRef();
   const [cateData, setCateData] = useState([]);
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -26,14 +28,17 @@ function CategoryStats({ type, onSelectedFilter }) {
         } else {
           console.log(error);
         }
+      } finally {
+        setLoading(false);
       }
     };
     fetchData();
   }, [type]);
 
-  if (!cateData) {
+  if (loading) {
     return <div className="p-5">데이터 로딩중...</div>;
-  } else if (cateData.length === 0) {
+  }
+  if (cateData.length === 0) {
     return (
       <div
         role="alert"
