@@ -19,9 +19,9 @@ function Login() {
     event.preventDefault();
 
     try {
-      const { accessToken } = await login(email, password);
+      const { accessToken, user } = await login(email, password);
       // alert("로그인 성공");
-      setLoginState(accessToken);
+      setLoginState(accessToken, user);
       navigate(redirectPath, { replace: true });
     } catch (error) {
       console.log("로그인 실패", error);

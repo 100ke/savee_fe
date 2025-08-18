@@ -10,7 +10,7 @@ export default function MainAnalysis() {
         <div className="container bg-[var(--main-color-lightest)] justify-between flex flex-row p-3 rounded-box">
           <p className="ml-4 font-bold">AI 분석 소비 리포트</p>
           <p className="">
-            로딩 중...
+            분석 데이터가 존재하지 않습니다.
             <span className="text-[var(--error-color)] ml-2">&gt;</span>
           </p>
         </div>

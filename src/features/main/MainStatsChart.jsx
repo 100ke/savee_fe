@@ -5,27 +5,41 @@ import {
   Tooltip,
   elements,
 } from "chart.js";
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState, useEffect, useContext } from "react";
 import { Doughnut } from "react-chartjs-2";
 import { categoryTotal } from "../stats/statsApi";
+import { AuthContext } from "../../context/AuthContext";
+
 ChartJS.register(ArcElement, Tooltip, Legend, elements);
+
 export default function MainChart({ type, onSelectedFilter }) {
   const chartRef = useRef();
   const [cateData, setCateData] = useState([]);
+  const { isLoggedIn } = useContext(AuthContext);
 
   useEffect(() => {
+    if (!isLoggedIn) return; // 비로그인 시 api 호출 X
     const fetchData = async () => {
       try {
         const result = await categoryTotal(type);
-        setCateData(result);
+        setCateData(Array.isArray(result) ? result : []);
       } catch (error) {
         console.log(error);
       }
     };
     fetchData();
-  }, [type]);
+  }, [type, isLoggedIn]);
+
+  if (!isLoggedIn) {
+    return (
+      <div className="text-center mt-10">로그인 후 확인할 수 있습니다.</div>
+    );
+  }
+
   if (!cateData || cateData.length === 0) {
-    return <div className="p-5">데이터 로딩중...</div>;
+    return (
+      <div className="text-center mt-10">가계부 내역이 존재하지 않습니다.</div>
+    );
   }
   // 차트 데이터
   const data = {
