@@ -41,7 +41,6 @@ const localDatetime = new Date(now.getTime() - now.getTimezoneOffset() * 60000)
   .slice(0, 16);
 
 export default function AddTransactions({ ledgers, onSave, tabType }) {
-  console.log(tabType);
   const [tab, setTab] = useState(tabType || "expense");
   const [amount, setAmount] = useState("");
   const [memo, setMemo] = useState("");

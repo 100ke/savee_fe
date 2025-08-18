@@ -8,20 +8,12 @@ import {
   getPersonalLedgerId,
 } from "../TransactionApi";
 import GoalRange from "./GoalRange";
-import GoalInfo from "./GoalInfo";
 
 export default function GoalLedger() {
   const [ledgerId, setLedgerId] = useState(null);
   const { ledgerId: sharedLedgerIdFromURL } = useParams();
-  const {
-    isShared,
-    selectedDate,
-    setSummary,
-    transactions,
-    setTransactions,
-    error,
-    setError,
-  } = useOutletContext();
+  const { isShared, selectedDate, setSummary, error, setError } =
+    useOutletContext();
   const [goals, setGoals] = useState(null);
   const [role, setRole] = useState(null);
   const [goalsTransactions, setGoalsTransactions] = useState(null);
@@ -45,11 +37,11 @@ export default function GoalLedger() {
           id = Number(sharedLedgerIdFromURL);
 
           // 현재 로그인한 사용자가 owner인지 member인지 알아내서 role에 저장
-          const owner = await fetchFindLedger(id, token);
-          const members = owner.ledger_ledgermembers || [];
+          const ledgerInfo = await fetchFindLedger(id, token);
+          const members = ledgerInfo.ledger_ledgermembers || [];
 
           const personalLedgerInfo = await getPersonalLedgerId(token);
-          const currentUserId = personalLedgerInfo.userId;
+          const currentUserId = personalLedgerInfo.id;
 
           const memberInfo = members.find(
             (member) => member.userId === currentUserId
@@ -57,11 +49,6 @@ export default function GoalLedger() {
           const role = memberInfo?.role;
 
           setRole(role);
-
-          if (role !== "owner") {
-            setError("권한이 없습니다.");
-            alert("목표는 가계부의 소유자만 관리할 수 있습니다.");
-          }
         } else {
           const personalLedgerId = await getPersonalLedgerId(token);
           id = personalLedgerId.id;
@@ -72,8 +59,8 @@ export default function GoalLedger() {
 
         const data = await fetchGetGoal(id, token);
 
-        if (!data) {
-          setError("목표가 없습니다.");
+        if (!data || data.length === 0) {
+          // setError("목표가 없습니다.");
           setGoals([]);
         } else {
           setError(null);
@@ -83,44 +70,26 @@ export default function GoalLedger() {
         // summary 값 받아오기
         const summary = await fetchDailyTransactions(id, selectedDate, token);
 
-        setSummary({
-          totalIncome: summary?.totalIncome ?? 0,
-          totalExpense: summary?.totalExpense ?? 0,
-        });
+        setSummary(summary.summary);
 
         // goal range bar & summary를 위한 데이터 가져오기
         const goalsTrs = await fetchGetGoalsTransactions(
-          token,
           id,
+          token,
           data[0].start_date,
           data[0].end_date
         );
-        console.log("id:", id); // ledgerId
-        console.log("data:", data); // fetchGetGoal 결과
-        console.log("categoryId:", data?.[0]?.categoryId);
-        console.log("start_date:", data?.[0]?.start_date);
-        console.log("end_date:", data?.[0]?.end_date);
 
         setGoalsTransactions(goalsTrs);
       } catch (error) {
         setSummary({ totalIncome: 0, totalExpense: 0 });
         const message = error.response?.data?.message;
         console.log(error);
-
-        // axios response status를 사용해 토큰이 없는 상태에 따른 에러 메시지 설정
-        // if (error.response?.status === 401) {
-        //   navigate("/login");
-        // } else if (error.response?.status === 404) {
-        //   if (message.includes("입력한 내역이 없습니다.")) {
-        //     setError("해당 기간에 내역이 없습니다.");
-        //   } else {
-        //     if (ledgerId === null) {
-        //       setError("아직 가계부가 없습니다. 가계부를 만들어 주세요.");
-        //     } else {
-        //       setError("데이터를 불러오는 데 실패했습니다.");
-        //     }
-        //   }
+        // if (ledgerId === null) {
+        //   setError("아직 가계부가 없습니다. 가계부를 만들어 주세요.");
         // }
+
+        setSummary({ totalIncome: 0, totalExpense: 0 });
       }
     };
     fetchGoals();
@@ -146,8 +115,6 @@ export default function GoalLedger() {
             setGoals={setGoals}
             goalsTransactions={goalsTransactions}
           />
-
-          <GoalInfo goals={goals} setGoals={setGoals} role={role} />
         </>
       )}
     </div>
