@@ -52,7 +52,11 @@ export default function Main() {
         const data = await fetchGetLedgers(token);
         setLedgers(data);
       } catch (error) {
-        setError("내역을 저장하지 못했습니다.");
+        if (error.response?.status === 401) {
+          console.log("Savee를 이용하시려면 로그인이 필요합니다.");
+        } else {
+          setError("내역을 저장하지 못했습니다.");
+        }
       }
     };
 

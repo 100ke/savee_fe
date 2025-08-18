@@ -91,33 +91,34 @@ export default function MainChart({ type, onSelectedFilter }) {
         />
       </div>
       <div className="legend-area mt-5 flex flex-col items-center sm:mx-5">
-        {cateData.slice(0, 4).map((item, i) => {
-          const percent = ((item.total / total) * 100).toFixed(0) + "%";
-          return (
-            <div
-              className="legend-item w-full flex justify-between my-1"
-              key={item.category + i}
-            >
-              <div className="area flex gap-4 items-center ">
-                <span className="legend-label">{item.category}</span>
-                <div
-                  className="legend-color rounded-full w-10 h-10 flex items-center justify-center"
-                  style={{
-                    backgroundColor: data.datasets[0].backgroundColor[i],
-                  }}
-                >
-                  <span className=" text-sm text-white rounded-[999px]">
-                    {percent}
+        {Array.isArray(cateData) &&
+          cateData.slice(0, 4).map((item, i) => {
+            const percent = ((item.total / total) * 100).toFixed(0) + "%";
+            return (
+              <div
+                className="legend-item w-full flex justify-between my-1"
+                key={item.category + i}
+              >
+                <div className="area flex gap-4 items-center ">
+                  <span className="legend-label">{item.category}</span>
+                  <div
+                    className="legend-color rounded-full w-10 h-10 flex items-center justify-center"
+                    style={{
+                      backgroundColor: data.datasets[0].backgroundColor[i],
+                    }}
+                  >
+                    <span className=" text-sm text-white rounded-[999px]">
+                      {percent}
+                    </span>
+                  </div>
+
+                  <span className="legend-amount text-xs bg-[var(--black20)] rounded-box p-1">
+                    {item.total.toLocaleString()}원
                   </span>
                 </div>
-
-                <span className="legend-amount text-xs bg-[var(--black20)] rounded-box p-1">
-                  {item.total.toLocaleString()}원
-                </span>
               </div>
-            </div>
-          );
-        })}
+            );
+          })}
       </div>
     </div>
   );
