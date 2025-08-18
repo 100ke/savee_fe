@@ -39,6 +39,22 @@ export default function TransactionChart({ weeklyDatas }) {
     });
   }
 
+  // 1. 최대값 계산
+  const allValues = weeklyDatas.flatMap((week) => [week.income, week.expense]);
+  const maxValue = Math.max(...allValues);
+
+  // 2. 단위 결정
+  let unit = 1000;
+  let unitLabel = "천원";
+
+  if (maxValue >= 10000000) {
+    unit = 1000000;
+    unitLabel = "백만원";
+  } else if (maxValue >= 100000) {
+    unit = 10000;
+    unitLabel = "만원";
+  }
+
   // incomeData 색상 배열
   const incomeColors = weeklyDatas.map((_, index) => {
     return currentWeekIndex === index
@@ -98,11 +114,13 @@ export default function TransactionChart({ weeklyDatas }) {
         stacked: false,
         ticks: {
           callback: function (value) {
-            return (value / 10000).toLocaleString() + " 만원"; // 숫자에 콤마 찍기
+            return (value / unit).toLocaleString() + " " + unitLabel; // 숫자에 콤마 + 단위명 찍기
           },
           font: {
             size: 14,
           },
+          stepSize: unit,
+          maxTicksLimit: 7,
         },
       },
       x: {

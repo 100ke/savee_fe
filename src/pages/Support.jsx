@@ -1,5 +1,5 @@
 import { Routes, Route } from "react-router-dom";
-import SupportMain from "../features/board/support/SuportMain.jsx";
+import SupportMain from "../features/board/support/SupportMain.jsx";
 import SupportInput from "../features/board/support/SupportInput.jsx";
 import SupportDetail from "../features/board/support/SupportDetail.jsx";
 export default function Support() {

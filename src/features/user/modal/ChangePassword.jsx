@@ -94,8 +94,6 @@ function ChangePassword({ isOpen, onSuccess, onClose }) {
                   type="password"
                   required
                   placeholder="Password"
-                  minlength="6"
-                  maxlength="20"
                   value={currentPw}
                   onChange={(e) => setCurrentPw(e.target.value)}
                 />

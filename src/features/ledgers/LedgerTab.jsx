@@ -1,6 +1,6 @@
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 
-function LedgerTab() {
+function LedgerTab({ isShared }) {
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -9,9 +9,9 @@ function LedgerTab() {
   const { ledgerId } = useParams();
 
   // 현재 경로에 따라 basePath 설정
-  const isShared = location.pathname.includes("/sharedLedger");
+  const isSharedRouter = location.pathname.includes("/sharedLedger");
   const basePath =
-    isShared && ledgerId ? `/sharedLedger/${ledgerId}` : "/ledger";
+    isSharedRouter && ledgerId ? `/sharedLedger/${ledgerId}` : "/ledger";
 
   // 현재 경로에 따라 active 탭 설정
   const activeTab = location.pathname;
@@ -21,7 +21,7 @@ function LedgerTab() {
     { name: "주간", path: `${basePath}/weekly` },
     { name: "월간", path: `${basePath}/monthly` },
     { name: "목표", path: `${basePath}/goals` },
-    { name: "코멘트", path: `${basePath}/comments` },
+    ...(isShared ? [{ name: "코멘트", path: `${basePath}/comments` }] : []),
   ];
 
   return (

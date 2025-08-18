@@ -50,9 +50,18 @@ function DailyLedger() {
         } else {
           try {
             const personalLedgerId = await getPersonalLedgerId(token);
+
+            if (!personalLedgerId) {
+              setHasLedger(false);
+              setTransactions([]);
+              setSummary({ totalIncome: 0, totalExpense: 0 });
+              return;
+            }
+
             id = personalLedgerId.id;
             setHasLedger(true);
           } catch (error) {
+            console.log(error);
             if (error.response?.status === 404) {
               // 가계부 없음
               setHasLedger(false);
@@ -66,7 +75,7 @@ function DailyLedger() {
         }
 
         setLedgerId(id);
-        console.log(ledgerId);
+
         const data = await fetchDailyTransactions(id, selectedDate, token);
 
         if (!data || !data.transactions) {
@@ -137,7 +146,7 @@ function DailyLedger() {
           로딩 중 ...{" "}
         </div>
       ) : (
-        <TransactionCard transactions={transactions} />
+        <TransactionCard transactions={transactions} compact={true} />
       )}
     </div>
   );

@@ -1,12 +1,11 @@
-import QnaTab from "./QnaTabs";
-import QnaList from "./QnaList";
-import QnaSearchBar from "../searchBar/QnaSearchBar";
-import React, { useState } from "react";
-import QnaModal from "./QnaModal";
-import { getQnaPosts } from "../QnaApi";
-import useSearch from "../Search";
+import React, { useEffect, useState } from "react";
+import { getMyQnAList } from "../userApi";
+import QnaTab from "../../board/qna/QnaTabs";
+import QnaList from "../../board/qna/QnaList";
+import { useSearchParams } from "react-router-dom";
+import useSearch from "../../board/Search";
 const ITEMS_PER_PAGE = 6;
-export default function QnaMain() {
+function MyQnAList() {
   const [refreshFlag, setRefreshFlag] = useState(false);
   // 커스텀 훅은 무조건 최상단에서 호출
   const {
@@ -23,7 +22,7 @@ export default function QnaMain() {
     pageParam,
     category,
     setSearchParams,
-  } = useSearch(getQnaPosts, refreshFlag, ITEMS_PER_PAGE);
+  } = useSearch(getMyQnAList, refreshFlag, ITEMS_PER_PAGE);
 
   const handleRefresh = () => {
     setSearchParams({
@@ -33,20 +32,19 @@ export default function QnaMain() {
     });
     setRefreshFlag((prev) => !prev); // 값 토글 → QnaList에서 useEffect로 감지
   };
+
+  const filteredData =
+    category && category !== ""
+      ? data.filter((post) => post.qna_type === category)
+      : data;
+
   return (
-    <section className="flex flex-col gap-6 mb-10">
-      <h1 className="text-xl text-center">Qna</h1>
-      <QnaModal onRegistered={handleRefresh}></QnaModal>
+    <section className="flex flex-col gap-6 mb-10 w-3/4">
+      <h1 className="text-3xl">내가 작성한 질문</h1>
       <div className="flex flex-col gap-1">
-        <QnaSearchBar
-          setSearchKeyword={setSearchKeyword}
-          searchKeyword={searchKeyword}
-          handleSearch={handleSearch}
-          category={category}
-        ></QnaSearchBar>
-        <QnaTab category={category}></QnaTab>
+        <QnaTab category={category} />
         <QnaList
-          data={data}
+          data={filteredData}
           loading={loading}
           error={error}
           admin={admin}
@@ -61,3 +59,5 @@ export default function QnaMain() {
     </section>
   );
 }
+
+export default MyQnAList;

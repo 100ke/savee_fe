@@ -1,15 +1,22 @@
 import NavBar from "./NavBar"; // 사이드바 컴포넌트
 
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 
 export default function Layout() {
+  const loc = useLocation();
+  const isMypage = loc.pathname.startsWith("/mypage");
+
   return (
     <div className="flex h-screen">
       {/* 사이드바 */}
       <NavBar />
 
       {/* 메인 콘텐츠 영역 */}
-      <main className="flex flex-1 bg-white overflow-visible justify-center">
+      <main
+        className={`flex flex-1 bg-white overflow-visible justify-center mt-10
+        ${isMypage ? "mb-0" : "mb-10"}
+        `}
+      >
         <Outlet />
       </main>
     </div>

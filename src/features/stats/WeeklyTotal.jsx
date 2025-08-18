@@ -21,7 +21,11 @@ function WeeklyTotal({ onSelectedFilter }) {
         const result = await weeklyTotal();
         setWeeklyData(result);
       } catch (error) {
-        console.log(error);
+        if (error.response?.status === 404) {
+          setWeeklyData([]);
+        } else {
+          console.log(error);
+        }
       }
     };
     fetchData();
@@ -84,7 +88,9 @@ function WeeklyTotal({ onSelectedFilter }) {
 
   return (
     <div className="weekly-trend rounded-box p-5 mb-3">
-      <h3 className="text-2xl mb-2">주별 지출 총합</h3>
+      <h3 className="text-2xl mb-2">
+        <span className="blue font-semibold">주별</span> 지출 총합
+      </h3>
       <Bar data={data} options={options} onClick={handleClick} ref={chartRef} />
     </div>
   );

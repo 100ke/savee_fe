@@ -14,20 +14,59 @@ ChartJS.register(ArcElement, Tooltip, Legend, elements);
 function CategoryStats({ type, onSelectedFilter }) {
   const chartRef = useRef();
   const [cateData, setCateData] = useState([]);
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
         const result = await categoryTotal(type);
         setCateData(result);
       } catch (error) {
-        console.log(error);
+        if (error.response?.status === 404) {
+          // 데이터가 없는 경우 빈 배열로 처리하기
+          setCateData([]);
+        } else {
+          console.log(error);
+        }
+      } finally {
+        setLoading(false);
       }
     };
     fetchData();
   }, [type]);
 
-  if (!cateData || cateData.length === 0) {
+  if (loading) {
     return <div className="p-5">데이터 로딩중...</div>;
+  }
+  if (cateData.length === 0) {
+    return (
+      <div
+        role="alert"
+        className="alert alert-vertical sm:alert-horizontal lg:alert-vertical mb-4"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          className="stroke-info h-6 w-6 shrink-0"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="2"
+            d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+          ></path>
+        </svg>
+        <span className="lg:text-xl">
+          데이터가 없습니다. 가계부를 작성해보세요!
+        </span>
+        <div>
+          <a className="btn btn-sm btn-primary" href="/ledger">
+            가계부 작성하기
+          </a>
+        </div>
+      </div>
+    );
   }
 
   // 차트 데이터
@@ -85,7 +124,12 @@ function CategoryStats({ type, onSelectedFilter }) {
 
   return (
     <div className="category-stats rounded-box p-5 mb-3">
-      <h3 className="text-2xl mb-2">카테고리별 지출</h3>
+      <h3 className="text-2xl mb-2 flex justify-between">
+        카테고리별 지출
+        <span className="blue">
+          {type === "weekly" ? "이번 주" : "이번 달"}
+        </span>
+      </h3>
       <div className="dnchart w-2/3 mx-auto">
         <Doughnut
           data={data}

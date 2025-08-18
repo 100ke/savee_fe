@@ -4,25 +4,20 @@ import {
   fetchDailyTransactions,
   fetchFindLedger,
   fetchGetGoal,
+  fetchGetGoalsTransactions,
   getPersonalLedgerId,
 } from "../TransactionApi";
 import GoalRange from "./GoalRange";
-import GoalInfo from "./GoalInfo";
+import { jwtDecode } from "jwt-decode";
 
 export default function GoalLedger() {
   const [ledgerId, setLedgerId] = useState(null);
   const { ledgerId: sharedLedgerIdFromURL } = useParams();
-  const {
-    isShared,
-    selectedDate,
-    setSummary,
-    transactions,
-    setTransactions,
-    error,
-    setError,
-  } = useOutletContext();
+  const { isShared, selectedDate, setSummary, error, setError } =
+    useOutletContext();
   const [goals, setGoals] = useState(null);
   const [role, setRole] = useState(null);
+  const [goalsTransactions, setGoalsTransactions] = useState(null);
 
   const token = localStorage.getItem("accessToken");
   const navigate = useNavigate();
@@ -43,11 +38,23 @@ export default function GoalLedger() {
           id = Number(sharedLedgerIdFromURL);
 
           // 현재 로그인한 사용자가 owner인지 member인지 알아내서 role에 저장
-          const owner = await fetchFindLedger(id, token);
-          const members = owner.ledger_ledgermembers || [];
+          const ledgerInfo = await fetchFindLedger(id, token);
+          const members = ledgerInfo.ledger_ledgermembers || [];
+          let currentUserId;
+          let personalLedgerInfo = null;
 
-          const personalLedgerInfo = await getPersonalLedgerId(token);
-          const currentUserId = personalLedgerInfo.userId;
+          try {
+            personalLedgerInfo = await getPersonalLedgerId(token); // 404 발생 가능
+          } catch (err) {
+            console.error("개인가계부 요청 실패:", err.message);
+          }
+
+          if (!personalLedgerInfo) {
+            const decoded = jwtDecode(token);
+            currentUserId = decoded.userId || decoded.id || decoded.sub; // 구조에 맞게 조정
+          } else {
+            currentUserId = personalLedgerInfo.id;
+          }
 
           const memberInfo = members.find(
             (member) => member.userId === currentUserId
@@ -55,11 +62,6 @@ export default function GoalLedger() {
           const role = memberInfo?.role;
 
           setRole(role);
-
-          if (role !== "owner") {
-            setError("권한이 없습니다.");
-            alert("목표는 가계부의 소유자만 관리할 수 있습니다.");
-          }
         } else {
           const personalLedgerId = await getPersonalLedgerId(token);
           id = personalLedgerId.id;
@@ -68,46 +70,35 @@ export default function GoalLedger() {
 
         setLedgerId(id);
 
+        // summary 값 받아오기
+        const dailyData = await fetchDailyTransactions(id, selectedDate, token);
+        setSummary(dailyData.summary);
+
         const data = await fetchGetGoal(id, token);
-        console.log(data);
-        if (!data) {
-          setError("목표가 없습니다.");
+
+        if (!data || data.length === 0) {
           setGoals([]);
         } else {
           setError(null);
           setGoals(data);
         }
 
-        // summary 값 받아오기
-        const summary = await fetchDailyTransactions(id, selectedDate, token);
+        // goal range bar & summary를 위한 데이터 가져오기
+        const goalsTrs = await fetchGetGoalsTransactions(
+          id,
+          token,
+          data[0].start_date,
+          data[0].end_date
+        );
 
-        setSummary({
-          totalIncome: summary?.totalIncome ?? 0,
-          totalExpense: summary?.totalExpense ?? 0,
-        });
+        setGoalsTransactions(goalsTrs);
       } catch (error) {
-        setSummary({ totalIncome: 0, totalExpense: 0 });
         const message = error.response?.data?.message;
         console.log(error);
-        // axios response status를 사용해 토큰이 없는 상태에 따른 에러 메시지 설정
-        if (error.response?.status === 401) {
-          navigate("/login");
-        } else if (error.response?.status === 404) {
-          if (message.includes("입력한 내역이 없습니다.")) {
-            // setGoals([]);
-            setError(null);
-          } else {
-            if (ledgerId === null) {
-              setError("아직 가계부가 없습니다. 가계부를 만들어 주세요.");
-            } else {
-              setError("데이터를 불러오는 데 실패했습니다.");
-            }
-          }
-        }
       }
     };
     fetchGoals();
-  }, [isShared, sharedLedgerIdFromURL, selectedDate, token]);
+  }, [isShared, sharedLedgerIdFromURL, selectedDate, token, goalsTransactions]);
 
   return (
     <div className="max-w-full px-full scrollbar-hidden">
@@ -124,10 +115,11 @@ export default function GoalLedger() {
             goals={goals}
             role={role}
             ledgerId={ledgerId}
+            error={error}
             setError={setError}
             setGoals={setGoals}
+            goalsTransactions={goalsTransactions}
           />
-          <GoalInfo goals={goals} setGoals={setGoals} role={role} />
         </>
       )}
     </div>

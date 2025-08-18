@@ -12,3 +12,8 @@
 .logo {
   color: var(--accent-color);
 }
+
+.menu-tab-active a {
+  background-color: var(--main-color-dark);
+  color: white;
+}

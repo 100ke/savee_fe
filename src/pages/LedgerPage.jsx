@@ -27,7 +27,7 @@ export default function LedgerPage() {
         setSelectedDate={setSelectedDate}
         summary={summary}
       />
-      {!isCalendarRoute && <LedgerTab />}
+      {!isCalendarRoute && <LedgerTab isShared={false} />}
 
       <Outlet
         context={{

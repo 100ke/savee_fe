@@ -119,4 +119,10 @@
   height: clamp(150px, 40vw, 330px);
 }
 
-/* 아코디언 */
+/* 코멘트 */
+@media (max-width: 600px) {
+  .comment-list-container .chat > button {
+    bottom: -10px; /* 버튼을 아래로 내림 */
+    right: -20px;
+  }
+}

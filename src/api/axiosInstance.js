@@ -33,9 +33,14 @@ instance.interceptors.response.use(
     if (error.response?.status === 401) {
       console.warn("토큰 만료 또는 인증 오류");
       const currentPath = window.location.pathname + window.location.search;
-      window.location.href = `/login?redirect=${encodeURIComponent(
-        currentPath
-      )}`;
+      // 메인화면에서는 로그인 이동 처리 막기
+      if (currentPath === "/") {
+        return Promise.resolve({ data: {} });
+      } else {
+        window.location.href = `/login?redirect=${encodeURIComponent(
+          currentPath
+        )}`;
+      }
     }
     return Promise.reject(error);
   }

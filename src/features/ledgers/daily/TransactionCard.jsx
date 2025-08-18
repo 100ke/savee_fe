@@ -1,11 +1,11 @@
 import "../Ledgers.css";
 
-function TransactionCard({ transactions }) {
+function TransactionCard({ transactions, compact = false }) {
+  const maxWidth = compact ? "max-w-[400px]" : "";
   function formatDate(days) {
     const date = new Date(days);
     const month = (date.getMonth() + 1).toString();
     const day = date.getDate().toString().padStart(2, "0");
-
     // 요일
     const weeks = ["일", "월", "화", "수", "목", "금", "토"];
     const dayOfWeek = weeks[date.getDay()];
@@ -54,7 +54,7 @@ function TransactionCard({ transactions }) {
           return (
             <table
               key={date}
-              className="table-auto w-full bg-base-100 rounded-3xl shadow-md p-4 scrollbar-hidden"
+              className={`table-auto w-full ${maxWidth} bg-base-100 rounded-3xl shadow-md p-4 scrollbar-hidden`}
             >
               <thead>
                 <tr>
@@ -66,10 +66,10 @@ function TransactionCard({ transactions }) {
                           오늘
                         </span>
                       )}
-                      <span className="ml-auto text-[var(--black70)]">
+                      <span className="ml-auto text-[var(--main-color)]">
                         +{income.toLocaleString()}원
                       </span>
-                      <span className="ml-2 text-[var(--black70)]">
+                      <span className="ml-2 text-[var(--error-color)]">
                         -{expense.toLocaleString()}원
                       </span>
                     </div>
@@ -79,7 +79,7 @@ function TransactionCard({ transactions }) {
               <tbody>
                 {items.map((item) => (
                   <tr key={item.id} className="border-t border-gray-200 m-2">
-                    <td className="text-center p-2 align-top text-sm text-[var(--black90)] border-r border-[var(--black30)]">
+                    <td className="text-center p-2 align-top text-sm text-[var(--accent-color)] border-r border-[var(--black30)]">
                       {item.category_transactions?.name || ""}
                     </td>
                     <td className="text-center p-2 align-top">{item.memo}</td>
@@ -93,7 +93,9 @@ function TransactionCard({ transactions }) {
           );
         })
       ) : (
-        <div className="p-4 col-span-full text-center">데이터가 없습니다.</div>
+        <div className="p-4 col-span-full text-center text-[var(--black70)]">
+          내역이 없습니다.
+        </div>
       )}
     </div>
   );

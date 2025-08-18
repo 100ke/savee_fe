@@ -48,23 +48,34 @@ export default function SharedLedger() {
           formData.email
         );
       }
+
+      // 리스트 갱신
+      await viewSharedLedgers();
     } catch (error) {
       setError("내역을 저장하지 못했습니다.");
     }
   };
 
-  useEffect(() => {
-    // if (
-    //   !token ||
-    //   token.trim() === "" ||
-    //   token === "null" ||
-    //   token === "undefined"
-    // ) {
-    //   navigate("/login");
-    //   setSharedLedgers(null);
-    //   return;
-    // }
+  // 공유 가계부 추가 후 화면에 바로 출력
+  const viewSharedLedgers = async () => {
+    try {
+      const ledgers = await fetchGetLedgers(token);
+      const shared = ledgers.filter((ledger) => ledger.is_shared);
+      const memberLedgers = await fetchGetLedgersByMembership(token);
 
+      // 소유한 가계부 + 참여한 가계부 합치고 중복 제거
+      const mergeLedgers = [...shared, ...memberLedgers].filter(
+        (ledger, index, self) =>
+          index === self.findIndex((l) => l.id === ledger.id)
+      );
+
+      setSharedLedgers(mergeLedgers);
+    } catch (error) {
+      setError("공유 가계부 목록을 가져오지 못했습니다.");
+    }
+  };
+
+  useEffect(() => {
     // 공유 가계부 생성 및 초대 시 사용 - owner 전용
     const fetchSharedLedgers = async () => {
       try {

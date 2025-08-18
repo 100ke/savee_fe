@@ -1,5 +1,6 @@
 import instance from "../../api/axiosInstance";
 
+// header에 token 추가 함수
 const getAuthHeader = (token) => ({
   headers: {
     Authorization: `Bearer ${token}`,
@@ -17,10 +18,15 @@ const getPersonalLedgerId = async (token) => {
     const peersonalLedgerId = await response.data.data;
     return peersonalLedgerId;
   } catch (error) {
+    // 가계부가 없어도 null 반환
+    if (error.response?.status === 404) {
+      return null;
+    }
     throw error;
   }
 };
 
+// 일일 데이터(수입/지출 내역) 가져오는 함수
 const fetchDailyTransactions = async (ledgerId, selectedDate, token) => {
   try {
     const ledId = Number(ledgerId);
@@ -32,7 +38,7 @@ const fetchDailyTransactions = async (ledgerId, selectedDate, token) => {
       `/ledgers/${ledId}/transactions/daily?month=${reDate}`,
       getAuthHeader(token)
     );
-    console.log(response.data);
+
     const { transactions, summary } = await response?.data?.data;
     return { transactions, summary };
   } catch (error) {
@@ -41,6 +47,7 @@ const fetchDailyTransactions = async (ledgerId, selectedDate, token) => {
   }
 };
 
+// 주간 데이터(한 달의 주별 내역과 총액) 가져오는 함수
 const fetchWeeklyTransactions = async (ledgerId, selectedDate, token) => {
   try {
     const ledId = Number(ledgerId);
@@ -67,6 +74,7 @@ const fetchWeeklyTransactions = async (ledgerId, selectedDate, token) => {
   }
 };
 
+// 월간 데이터(한 달의 내역과 각 일자별 총금액) 가져오는 함수
 const fetchMonthlyTransactions = async (ledgerId, selectedDate, token) => {
   try {
     const ledId = Number(ledgerId);
@@ -97,6 +105,7 @@ const fetchMonthlyTransactions = async (ledgerId, selectedDate, token) => {
   }
 };
 
+// 가계부 목록 가져오는 함수
 const fetchGetLedgers = async (token) => {
   try {
     const response = await instance.get(`ledgers`, getAuthHeader(token));
@@ -108,6 +117,7 @@ const fetchGetLedgers = async (token) => {
   }
 };
 
+// 수입/지출 내역 추가
 const fetchCreateTransactions = async (
   ledgerId,
   token,
@@ -142,6 +152,7 @@ const fetchCreateTransactions = async (
   }
 };
 
+// 공유 가계부 생성
 const fetchCreateSharedLedgers = async (name, token) => {
   const is_shared = true;
   try {
@@ -156,6 +167,7 @@ const fetchCreateSharedLedgers = async (name, token) => {
   }
 };
 
+// 공유 가계부에 멤버 초대(이메일로 초대 코드 발송)
 const fetchInviteLedgerMembers = async (ledgerId, token, email) => {
   try {
     const ledId = Number(ledgerId);
@@ -177,6 +189,7 @@ const fetchInviteLedgerMembers = async (ledgerId, token, email) => {
   }
 };
 
+// 공유 가계부 초대 수락(코드 등록)
 const fetchAcceptCodes = async (ledgerId, token, code, email) => {
   try {
     const ledId = Number(ledgerId);
@@ -198,6 +211,7 @@ const fetchAcceptCodes = async (ledgerId, token, code, email) => {
   }
 };
 
+// 현재 로그인한 멤버가 참여중인 공유 가계부의 데이터(멤버 정보, 목표, 예산)
 const fetchGetLedgersByMembership = async (token) => {
   try {
     const response = await instance.get(
@@ -212,6 +226,7 @@ const fetchGetLedgersByMembership = async (token) => {
   }
 };
 
+// 가계부 id 가져오기 위한 함수
 const fetchFindLedger = async (ledgerId, token) => {
   try {
     const ledId = Number(ledgerId);
@@ -227,6 +242,7 @@ const fetchFindLedger = async (ledgerId, token) => {
   }
 };
 
+// 개인 가계부 생성
 const fetchCreatePersoalLedger = async (token, name) => {
   try {
     const data = {
@@ -243,6 +259,7 @@ const fetchCreatePersoalLedger = async (token, name) => {
   }
 };
 
+// 목표 생성
 const fetchCreateGoals = async (
   ledgerId,
   token,
@@ -283,6 +300,7 @@ const fetchCreateGoals = async (
   }
 };
 
+// 목표 데이터 가져오는 함수
 const fetchGetGoal = async (ledgerId, token) => {
   try {
     const ledId = Number(ledgerId);
@@ -294,6 +312,102 @@ const fetchGetGoal = async (ledgerId, token) => {
 
     const resultGoal = await response.data.data;
     return resultGoal;
+  } catch (error) {
+    throw error;
+  }
+};
+
+// 목표의 카테고리와 기간에 부합하는 데이터(수입/지출 내역, 각 총금액, 수입 + 지출 총 금액) 가져오는 함수
+const fetchGetGoalsTransactions = async (
+  ledgerId,
+  token,
+  start_date,
+  end_date
+) => {
+  try {
+    const ledId = Number(ledgerId);
+
+    const response = await instance.get(
+      `ledgers/${ledId}/transactions/goals-progress`,
+      {
+        headers: { Authorization: `Bearer ${token}` },
+        params: {
+          start_date,
+          end_date,
+        },
+      }
+    );
+
+    const goalsTrs = await response.data.data;
+    return goalsTrs;
+  } catch (error) {
+    throw error;
+  }
+};
+
+// 목표 수정(상태 변경)
+const fetchUpdateGoal = async (ledgerId, token, goalId, newStatus, current) => {
+  try {
+    const ledId = Number(ledgerId);
+
+    const response = await instance.put(
+      `ledgers/${ledId}/goals/${goalId}`,
+      { status: newStatus, current_amount: current },
+      getAuthHeader(token)
+    );
+
+    const newGoalStatus = await response.data.data;
+    return newGoalStatus;
+  } catch (error) {
+    throw error;
+  }
+};
+
+// 개인 + 공유(참여중 포함) 가계부 모두 가져오기
+const fetchGetAllAccessLedgers = async (token) => {
+  try {
+    const response = await instance.get(`ledgers/all`, getAuthHeader(token));
+
+    const allLedgers = await response.data.data;
+    return allLedgers;
+  } catch (error) {
+    throw error;
+  }
+};
+
+// 공유 가계부의 내역 + 코멘트 불러오기
+const fetchGetCommentsAndTransactions = async (ledgerId, totalDate, token) => {
+  try {
+    const ledId = Number(ledgerId);
+
+    const response = await instance.get(
+      `ledgers/${ledId}/comments?date=${totalDate}`,
+      getAuthHeader(token)
+    );
+
+    const comments = await response.data.data;
+    return comments;
+  } catch (error) {
+    if (error.response?.status === 404) {
+      return [];
+    }
+    throw error;
+  }
+};
+
+// 댓글 추가
+const fetchCreateComment = async (ledgerId, commentDate, content, token) => {
+  try {
+    const ledId = Number(ledgerId);
+
+    const response = await instance.post(
+      `ledgers/${ledId}/comments`,
+      { content, comment_date: commentDate },
+      getAuthHeader(token)
+    );
+
+    const result = await response.data.data;
+    return result;
   } catch (error) {
     throw error;
   }
@@ -314,4 +428,9 @@ export {
   fetchCreateGoals,
   fetchGetGoal,
   fetchCreatePersoalLedger,
+  fetchGetGoalsTransactions,
+  fetchUpdateGoal,
+  fetchGetAllAccessLedgers,
+  fetchGetCommentsAndTransactions,
+  fetchCreateComment,
 };
