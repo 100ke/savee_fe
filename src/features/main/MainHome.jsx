@@ -68,7 +68,6 @@ export default function Main() {
     }
   }, [open]);
   const handleAddTransactions = async (tabType) => {
-    console.log("a");
     setModalTabType(tabType); // 버튼에서 tabType 전달
     setModalOpen(true);
   };
@@ -129,7 +128,6 @@ export default function Main() {
       icon: ">",
       color: "var(--main-color)",
       tabType: "",
-      amount: "1000",
       link: "/ledger",
     },
     {
@@ -139,7 +137,6 @@ export default function Main() {
       icon: ">",
       color: "var(--accent-color)",
       tabType: "",
-      amount: "1000",
       link: "/sharedLedger",
     },
   ];

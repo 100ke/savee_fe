@@ -15,7 +15,6 @@ export default function MainTransaction({ setHasLedgerInParent }) {
 
   useEffect(() => {
     const now = new Date().toLocaleDateString("sv-SE").split("T")[0];
-    console.log(now);
     setDate(now);
   }, []);
   useEffect(() => {
@@ -41,7 +40,7 @@ export default function MainTransaction({ setHasLedgerInParent }) {
     const getTransactions = async () => {
       try {
         const currentDate = new Date(date);
-        console.log(date);
+
         const { transactions, summary } = await fetchDailyTransactions(
           ledgerId,
           currentDate,
@@ -61,7 +60,7 @@ export default function MainTransaction({ setHasLedgerInParent }) {
   return (
     <div className="w-2/4 h-[200px]">
       <div className="w-full h-full overflow-auto">
-        <TransactionCard transactions={data} />
+        {token && <TransactionCard transactions={data} />}
       </div>
     </div>
   );
