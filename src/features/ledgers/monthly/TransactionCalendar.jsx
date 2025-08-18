@@ -37,7 +37,7 @@ export default function TransactionCalendar({ monthlyDatas, selectedDate }) {
         </div>
 
         {/* 날짜 셀 */}
-        <div className="grid grid-cols-7 gap-1 mt-2 text-center text-sm">
+        <div className="grid grid-cols-7 gap-1 mt-2 text-center text-sm [grid-auto-rows:120px]">
           {/* 시작 빈칸 채우기 */}
           {Array.from({ length: firstDayOfMonth }).map((_, idx) => (
             <div
@@ -58,7 +58,7 @@ export default function TransactionCalendar({ monthlyDatas, selectedDate }) {
             return (
               <div
                 key={idx}
-                className={`min-h-[120px] border-b border-[var(--black30)] hover:bg-gray-50 flex flex-col justify-start items-center p-2 pt-3 text-base`}
+                className={`min-h-[120px] border-b border-[var(--black30)] hover:bg-[var(--main-color-lightest-40)] flex flex-col justify-start items-center p-2 pt-3 text-base`}
               >
                 <div
                   className={`w-8 h-8 flex items-center justify-center ${
@@ -73,12 +73,12 @@ export default function TransactionCalendar({ monthlyDatas, selectedDate }) {
                 {dayData && (
                   <div className="totals mt-10 text-xs text-center leading-tight">
                     {dayData.totalIncome > 0 && (
-                      <div className="monthly-income text-blue-500">
+                      <div className="monthly-income text-[var(--main-color)]">
                         +{dayData.totalIncome.toLocaleString()}원
                       </div>
                     )}
                     {dayData.totalExpense > 0 && (
-                      <div className="monthly-expense text-red-500">
+                      <div className="monthly-expense text-[var(--error-color)]">
                         -{dayData.totalExpense.toLocaleString()}원
                       </div>
                     )}

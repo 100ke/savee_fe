@@ -93,8 +93,8 @@ function InfoStep({ onBack, onNext, onSignupSuccess }) {
               type="text"
               required
               placeholder="Username"
-              minlength="2"
-              maxlength="10"
+              minLength="2"
+              maxLength="10"
               value={name}
               onChange={(e) => setName(e.target.value)}
             />
@@ -208,8 +208,8 @@ function InfoStep({ onBack, onNext, onSignupSuccess }) {
               type="password"
               required
               placeholder="Password"
-              minlength="6"
-              maxlength="20"
+              minLength="6"
+              maxLength="20"
               value={password}
               onChange={(e) => {
                 setPassword(e.target.value);
@@ -255,8 +255,8 @@ function InfoStep({ onBack, onNext, onSignupSuccess }) {
               type="password"
               required
               placeholder="Confirm Password"
-              minlength="6"
-              maxlength="20"
+              minLength="6"
+              maxLength="20"
               value={confirmPassword}
               onChange={(e) => {
                 setConfirmPassword(e.target.value);

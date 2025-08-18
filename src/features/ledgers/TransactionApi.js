@@ -323,21 +323,84 @@ const fetchGetGoalsTransactions = async (
   try {
     const ledId = Number(ledgerId);
 
-    const data = {
-      token,
-      ledgerId: ledId,
-      start_date,
-      end_date,
-    };
-
     const response = await instance.get(
-      `ledgers/${ledId}/transactions/goals_progress?start_date=${start_date}&end_date=${end_date}`,
-      data,
-      getAuthHeader(token)
+      `ledgers/${ledId}/transactions/goals-progress`,
+      {
+        headers: { Authorization: `Bearer ${token}` },
+        params: {
+          start_date,
+          end_date,
+        },
+      }
     );
 
     const goalsTrs = await response.data.data;
     return goalsTrs;
+  } catch (error) {
+    throw error;
+  }
+};
+
+// 목표 수정(상태 변경)
+const fetchUpdateGoal = async (ledgerId, token, goalId, newStatus, current) => {
+  try {
+    const ledId = Number(ledgerId);
+
+    const response = await instance.put(
+      `ledgers/${ledId}/goals/${goalId}`,
+      { status: newStatus, current_amount: current },
+      getAuthHeader(token)
+    );
+
+    const newGoalStatus = await response.data.data;
+    return newGoalStatus;
+  } catch (error) {
+    throw error;
+  }
+};
+
+// 개인 + 공유(참여중 포함) 가계부 모두 가져오기
+const fetchGetAllAccessLedgers = async (token) => {
+  try {
+    const response = await instance.get(`ledgers/all`, getAuthHeader(token));
+
+    const allLedgers = await response.data.data;
+    return allLedgers;
+  } catch (error) {
+    throw error;
+  }
+};
+
+// 공유 가계부의 내역 + 코멘트 불러오기
+const fetchGetCommentsAndTransactions = async (ledgerId, totalDate, token) => {
+  try {
+    const ledId = Number(ledgerId);
+
+    const response = await instance.get(
+      `ledgers/${ledId}/comments?date=${totalDate}`,
+      getAuthHeader(token)
+    );
+
+    const comments = await response.data.data;
+    return comments;
+  } catch (error) {
+    throw error;
+  }
+};
+
+// 댓글 추가
+const fetchCreateComment = async (ledgerId, commentDate, content, token) => {
+  try {
+    const ledId = Number(ledgerId);
+
+    const response = await instance.post(
+      `ledgers/${ledId}/comments`,
+      { content, comment_date: commentDate },
+      getAuthHeader(token)
+    );
+
+    const result = await response.data.data;
+    return result;
   } catch (error) {
     throw error;
   }
@@ -359,4 +422,8 @@ export {
   fetchGetGoal,
   fetchCreatePersoalLedger,
   fetchGetGoalsTransactions,
+  fetchUpdateGoal,
+  fetchGetAllAccessLedgers,
+  fetchGetCommentsAndTransactions,
+  fetchCreateComment,
 };

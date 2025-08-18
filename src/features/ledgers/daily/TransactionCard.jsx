@@ -66,10 +66,10 @@ function TransactionCard({ transactions }) {
                           오늘
                         </span>
                       )}
-                      <span className="ml-auto text-[var(--black70)]">
+                      <span className="ml-auto text-[var(--main-color)]">
                         +{income.toLocaleString()}원
                       </span>
-                      <span className="ml-2 text-[var(--black70)]">
+                      <span className="ml-2 text-[var(--error-color)]">
                         -{expense.toLocaleString()}원
                       </span>
                     </div>
@@ -79,7 +79,7 @@ function TransactionCard({ transactions }) {
               <tbody>
                 {items.map((item) => (
                   <tr key={item.id} className="border-t border-gray-200 m-2">
-                    <td className="text-center p-2 align-top text-sm text-[var(--black90)] border-r border-[var(--black30)]">
+                    <td className="text-center p-2 align-top text-sm text-[var(--accent-color)] border-r border-[var(--black30)]">
                       {item.category_transactions?.name || ""}
                     </td>
                     <td className="text-center p-2 align-top">{item.memo}</td>

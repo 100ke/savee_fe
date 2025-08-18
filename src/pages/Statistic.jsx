@@ -104,7 +104,12 @@ function Statistic() {
             )}
             <DetailList
               detailData={detailData}
-              categoryName={selectedFilter?.value}
+              categoryName={
+                selectedFilter?.type === "month"
+                  ? selectedFilter?.month
+                  : selectedFilter?.value
+              }
+              filterType={selectedFilter?.type}
             />
           </div>
         </div>

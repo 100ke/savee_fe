@@ -11,15 +11,15 @@ function AccountSettings({ onInfoChange }) {
       <div className="card bg-base-100 shadow-md border">
         <div className="card-body">
           <h2 className="card-title text-xl">계정 설정</h2>
-          <div className="btn-group flex gap-30 text-lg">
+          <div className="btn-group flex text-lg">
             <button
-              className="cursor-pointer text-gray-400"
+              className="text-left cursor-pointer text-gray-400 flex-1"
               onClick={() => setIsNameModalOpen(true)}
             >
               이름 변경
             </button>
             <button
-              className="cursor-pointer text-gray-400"
+              className="text-left cursor-pointer text-gray-400 flex-1"
               onClick={() => setIsPwModalOpen(true)}
             >
               비밀번호 변경

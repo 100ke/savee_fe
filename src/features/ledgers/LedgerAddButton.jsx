@@ -1,6 +1,10 @@
 import { useEffect, useState } from "react";
 import AddTransactions from "./modal/AddTransactions";
-import { fetchCreateTransactions, fetchGetLedgers } from "./TransactionApi";
+import {
+  fetchCreateTransactions,
+  fetchGetAllAccessLedgers,
+  fetchGetLedgers,
+} from "./TransactionApi";
 
 export default function LedgerAddButton({ ledgers, setLedgers, setError }) {
   const [open, setOpen] = useState(false);
@@ -9,8 +13,8 @@ export default function LedgerAddButton({ ledgers, setLedgers, setError }) {
   useEffect(() => {
     const load = async () => {
       try {
-        const data = await fetchGetLedgers(token);
-        setLedgers(data);
+        const allLedgers = await fetchGetAllAccessLedgers(token);
+        setLedgers(allLedgers);
       } catch (error) {
         setError("내역을 저장하지 못했습니다.");
       }
