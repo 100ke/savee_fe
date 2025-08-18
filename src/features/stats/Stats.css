@@ -32,10 +32,24 @@
   overflow-x: hidden;
 }
 
+.category-stats .blue {
+  color: var(--main-color-dark);
+}
+
 .category-stats .badge {
   width: 2.5rem;
   border-color: var(--black20);
   background-color: var(--black20);
+}
+
+/* 월별 지출 총합 */
+.monthly-trend .blue {
+  color: var(--main-color-dark);
+}
+
+/* 주별 지출 총합 */
+.weekly-trend .blue {
+  color: var(--main-color-dark);
 }
 
 /* 지출 상세 내역 */

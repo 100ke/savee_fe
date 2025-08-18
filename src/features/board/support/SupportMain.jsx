@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
-import SupportList from "./SupportList";
+import SupportList from "./SupportListMain";
+import SupportListMain from "./SupportListMain";
 export default function SupportMain() {
   return (
     <div className="pb-10 overflow-auto scrollbar-hidden">
@@ -51,7 +52,7 @@ export default function SupportMain() {
                 <p className="inline ml-1 ">이메일 문의</p>
               </div>
               <div className="p-3 text-sm">
-                <a href="mailto:savee@savee.com">savee@savee.com</a>
+                <a href="mailto:wesavee98s@gmail.com">wesavee98s@gmail.com</a>
                 <small className="block text-[var(--black70)]">
                   24시간 접수 가능
                 </small>
@@ -89,7 +90,7 @@ export default function SupportMain() {
           </div>
         </div>
       </section>
-      <SupportList></SupportList>
+      <SupportListMain></SupportListMain>
     </div>
   );
 }

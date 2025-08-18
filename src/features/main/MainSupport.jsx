@@ -1,13 +1,26 @@
-import SupportList from "../board/support/SupportList"
-export default function MainSurpports(){
-    return(
-            <div className="w-2/4">
-            
-                <p className="font-bold">공지사항 &gt;</p>
-                <hr />
-
-                <p className=""><span className="mr-2 text-[var(--error-color)]"> New</span>지난 달보다 소비가 25% 증가하였습니다.<span className="text-[var(--error-color)] ml-2">&gt;</span></p>
-                {/* <SupportList></SupportList> */}
-                </div>
-    )
+import SupportList from "../board/support/SupportList";
+import useSearch from "../board/Search";
+import { getSupportPosts } from "../board/SupportApi";
+import { useNavigate } from "react-router-dom";
+export default function MainSurpports() {
+  const { data } = useSearch(getSupportPosts, undefined, 5);
+  const navigate = useNavigate();
+  return (
+    <div className="w-2/4 flex flex-col gap-1">
+      <p
+        className="font-bold container w-full cursor-pointer text-[var(--main-color)]"
+        onClick={() => navigate("/support")}
+      >
+        공지사항 <span className="">&gt;</span>
+      </p>
+      <hr className="text-[var(--black20)]" />
+      <SupportList
+        data={data}
+        searchKeyword={""}
+        currentPage={1}
+        onTh={false}
+        compact={true}
+      ></SupportList>
+    </div>
+  );
 }

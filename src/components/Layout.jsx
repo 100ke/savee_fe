@@ -9,7 +9,7 @@ export default function Layout() {
       <NavBar />
 
       {/* 메인 콘텐츠 영역 */}
-      <main className="flex flex-1 bg-white overflow-visible justify-center">
+      <main className="flex flex-1 bg-white overflow-visible justify-center mb-10 mt-10">
         <Outlet />
       </main>
     </div>

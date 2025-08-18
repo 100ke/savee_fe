@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { getUserInfo } from "../user/userApi";
 import MainButton from "./Button";
 import MainStats from "./MainStats";
@@ -6,6 +6,8 @@ import MainAnalysis from "./MainAnalysis";
 import MainSurpports from "./MainSupport";
 import MainTransaction from "./MainTransaction";
 import { useNavigate } from "react-router-dom";
+
+import AddTransactions from "../ledgers/modal/AddTransactions";
 
 import {
   fetchCreateTransactions,
@@ -18,7 +20,7 @@ export default function Main() {
   const [error, setError] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [modalTabType, setModalTabType] = useState("expense");
-
+  const [open, setOpen] = useState(false);
   const token = localStorage.getItem("accessToken");
   const [ledgers, setLedgers] = useState(null);
 
@@ -53,10 +55,33 @@ export default function Main() {
 
     load();
   }, []);
-
-  const handleAddTransactions = async () => {
-    // setModalTabType(tabType); // 버튼에서 tabType 전달
+  useEffect(() => {
+    if (open) {
+      document.getElementById("add-transactions-modal")?.showModal();
+    }
+  }, [open]);
+  const handleAddTransactions = async (tabType) => {
+    console.log("a");
+    setModalTabType(tabType); // 버튼에서 tabType 전달
     setModalOpen(true);
+  };
+
+  const handleSave = async (formData) => {
+    try {
+      await fetchCreateTransactions(
+        formData.ledgerId,
+        formData.token,
+        formData.type,
+        formData.memo,
+        formData.amount,
+        formData.date,
+        formData.categoryId
+      );
+      alert("저장 완료");
+      setOpen(false);
+    } catch (error) {
+      setError("내역을 저장하지 못했습니다.");
+    }
   };
 
   const btns = [
@@ -66,7 +91,6 @@ export default function Main() {
       label: "수입 입력",
       icon: "+",
       color: "white",
-      handleClick: "handleAddTransactions",
       tabType: "income",
     },
     {
@@ -85,6 +109,7 @@ export default function Main() {
       color: "var(--main-color)",
       tabType: "",
       amount: "1000",
+      link: "/ledger",
     },
     {
       bgColor: "white",
@@ -94,6 +119,7 @@ export default function Main() {
       color: "var(--accent-color)",
       tabType: "",
       amount: "1000",
+      link: "/sharedLedger",
     },
   ];
   if (loading) return <p>로딩 중...</p>;
@@ -101,7 +127,7 @@ export default function Main() {
   return (
     <div className="flex flex-col justify-center gap-6 w-3/4">
       <div>
-        <h1>
+        <h1 className="mb-1">
           {isLoggedIn ? (
             <p>
               <span className="text-[var(--accent-color)] font-bold">
@@ -125,8 +151,8 @@ export default function Main() {
         </h1>
         <hr className="w-full" />
       </div>
-      <div className="flex flex-row gap-5">
-        <div className="w-2/4 flex flex-wrap">
+      <div className="flex flex-row gap-1">
+        <div className="w-1/2 flex flex-wrap">
           {btns.map((btn, idx) => (
             <MainButton
               key={idx}
@@ -136,9 +162,11 @@ export default function Main() {
               icon={btn.icon}
               color={btn.color}
               amount={btn.amount}
-              handleClick={handleAddTransactions}
-              tabType={modalTabType}
-              ledgers={ledgers}
+              handleClick={
+                btn.tabType
+                  ? () => handleAddTransactions(btn.tabType)
+                  : () => navigate(btn.link)
+              }
             ></MainButton>
           ))}
         </div>
@@ -149,6 +177,15 @@ export default function Main() {
         <MainSurpports></MainSurpports>
         <MainTransaction></MainTransaction>
       </div>
+      {modalOpen && (
+        <AddTransactions
+          ledgers={ledgers}
+          onSave={handleSave}
+          tabType={modalTabType}
+          onClose={() => setModalOpen(false)}
+          open={modalOpen}
+        />
+      )}
     </div>
   );
 }

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { BiRefresh } from "react-icons/bi";
 
 const expenseCategories = [
@@ -40,7 +40,15 @@ const localDatetime = new Date(now.getTime() - now.getTimezoneOffset() * 60000)
   .toISOString()
   .slice(0, 16);
 
-export default function AddTransactions({ ledgers, onSave, tabType }) {
+export default function AddTransactions({
+  ledgers,
+  onSave,
+  tabType,
+  onClose,
+  open,
+}) {
+  // console.log(tabType);
+  const dialogRef = useRef(null);
   const [tab, setTab] = useState(tabType || "expense");
   const [amount, setAmount] = useState("");
   const [memo, setMemo] = useState("");
@@ -49,8 +57,19 @@ export default function AddTransactions({ ledgers, onSave, tabType }) {
   const [selectedCategory, setSelectedCategory] = useState("");
 
   useEffect(() => {
+    if (open && dialogRef.current) {
+      dialogRef.current.showModal();
+    }
+  }, [open]);
+  const handleClose = () => {
+    if (dialogRef.current) dialogRef.current.close();
+    if (onClose) onClose(); // 부모(Main)에게 modalOpen false 알리기
+  };
+
+  useEffect(() => {
     setTab(tabType || "expense");
   }, [tabType]);
+
   // 숫자 입력 시 0,000 형태로 보이게 포맷
   const formatNumber = (value) => {
     const onlyNumbers = value.replace(/[^0-9]/g, "");
@@ -103,11 +122,12 @@ export default function AddTransactions({ ledgers, onSave, tabType }) {
     // 폼 초기화
     handleReset();
     document.getElementById("add-transactions-modal").close();
+    handleClose();
   };
 
   return (
     <div className="add-transactions">
-      <dialog id="add-transactions-modal" className="modal">
+      <dialog ref={dialogRef} id="add-transactions-modal" className="modal">
         <div className="modal-box max-w-2xl">
           {/* 탭 */}
           <div className="relative flex justify-between text-lg gap-10 mb-6 border-b border-[var(--black30)]">
@@ -259,7 +279,7 @@ export default function AddTransactions({ ledgers, onSave, tabType }) {
           </div>
         </div>
 
-        <form method="dialog" className="modal-backdrop">
+        <form method="dialog" className="modal-backdrop" onClick={handleClose}>
           <button>닫기</button>
         </form>
       </dialog>
