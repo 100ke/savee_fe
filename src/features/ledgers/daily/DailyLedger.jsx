@@ -146,7 +146,7 @@ function DailyLedger() {
           로딩 중 ...{" "}
         </div>
       ) : (
-        <TransactionCard transactions={transactions} />
+        <TransactionCard transactions={transactions} compact={true} />
       )}
     </div>
   );
