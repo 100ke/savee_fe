@@ -118,3 +118,11 @@
 .ledgers-transaction .weekly-chart {
   height: clamp(150px, 40vw, 330px);
 }
+
+/* 코멘트 */
+@media (max-width: 600px) {
+  .comment-list-container .chat > button {
+    bottom: -30px; /* 버튼을 아래로 내림 */
+    right: 10px;
+  }
+}

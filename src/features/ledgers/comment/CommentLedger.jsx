@@ -52,6 +52,23 @@ export default function CommentLedger() {
       } else {
         setComments(data || []);
 
+        const totalIncome = data.reduce((sum, tx) => {
+          const incomes = tx.users
+            .flatMap((user) => user.transactions)
+            .filter((t) => t.type === "income")
+            .reduce((s, t) => s + t.amount, 0);
+          return sum + incomes;
+        }, 0);
+
+        const totalExpense = data.reduce((sum, tx) => {
+          const expenses = tx.users
+            .flatMap((user) => user.transactions)
+            .filter((t) => t.type === "expense")
+            .reduce((s, t) => s + t.amount, 0);
+          return sum + expenses;
+        }, 0);
+
+        setSummary({ totalIncome, totalExpense });
         setError(null);
       }
     } catch (error) {

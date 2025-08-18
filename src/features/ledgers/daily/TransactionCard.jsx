@@ -54,7 +54,7 @@ function TransactionCard({ transactions }) {
           return (
             <table
               key={date}
-              className="table-auto w-full bg-base-100 rounded-3xl shadow-md p-4 scrollbar-hidden"
+              className="table-auto w-full max-w-[304px] bg-base-100 rounded-3xl shadow-md p-4 scrollbar-hidden"
             >
               <thead>
                 <tr>
