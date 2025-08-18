@@ -148,7 +148,7 @@ export default function Main() {
         <div>
           <h1 className="mb-1">
             {isLoggedIn ? (
-              <p>
+              <p className="text-2xl">
                 <span className="text-[var(--accent-color)] font-bold">
                   {userName}
                 </span>{" "}

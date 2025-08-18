@@ -15,8 +15,8 @@ export default function MainStats() {
   const year = now.getFullYear();
   const month = now.getMonth() + 1;
   return (
-    <div className="card border w-2/4 p-3">
-      <div className="flex flex-row justify-between">
+    <div className="card border w-2/4 p-3 main-chart-box">
+      <div className="flex flex-col lg:flex-row justify-between">
         <div className="">
           <a
             className="cursor-pointer font-bold text-lg"
@@ -25,7 +25,7 @@ export default function MainStats() {
             카테고리별 지출 &gt;
           </a>
         </div>
-        <div className="flex items-center sm:gap-5">
+        <div className="flex items-center justify-between sm:gap-5">
           <span className="date-title">
             {year}년 {month}월
           </span>
