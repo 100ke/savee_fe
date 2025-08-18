@@ -5,6 +5,7 @@ import MonthlyLedger from "../features/ledgers/monthly/MonthlyLedger";
 import SharedLedger from "../features/ledgers/shared/SharedLedger";
 import SharedLedgerPage from "./SharedLedgerPage";
 import GoalLedger from "../features/ledgers/goal/GoalLedger";
+import CommentLedger from "../features/ledgers/comment/CommentLedger";
 
 export default function SharedLedgerMain() {
   return (
@@ -16,7 +17,7 @@ export default function SharedLedgerMain() {
           <Route path="weekly" element={<WeeklyLedger />} />
           <Route path="monthly" element={<MonthlyLedger />} />
           <Route path="goals" element={<GoalLedger />} />
-          <Route path="comments" element={<WeeklyLedger />} />
+          <Route path="comments" element={<CommentLedger />} />
         </Route>
       </Route>
     </Routes>

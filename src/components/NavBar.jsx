@@ -1,10 +1,11 @@
 import "./NavBar.css";
 import Logo from "./../assets/savee.png";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
 
 export default function NavBar() {
+  const location = useLocation();
   const { isLoggedIn, logout } = useContext(AuthContext);
   const navigate = useNavigate();
   const goMainPage = async () => {
@@ -16,7 +17,7 @@ export default function NavBar() {
     alert("로그아웃 되었습니다.");
     navigate("/login");
   };
-
+  const activeTab = location.pathname;
   const menuItems = [
     {
       label: "달력",
@@ -59,20 +60,6 @@ export default function NavBar() {
       ),
     },
     {
-      label: "통계",
-      path: "/statistics",
-      icon: (
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 24 24"
-          fill="currentColor"
-          className="size-6"
-        >
-          <path d="M18.375 2.25c-1.035 0-1.875.84-1.875 1.875v15.75c0 1.035.84 1.875 1.875 1.875h.75c1.035 0 1.875-.84 1.875-1.875V4.125c0-1.036-.84-1.875-1.875-1.875h-.75ZM9.75 8.625c0-1.036.84-1.875 1.875-1.875h.75c1.036 0 1.875.84 1.875 1.875v11.25c0 1.035-.84 1.875-1.875 1.875h-.75a1.875 1.875 0 0 1-1.875-1.875V8.625ZM3 13.125c0-1.036.84-1.875 1.875-1.875h.75c1.036 0 1.875.84 1.875 1.875v6.75c0 1.035-.84 1.875-1.875 1.875h-.75A1.875 1.875 0 0 1 3 19.875v-6.75Z" />
-        </svg>
-      ),
-    },
-    {
       label: "공유 가계부",
       path: "/sharedLedger",
       icon: (
@@ -87,8 +74,22 @@ export default function NavBar() {
       ),
     },
     {
+      label: "통계",
+      path: "/statistics",
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="currentColor"
+          className="size-6"
+        >
+          <path d="M18.375 2.25c-1.035 0-1.875.84-1.875 1.875v15.75c0 1.035.84 1.875 1.875 1.875h.75c1.035 0 1.875-.84 1.875-1.875V4.125c0-1.036-.84-1.875-1.875-1.875h-.75ZM9.75 8.625c0-1.036.84-1.875 1.875-1.875h.75c1.036 0 1.875.84 1.875 1.875v11.25c0 1.035-.84 1.875-1.875 1.875h-.75a1.875 1.875 0 0 1-1.875-1.875V8.625ZM3 13.125c0-1.036.84-1.875 1.875-1.875h.75c1.036 0 1.875.84 1.875 1.875v6.75c0 1.035-.84 1.875-1.875 1.875h-.75A1.875 1.875 0 0 1 3 19.875v-6.75Z" />
+        </svg>
+      ),
+    },
+    {
       label: "소비 분석",
-      path: "/",
+      path: "/analysis",
       icon: (
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -159,7 +160,10 @@ export default function NavBar() {
       </div>
       <ul className="menu [&_li>*]:rounded-none p-0 w-48 custom-side-menu">
         {menuItems.map((item, idx) => (
-          <li key={idx}>
+          <li
+            key={idx}
+            className={`${activeTab === item.path ? "menu-tab-active" : ""}`}
+          >
             <Link
               to={item.path}
               className="p-4 text-base flex items-center gap-2"

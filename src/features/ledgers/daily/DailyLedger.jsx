@@ -66,7 +66,7 @@ function DailyLedger() {
         }
 
         setLedgerId(id);
-        console.log(ledgerId);
+
         const data = await fetchDailyTransactions(id, selectedDate, token);
 
         if (!data || !data.transactions) {

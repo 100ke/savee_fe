@@ -1,6 +1,6 @@
 import React from "react";
 
-function DetailList({ detailData, categoryName }) {
+function DetailList({ detailData, categoryName, filterType }) {
   if (!detailData || !Array.isArray(detailData) || detailData.length === 0) {
     return (
       <div className="detail-area rounded-box p-5 mb-3">
@@ -13,7 +13,17 @@ function DetailList({ detailData, categoryName }) {
   return (
     <div className="detail-area flex-grow overflow-auto rounded-box p-5 mb-3">
       <h3 className="text-2xl mb-2">
-        상세 내역 <span>{categoryName ? `- ${categoryName}` : ""}</span>
+        상세 내역{" "}
+        <span>
+          {categoryName &&
+            (filterType === "category"
+              ? `- ${categoryName} 카테고리`
+              : filterType === "week"
+              ? `- ${categoryName} 주`
+              : filterType === "month"
+              ? `- ${categoryName} 월`
+              : "")}
+        </span>
       </h3>
       <ul className="detail-list">
         {detailData.map((tx) => (

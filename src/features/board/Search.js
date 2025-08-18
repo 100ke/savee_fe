@@ -2,8 +2,7 @@ import { useEffect, useState } from "react";
 import { useSearchParams, useLocation } from "react-router-dom";
 import { isAdmin } from "./SupportApi";
 
-const ITEMS_PER_PAGE = 6;
-export default function useSearch(fetchFunction, refreshFlag) {
+export default function useSearch(fetchFunction, refreshFlag, items_amount) {
   const [data, setData] = useState([]); // 게시글 리스트
   const [currentPage, setCurrentPage] = useState(1); // 현재 페이지 번호
   const [totalPages, setTotalPages] = useState(1); // 총 페이지 수
@@ -11,7 +10,7 @@ export default function useSearch(fetchFunction, refreshFlag) {
   const [error, setError] = useState(null); // 에러 메시지 저장
   const [admin, setAdmin] = useState(false);
   const [searchKeyword, setSearchKeyword] = useState("");
-
+  const ITEMS_PER_PAGE = items_amount;
   const location = useLocation();
   const [searchParams, setSearchParams] = useSearchParams();
 
