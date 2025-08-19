@@ -38,13 +38,12 @@ export default function AddComment({
           <div className="form-control col-span-2">
             <label className="label font-semibold text-base">댓글</label>
             <span className="ml-3 text-[var(--black70)]">({date})</span>
-            <input
-              type="textArea"
+            <textarea
               placeholder="댓글 내용을 입력해 주세요"
               name="comment-content"
               onChange={(e) => setContent(e.target.value)}
               value={content}
-              className="input input-bordered focus:outline-none w-full border-0 border-b border-[var(--black30)] rounded-none"
+              className="textarea textarea-bordered focus:outline-none w-full border-0 border-b border-[var(--black30)] rounded-none"
             />
           </div>
 
