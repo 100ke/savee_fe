@@ -65,6 +65,10 @@
   width: 80px;
 }
 
+.detail-area .accent {
+  color: var(--accent-color);
+}
+
 /* 일일 지출 추이 */
 .daily-trend {
   border-color: var(--main-color-dark);
