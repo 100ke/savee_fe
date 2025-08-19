@@ -21,7 +21,7 @@ export default function SupportDetail() {
     }
     checkAdmin();
   }, []);
-  console.log("admin", admin);
+  // console.log("admin", admin);
   //로드
   useEffect(() => {
     const loadPost = async () => {
@@ -29,7 +29,7 @@ export default function SupportDetail() {
       try {
         const data = await fetchPostById(id);
         const post = data.data;
-        console.log("응답 내용:", post);
+        // console.log("응답 내용:", post);
         // console.log(posts);
         if (!post) return <div>게시글이 없습니다.</div>;
         setPost(post);
@@ -78,8 +78,7 @@ export default function SupportDetail() {
       </div>
       {/* </div> */}
 
-      <div className="container flex m-auto flex-wrap justify-between p-5 mt-3">
-        <a className="">이전글</a>
+      <div className="container flex m-auto flex-wrap justify-center p-5 mt-3">
         <button
           className="btn join-item rounded-box w-20 support-submit"
           onClick={() =>
@@ -106,7 +105,6 @@ export default function SupportDetail() {
             삭제
           </button>
         )}
-        <a>다음글</a>
       </div>
     </div>
   );
