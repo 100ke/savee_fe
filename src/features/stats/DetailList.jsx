@@ -12,16 +12,16 @@ function DetailList({ detailData, categoryName, filterType }) {
   }
   return (
     <div className="detail-area flex-grow overflow-auto rounded-box p-5 mb-3">
-      <h3 className="text-2xl mb-2">
+      <h3 className="text-2xl mb-2 flex justify-between">
         상세 내역{" "}
-        <span>
+        <span className="accent mr-3">
           {categoryName &&
             (filterType === "category"
-              ? `- ${categoryName} 카테고리`
+              ? ` ${categoryName} 카테고리`
               : filterType === "week"
-              ? `- ${categoryName} 주`
+              ? ` ${categoryName} 주`
               : filterType === "month"
-              ? `- ${categoryName} 월`
+              ? ` ${categoryName} 월`
               : "")}
         </span>
       </h3>

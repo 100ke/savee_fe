@@ -1,7 +1,9 @@
 // src/api/axiosInstance.js
 import axios from "axios";
+
 // local
 // const baseURL = process.env.REACT_APP_API_URL || "http://localhost:3001";
+
 
 // 배포
 // const baseURL =
@@ -10,6 +12,7 @@ import axios from "axios";
 // 배포 슬롯
 const baseURL =
   process.env.REACT_APP_API_URL || "https://savee-be-staging.azurewebsites.net";
+
 
 // Axios 인스턴스 생성
 const instance = axios.create({

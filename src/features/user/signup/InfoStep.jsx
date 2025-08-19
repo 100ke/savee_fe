@@ -45,6 +45,10 @@ function InfoStep({ onBack, onNext, onSignupSuccess }) {
       alert("모든 필드를 입력해주세요.");
       return;
     }
+    if (/\s/.test(name)) {
+      alert("이름에 공백은 허용되지 않습니다.");
+      return;
+    }
     if (!isVerified) {
       alert("이메일 인증을 완료해주세요.");
       return;

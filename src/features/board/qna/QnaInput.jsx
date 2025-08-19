@@ -5,8 +5,6 @@ export default function QnaInput({ onRegistered, closeModal }) {
   const [title, setTitle] = useState("");
   const [question, setQuestion] = useState("");
   const [error, setError] = useState("");
-  // const [files, setFiles] = useState([]);
-  // const [previews, setPreviews] = useState([]);
   const navigate = useNavigate();
   const [qna_type, setType] = useState("로그인");
   const { id } = useParams(); // id가 있으면 수정, 없으면 등록
@@ -82,7 +80,7 @@ export default function QnaInput({ onRegistered, closeModal }) {
     }
   };
   return (
-    <div className="w-full">
+    <div className="w-full h-2/3">
       <div className="flex items-center w-3/4">
         <fieldset className="fieldset flex-1">
           <legend className="fieldset-legend text-base font-normal">
@@ -114,7 +112,7 @@ export default function QnaInput({ onRegistered, closeModal }) {
           </select>
         </form>
       </div>
-      <fieldset className="fieldset h-2/4 flex flex-col">
+      <fieldset className="fieldset h-full flex flex-col">
         <legend className="fieldset-legend text-base font-normal w-full">
           문의
         </legend>

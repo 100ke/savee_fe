@@ -39,9 +39,18 @@ const fetchDailyTransactions = async (ledgerId, selectedDate, token) => {
       getAuthHeader(token)
     );
 
-    const { transactions, summary } = await response?.data?.data;
+    const data = response?.data?.data;
+
+    if (!data || !Array.isArray(data.transactions)) {
+      return { transactions: [], summary: { totalIncome: 0, totalExpense: 0 } };
+    }
+
+    const { transactions, summary } = data;
     return { transactions, summary };
   } catch (error) {
+    if (error.response?.status === 404) {
+      return { transactions: [], summary: { totalIncome: 0, totalExpense: 0 } };
+    }
     // 상위에서 처리하도록 throw
     throw error;
   }
@@ -311,8 +320,12 @@ const fetchGetGoal = async (ledgerId, token) => {
     );
 
     const resultGoal = await response.data.data;
+    console.log(resultGoal);
     return resultGoal;
   } catch (error) {
+    if (error.response?.status === 404) {
+      return [];
+    }
     throw error;
   }
 };
