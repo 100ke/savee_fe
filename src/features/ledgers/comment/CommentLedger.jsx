@@ -61,10 +61,10 @@ export default function CommentLedger() {
 
       if (!data || data.length === 0) {
         setError("데이터가 없습니다.");
-        setComments([]);
+        setComments(null);
         setSummary({ totalIncome: 0, totalExpense: 0 });
       } else {
-        setComments(data || []);
+        setComments(data || null);
 
         const totalIncome = data.reduce((sum, tx) => {
           const incomes = tx.users
@@ -91,12 +91,12 @@ export default function CommentLedger() {
       console.log(error);
       if (error.response?.status === 404) {
         setError("선택하신 월에 등록된 내역이 없습니다.");
-        setComments([]);
+        setComments(null);
         setSummary({ totalIncome: 0, totalExpense: 0 });
       } else {
         // 그 외 에러는 일반 에러 처리
         setError("데이터를 불러오는 중 오류가 발생했습니다.");
-        setComments([]);
+        setComments(null);
         setSummary({ totalIncome: 0, totalExpense: 0 });
       }
     }
@@ -119,6 +119,7 @@ export default function CommentLedger() {
         <>
           <TransactionList
             comments={comments}
+            setComments={setComments}
             ledgerId={ledgerId}
             content={content}
             setContent={setContent}

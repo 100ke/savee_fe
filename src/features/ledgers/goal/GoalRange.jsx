@@ -12,23 +12,23 @@ export default function GoalRange({
   setGoals,
   goalsTransactions,
 }) {
-  useEffect(() => {
-    if (
-      goalsTransactions &&
-      goalsTransactions.totalIncome === 0 &&
-      goalsTransactions.totalExpense === 0
-    ) {
-      // 이미 에러 상태가 있으면 중복 호출 방지
-      if (error !== "아직 등록된 수입/지출 내역이 없습니다.") {
-        setError("아직 등록된 수입/지출 내역이 없습니다.");
-      }
-    } else {
-      // 내역이 있으면 에러 초기화
-      if (error === "아직 등록된 수입/지출 내역이 없습니다.") {
-        setError(null);
-      }
-    }
-  }, [goalsTransactions, error, setError]);
+  // useEffect(() => {
+  //   if (
+  //     goalsTransactions &&
+  //     goalsTransactions.totalIncome === 0 &&
+  //     goalsTransactions.totalExpense === 0
+  //   ) {
+  //     // 이미 에러 상태가 있으면 중복 호출 방지
+  //     if (error !== "아직 등록된 수입/지출 내역이 없습니다.") {
+  //       setError("아직 등록된 수입/지출 내역이 없습니다.");
+  //     }
+  //   } else {
+  //     // 내역이 있으면 에러 초기화
+  //     if (error === "아직 등록된 수입/지출 내역이 없습니다.") {
+  //       setError(null);
+  //     }
+  //   }
+  // }, [goalsTransactions, error, setError]);
   const goal = Array.isArray(goals) ? goals[0] : goals;
   const rangeRef = useRef(null);
   const [thumbPosition, setThumbPosition] = useState(0);
@@ -144,7 +144,7 @@ export default function GoalRange({
   return (
     <div className="goal-range-container">
       {/* 에러 있으면 목표 진행바 숨김 */}
-      {!isValidGoal || !hasGoal || error ? (
+      {!isValidGoal || !hasGoal ? (
         <div className="text-center mt-10 text-[var(--black70)] flex flex-col justify-center items-center">
           {error || "아직 목표가 설정되지 않았습니다."}
           {(role === null || role === "owner") && !error && (
@@ -187,9 +187,10 @@ export default function GoalRange({
             <div
               className="absolute -bottom-6 text-xs text-[var(--accent-color)] font-medium whitespace-nowrap"
               style={{
-                left: `calc(${
-                  target !== 0 ? (current / target) * 100 : 0
-                }% - 30px)`,
+                left: `calc(${Math.min(
+                  (current / target) * 100,
+                  100
+                )}% - 30px)`,
                 transition: "left 0.3s ease",
                 top: "-1.5rem",
               }}
