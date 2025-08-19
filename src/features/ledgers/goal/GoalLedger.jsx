@@ -110,13 +110,16 @@ export default function GoalLedger() {
         const message = error.response?.data?.message;
         console.log(error);
         console.error(error);
-        if (message.includes("내역이 없습니다.")) {
+        if (
+          typeof message === "string" &&
+          message.includes("내역이 없습니다.")
+        ) {
           setError("내역이 없습니다.");
         }
       }
     };
     fetchGoals();
-  }, [isShared, sharedLedgerIdFromURL, selectedDate, token, goalsTransactions]);
+  }, [isShared, sharedLedgerIdFromURL, selectedDate, token]);
 
   return (
     <div className="max-w-full px-full scrollbar-hidden">
