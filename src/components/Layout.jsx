@@ -13,8 +13,9 @@ export default function Layout() {
 
       {/* 메인 콘텐츠 영역 */}
       <main
-        className={`flex flex-1 bg-white overflow-visible justify-center mt-10
-        ${isMypage ? "mb-0" : "mb-10"}
+        className={`flex flex-1 bg-white justify-center mt-10
+          ${isMypage ? "mb-0" : "mb-10"}
+          ${loc.pathname === "/analysis" ? "overflow-auto" : "overflow-visible"}
         `}
       >
         <Outlet />

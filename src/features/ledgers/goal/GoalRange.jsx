@@ -7,6 +7,7 @@ export default function GoalRange({
   goals,
   role,
   ledgerId,
+  error,
   setError,
   setGoals,
   goalsTransactions,
@@ -17,10 +18,17 @@ export default function GoalRange({
       goalsTransactions.totalIncome === 0 &&
       goalsTransactions.totalExpense === 0
     ) {
-      setError("아직 등록된 수입/지출 내역이 없습니다.");
+      // 이미 에러 상태가 있으면 중복 호출 방지
+      if (error !== "아직 등록된 수입/지출 내역이 없습니다.") {
+        setError("아직 등록된 수입/지출 내역이 없습니다.");
+      }
+    } else {
+      // 내역이 있으면 에러 초기화
+      if (error === "아직 등록된 수입/지출 내역이 없습니다.") {
+        setError(null);
+      }
     }
-  }, [goalsTransactions]);
-
+  }, [goalsTransactions, error, setError]);
   const goal = Array.isArray(goals) ? goals[0] : goals;
   const rangeRef = useRef(null);
   const [thumbPosition, setThumbPosition] = useState(0);
@@ -135,10 +143,11 @@ export default function GoalRange({
 
   return (
     <div className="goal-range-container">
-      {!isValidGoal || !hasGoal ? (
+      {/* 에러 있으면 목표 진행바 숨김 */}
+      {!isValidGoal || !hasGoal || error ? (
         <div className="text-center mt-10 text-[var(--black70)] flex flex-col justify-center items-center">
-          아직 목표가 설정되지 않았습니다.
-          {(role === null || role === "owner") && (
+          {error || "아직 목표가 설정되지 않았습니다."}
+          {(role === null || role === "owner") && !error && (
             <button
               onClick={() => {
                 document.getElementById("add-goal-modal").showModal();

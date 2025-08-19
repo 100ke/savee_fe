@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { deleteUser } from "../userApi";
 import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../../../context/AuthContext";
 
 function Withdraw() {
   const navigate = useNavigate();
@@ -8,10 +9,17 @@ function Withdraw() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  const { setIsLoggedIn, setUser } = useContext(AuthContext);
+
   const handleWithdraw = async () => {
     try {
       await deleteUser(email, password);
       localStorage.removeItem("accessToken");
+      localStorage.removeItem("user");
+      // 로그인 했던 전역 상태 초기화
+      setIsLoggedIn(false);
+      setUser(null);
+
       alert("회원 탈퇴가 완료되었습니다.");
       navigate("/");
     } catch (error) {

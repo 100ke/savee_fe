@@ -132,8 +132,8 @@ function ChangePassword({ isOpen, onSuccess, onClose }) {
                   type="password"
                   required
                   placeholder="Password"
-                  minlength="6"
-                  maxlength="20"
+                  minLength="6"
+                  maxLength="20"
                   value={newPw}
                   onChange={(e) => {
                     setNewPw(e.target.value);
@@ -176,8 +176,8 @@ function ChangePassword({ isOpen, onSuccess, onClose }) {
                   type="password"
                   required
                   placeholder="Confirm Password"
-                  minlength="6"
-                  maxlength="20"
+                  minLength="6"
+                  maxLength="20"
                   value={confirmPw}
                   onChange={(e) => {
                     setConfirmPw(e.target.value);
