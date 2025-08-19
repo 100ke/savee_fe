@@ -55,14 +55,28 @@ export default function QnaList({
                     </span>
                   </td>
                   <td>
-                    <div className="bg-[var(--accent-color)] p-1 text-center w-15 text-xs rounded-box text-white">
+                    <div className="bg-[var(--accent-color)] p-1 text-center w-15 text-xs rounded-box text-white text-overflow">
                       {post.qna_type}
                     </div>
                   </td>
-                  <td>{post.title}</td>
-                  <td>{post.createdAt?.split("T")[0]}</td>
-                  {/* {console.log(post.iscompleted)} */}
-                  <td>{post?.iscompleted ? "답변완료" : "답변없음"}</td>
+                  <td className="w-80">{post.title}</td>
+                  <td className="w-30 text-end">{post.user?.name}</td>
+                  <td className="w-40 text-end">
+                    {post.createdAt &&
+                      new Date(post.createdAt).toLocaleDateString("sv-SE")}
+                  </td>
+                  <td className="text-end">
+                    <span
+                      className={`border p-1.5 rounded-box text-xs 
+    ${
+      post?.iscompleted
+        ? "bg-[var(--main-color-dark)] text-white"
+        : "border-[var(--main-color-dark)] text-[var(--main-color-dark)]"
+    }`}
+                    >
+                      {post?.iscompleted ? "답변완료" : "답변없음"}
+                    </span>
+                  </td>
                 </tr>
 
                 <tr>
