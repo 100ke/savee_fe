@@ -71,30 +71,48 @@ export default function GoalLedger() {
         setLedgerId(id);
 
         // summary 값 받아오기
-        const dailyData = await fetchDailyTransactions(id, selectedDate, token);
+        let dailyData;
+        try {
+          dailyData = await fetchDailyTransactions(id, selectedDate, token);
+        } catch (e) {
+          console.warn(
+            "일일 내역이 없습니다.",
+            e?.response?.data?.message || e.message
+          );
+          dailyData = {
+            transactions: [],
+            summary: { totalIncome: 0, totalExpense: 0 },
+          };
+        }
         setSummary(dailyData.summary);
 
         const data = await fetchGetGoal(id, token);
 
-        if (!data || data.length === 0) {
+        if (!Array.isArray(data) || data.length === 0) {
           setGoals([]);
-        } else {
-          setError(null);
-          setGoals(data);
+          return;
         }
 
-        // goal range bar & summary를 위한 데이터 가져오기
-        const goalsTrs = await fetchGetGoalsTransactions(
-          id,
-          token,
-          data[0].start_date,
-          data[0].end_date
-        );
+        setError(null);
+        setGoals(data);
 
-        setGoalsTransactions(goalsTrs);
+        const { start_date, end_date } = data[0];
+        if (start_date && end_date) {
+          const goalsTrs = await fetchGetGoalsTransactions(
+            id,
+            token,
+            start_date,
+            end_date
+          );
+          setGoalsTransactions(goalsTrs);
+        }
       } catch (error) {
         const message = error.response?.data?.message;
         console.log(error);
+        console.error(error);
+        if (message.includes("내역이 없습니다.")) {
+          setError("내역이 없습니다.");
+        }
       }
     };
     fetchGoals();

@@ -1,4 +1,6 @@
+import { FaUserAlt } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import "../Ledgers.css";
 
 export default function SharedLedgerCard({ sharedLedgers, children }) {
   // daily에 ledgerId 넘기기
@@ -42,11 +44,8 @@ export default function SharedLedgerCard({ sharedLedgers, children }) {
                 <div className="flex -space-x-2.5">
                   {members.slice(0, 3).map((member, index) => (
                     <div className="avatar" key={index}>
-                      <div className="w-10 rounded-full border border-gray-200">
-                        <img
-                          src={`https://api.dicebear.com/7.x/initials/svg?seed=User${member.userId}`}
-                          alt={`User ${member.userId}`}
-                        />
+                      <div className="w-12 h-12 rounded-full border border-[var(--main-color)] bg-[var(--accent-color)] flex items-center justify-center">
+                        <FaUserAlt className="w-6 h-6 text-[var(--white)] bg-[var(--accent-color)] ml-3 mt-2.5" />
                       </div>
                     </div>
                   ))}
