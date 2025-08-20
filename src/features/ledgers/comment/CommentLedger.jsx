@@ -47,7 +47,7 @@ export default function CommentLedger() {
         const decoded = jwtDecode(token);
         currentUserId = decoded.userId || decoded.id || decoded.sub; // 구조에 맞게 조정
       } else {
-        currentUserId = personalLedgerInfo.id;
+        currentUserId = personalLedgerInfo.userId;
       }
 
       setUserId(currentUserId);
