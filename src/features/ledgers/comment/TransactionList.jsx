@@ -5,6 +5,7 @@ import { fetchCreateComment } from "../TransactionApi";
 
 export default function TransactionList({
   comments,
+  setComments,
   ledgerId,
   content,
   setContent,
@@ -21,9 +22,34 @@ export default function TransactionList({
         formData.content,
         localStorage.getItem("accessToken")
       );
+
+      // 댓글을 작성한 사용자 정보를 comment.users 배열에 추가
+      const updatedComments = comments.map((comment) => {
+        if (comment.date === formData.commentDate) {
+          return {
+            ...comment,
+            users: comment.users.map((user) => {
+              if (user.user.id === currentUserId) {
+                return {
+                  user: [
+                    ...comment.users,
+                    { id: currentUserId, name: user.user.name },
+                  ],
+                  comments: [...user.comments, { content: formData.content }],
+                };
+              }
+              return user;
+            }),
+          };
+        }
+        return comment;
+      });
+
       setContent(content);
       alert("등록 완료");
 
+      // UI 업데이트
+      setComments(updatedComments); // 댓글을 반영한 업데이트
       await onReload();
       setChooseDate(null);
       setContent(null);
@@ -48,7 +74,7 @@ export default function TransactionList({
     </div>
   ) : (
     <div
-      className="list comment-list rounded-box mt-5 max-h-[600px] overflow-y-auto scrollbar-hidden"
+      className="list comment-list rounded-box mt-5 max-h-[500px] overflow-y-auto scrollbar-hidden"
       style={{
         display: "grid",
         gridTemplateColumns: "repeat(2, 1fr)",
@@ -64,7 +90,7 @@ export default function TransactionList({
         return (
           <div
             key={comment.date}
-            className="comment-list-container shadow-md rounded-lg p-4 space-y-4"
+            className="comment-list-container shadow-md rounded-lg p-4 space-y-4 max-h-[500px] overflow-y-auto scrollbar-hidden"
           >
             {/* 날짜 */}
             <div className="comment-date text-sm font-semibold border-b border-[var(--black70)] pb-2 tracking-wide">
@@ -72,30 +98,36 @@ export default function TransactionList({
             </div>
 
             {/* 사용자별 내역 */}
-            {comment.users.map((user) => (
-              <div key={user.user.id} className="space-y-2">
-                <div className="user-name font-semibold">{user.user.name}</div>
+            {comment.users
+              .filter(
+                (user) => user.transactions && user.transactions.length > 0
+              )
+              .map((user) => (
+                <div key={user.user.id} className="space-y-2">
+                  <div className="user-name font-semibold">
+                    {user.user.name}
+                  </div>
 
-                <div className="rounded shadow p-4 space-y-2">
-                  {user.transactions.map((tx, idx) => (
-                    <div
-                      key={tx.id ?? idx}
-                      className="flex items-center gap-3 p-2 border-b last:border-b-0 border-[var(--black70)]"
-                    >
-                      <div className="w-10 h-10 flex items-center mb-1 justify-center text-sm font-medium text-[var(--accent-color)]">
-                        {tx.category_transactions?.name || "?"}
-                      </div>
-                      <div className="flex-1">
-                        <div className="font-semibold">{tx.memo}</div>
-                        <div className="text-sm text-[var(--black70)]">
-                          {tx.amount.toLocaleString()}원
+                  <div className="rounded shadow p-4 space-y-2">
+                    {user.transactions.map((tx, idx) => (
+                      <div
+                        key={tx.id ?? idx}
+                        className="flex items-center gap-3 p-2 border-b last:border-b-0 border-[var(--black70)]"
+                      >
+                        <div className="w-10 h-10 flex items-center mb-1 justify-center text-sm font-medium text-[var(--accent-color)]">
+                          {tx.category_transactions?.name || "?"}
+                        </div>
+                        <div className="flex-1">
+                          <div className="font-semibold">{tx.memo}</div>
+                          <div className="text-sm text-[var(--black70)]">
+                            {tx.amount.toLocaleString()}원
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  ))}
+                    ))}
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))}
 
             {/* 댓글 + 버튼 */}
             <div className="flex justify-end mt-4">

@@ -3,7 +3,6 @@ import AddTransactions from "./modal/AddTransactions";
 import {
   fetchCreateTransactions,
   fetchGetAllAccessLedgers,
-  fetchGetLedgers,
 } from "./TransactionApi";
 
 export default function LedgerAddButton({ ledgers, setLedgers, setError }) {

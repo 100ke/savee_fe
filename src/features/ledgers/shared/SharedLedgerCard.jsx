@@ -6,6 +6,12 @@ export default function SharedLedgerCard({ sharedLedgers, children }) {
   // daily에 ledgerId 넘기기
   const navigate = useNavigate();
 
+  if (!Array.isArray(sharedLedgers) || sharedLedgers.length === 0) {
+    return (
+      <div className="text-[var(--black70)] m-4 mt-30 ml-18">로딩 중...</div>
+    );
+  }
+
   return (
     <div className="flex flex-row flex-wrap gap-6">
       {sharedLedgers.map((ledger, idx) => {
