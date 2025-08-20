@@ -102,11 +102,9 @@ export const changeName = async (name) => {
 
 export const deleteUser = async (email, password) => {
   try {
-    const response = await axios.delete("/user", {
-      data: {
-        email,
-        password,
-      },
+    const response = await axios.post("/user", {
+      email,
+      password,
     });
     return response.data;
   } catch (error) {

@@ -45,8 +45,8 @@ function ChangeName({ isOpen, onSuccess, onClose }) {
                   type="text"
                   placeholder="Type here"
                   className="input"
-                  min="2"
-                  max="10"
+                  minLength="2"
+                  maxLength="10"
                   value={name}
                   onChange={(e) => {
                     setName(e.target.value);

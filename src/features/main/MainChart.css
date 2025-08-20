@@ -1,0 +1,11 @@
+.main-chart .legend-label {
+  width: 65px;
+}
+
+.main-chart .legend-amount {
+  width: 62px;
+}
+
+.main-chart-box {
+  min-width: 230px;
+}
