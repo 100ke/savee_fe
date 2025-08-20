@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { getMyQnAList } from "../userApi";
 import QnaTab from "../../board/qna/QnaTabs";
 import QnaList from "../../board/qna/QnaList";
@@ -9,18 +9,14 @@ function MyQnAList() {
   // 커스텀 훅은 무조건 최상단에서 호출
   const {
     data = [],
-    searchKeyword,
-    setSearchKeyword,
     admin,
     currentPage,
     loading,
     error,
-    handleSearch,
     handlePageChange,
     totalPages,
     pageParam,
     category,
-    setSearchParams,
   } = useSearch(getMyQnAList, refreshFlag, ITEMS_PER_PAGE);
 
   const filteredData =
