@@ -12,23 +12,6 @@ export default function GoalRange({
   setGoals,
   goalsTransactions,
 }) {
-  // useEffect(() => {
-  //   if (
-  //     goalsTransactions &&
-  //     goalsTransactions.totalIncome === 0 &&
-  //     goalsTransactions.totalExpense === 0
-  //   ) {
-  //     // 이미 에러 상태가 있으면 중복 호출 방지
-  //     if (error !== "아직 등록된 수입/지출 내역이 없습니다.") {
-  //       setError("아직 등록된 수입/지출 내역이 없습니다.");
-  //     }
-  //   } else {
-  //     // 내역이 있으면 에러 초기화
-  //     if (error === "아직 등록된 수입/지출 내역이 없습니다.") {
-  //       setError(null);
-  //     }
-  //   }
-  // }, [goalsTransactions, error, setError]);
   const goal = Array.isArray(goals) ? goals[0] : goals;
   const rangeRef = useRef(null);
   const [thumbPosition, setThumbPosition] = useState(0);

@@ -4,6 +4,7 @@ import Strategy from "../features/analysis/Strategy";
 import { getStrategy, getSummary } from "../features/analysis/analysisApi";
 import "../features/analysis/Analysis.css";
 import { AuthContext } from "../context/AuthContext";
+import { Navigate } from "react-router-dom";
 
 function Analysis() {
   const [summary, setSummary] = useState(null);
@@ -11,7 +12,7 @@ function Analysis() {
 
   const TODAY = new Date().toISOString().split("T")[0];
 
-  const { user } = useContext(AuthContext);
+  const { user, isLoggedIn } = useContext(AuthContext);
   const userId = user?.id;
 
   // 로컬 스토리지에서 캐시 가져오기
@@ -67,6 +68,10 @@ function Analysis() {
       console.log("캐시 데이터 사용");
     }
   }, [userId]);
+
+  if (!isLoggedIn) {
+    return <Navigate to="/login" replace />;
+  }
 
   // 기존) 페이지 로드마다 데이터 불러오는 방식
   // useEffect(() => {
