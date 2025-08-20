@@ -201,7 +201,6 @@ const fetchInviteLedgerMembers = async (ledgerId, token, email) => {
 // 공유 가계부 초대 수락(코드 등록)
 const fetchAcceptCodes = async (ledgerId, token, code, email) => {
   try {
-    const ledId = Number(ledgerId);
     const data = {
       code,
       email,

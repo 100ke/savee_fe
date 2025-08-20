@@ -74,7 +74,7 @@ export default function TransactionList({
     </div>
   ) : (
     <div
-      className="list comment-list rounded-box mt-5 max-h-[600px] overflow-y-auto scrollbar-hidden"
+      className="list comment-list rounded-box mt-5 max-h-[500px] overflow-y-auto scrollbar-hidden"
       style={{
         display: "grid",
         gridTemplateColumns: "repeat(2, 1fr)",
@@ -90,7 +90,7 @@ export default function TransactionList({
         return (
           <div
             key={comment.date}
-            className="comment-list-container shadow-md rounded-lg p-4 space-y-4 max-h-[550px] overflow-y-auto scrollbar-hidden"
+            className="comment-list-container shadow-md rounded-lg p-4 space-y-4 max-h-[500px] overflow-y-auto scrollbar-hidden"
           >
             {/* 날짜 */}
             <div className="comment-date text-sm font-semibold border-b border-[var(--black70)] pb-2 tracking-wide">
