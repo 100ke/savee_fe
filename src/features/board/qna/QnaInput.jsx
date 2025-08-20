@@ -31,7 +31,7 @@ export default function QnaInput({ onRegistered, closeModal }) {
   //포커싱
   const titleRef = useRef(null); // 제목 input 참조
   const contentRef = useRef(null); // 내용 textarea 참조
-  const MAX = 10;
+  // const MAX = 10;
 
   //제출
   const handleSubmit = async (e) => {
