@@ -53,6 +53,10 @@ function InfoStep({ onBack, onNext, onSignupSuccess }) {
       alert("이메일 인증을 완료해주세요.");
       return;
     }
+    if (/\s/.test(password) || /\s/.test(confirmPassword)) {
+      alert("비밀번호에 공백은 허용되지 않습니다.");
+      return;
+    }
     if (password !== confirmPassword) {
       alert("비밀번호가 일치하지 않습니다.");
       return;

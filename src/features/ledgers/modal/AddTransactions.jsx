@@ -119,6 +119,9 @@ export default function AddTransactions({
       categoryId,
     });
 
+    // 250824 백혜윤 - 수입/지출 입력시 소비분석 데이터 캐시 무효화
+    localStorage.setItem("ledgerUpdated", Date.now());
+
     // 폼 초기화
     handleReset();
     document.getElementById("add-transactions-modal").close();

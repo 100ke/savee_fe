@@ -6,9 +6,25 @@ export default function SharedLedgerCard({ sharedLedgers, children }) {
   // daily에 ledgerId 넘기기
   const navigate = useNavigate();
 
-  if (!Array.isArray(sharedLedgers) || sharedLedgers.length === 0) {
+  // if (!Array.isArray(sharedLedgers) || sharedLedgers.length === 0) {
+  //   return (
+  //     <div className="text-[var(--black70)] m-4 mt-30 ml-18">로딩중...</div>
+  //   );
+  // }
+
+  // ledger_ledgermembers가 빈 배열인 ledger가 있으면 아직 완전히 로딩 안된 상태로 간주
+  const isAnyMembersEmpty = sharedLedgers.some(
+    (ledger) =>
+      !Array.isArray(ledger.ledger_ledgermembers) ||
+      ledger.ledger_ledgermembers.length === 0
+  );
+
+  if (isAnyMembersEmpty) {
     return (
-      <div className="text-[var(--black70)] m-4 mt-30 ml-18">로딩 중...</div>
+      <div className="text-[var(--black70)] m-4 mt-30 ml-18 text-center">
+        가계부 정보를 불러오는 중... <br />
+        로딩이 지속될 경우 새로고침 해주세요.
+      </div>
     );
   }
 

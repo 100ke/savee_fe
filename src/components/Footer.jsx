@@ -30,8 +30,7 @@ function Footer() {
         </a>
       </nav>
       <nav>
-        <h6 className="footer-title">Company</h6>
-        <a className="link link-hover">About us</a>
+        <h6 className="footer-title">About us</h6>
         <a className="link link-hover" href="https://github.com/100ke">
           100ke
         </a>
