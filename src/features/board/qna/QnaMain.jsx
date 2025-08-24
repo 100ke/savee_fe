@@ -1,7 +1,7 @@
 import QnaTab from "./QnaTabs";
 import QnaList from "./QnaList";
 import QnaSearchBar from "../searchBar/QnaSearchBar";
-import { useState } from "react";
+import React, { useState } from "react";
 import QnaModal from "./QnaModal";
 import { getQnaPosts } from "../QnaApi";
 import useSearch from "../Search";

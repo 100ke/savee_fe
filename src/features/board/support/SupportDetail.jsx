@@ -78,7 +78,9 @@ export default function SupportDetail() {
       </div>
       {/* </div> */}
 
+
       <div className="container flex m-auto flex-wrap justify-center p-5 mt-3">
+
         <button
           className="btn join-item rounded-box w-20 support-submit"
           onClick={() =>
