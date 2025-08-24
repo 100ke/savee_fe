@@ -10,24 +10,23 @@ function Analysis() {
   const { user, isLoggedIn, loading: authLoading } = useContext(AuthContext);
   const userId = user?.id;
 
-  const [summary, setSummary] = useState(null);
-  const [strategy, setStrategy] = useState(null);
-  const [loading, setLoading] = useState(true);
-
   const TODAY = new Date().toISOString().split("T")[0];
 
-  // 로컬 스토리지에서 캐시 가져오기
-  const loadCachedData = () => {
-    if (!userId) return;
-    const cachedSummary = localStorage.getItem(`cachedSummary_${userId}`);
-    const cachedStrategy = localStorage.getItem(`cachedStrategy_${userId}`);
-    const lastFetchDate = localStorage.getItem(`lastFetchDate_${userId}`);
+  // 캐시에서 초기 상태 세팅
+  const cachedSummary = userId
+    ? localStorage.getItem(`cachedSummary_${userId}`)
+    : null;
+  const cachedStrategy = userId
+    ? localStorage.getItem(`cachedStrategy_${userId}`)
+    : null;
 
-    if (cachedSummary) setSummary(JSON.parse(cachedSummary));
-    if (cachedStrategy) setStrategy(JSON.parse(cachedStrategy));
-
-    return lastFetchDate;
-  };
+  const [summary, setSummary] = useState(
+    cachedSummary ? JSON.parse(cachedSummary) : null
+  );
+  const [strategy, setStrategy] = useState(
+    cachedStrategy ? JSON.parse(cachedStrategy) : null
+  );
+  const [loading, setLoading] = useState(!cachedSummary || !cachedStrategy);
 
   // api 호출 및 캐시에 데이터 저장
   const fetchAndCachedData = async () => {
@@ -64,12 +63,12 @@ function Analysis() {
 
   useEffect(() => {
     if (!userId) return;
-    const lastFetchDate = loadCachedData();
-
+    const lastFetchDate = localStorage.getItem(`lastFetchDate_${userId}`);
     // 수입/지출 내역 추가가 있었다면 fetch 하도록 코드 수정
     const ledgerUpdated = localStorage.getItem("ledgerUpdated");
 
-    if (lastFetchDate !== TODAY || ledgerUpdated) {
+    // 캐시 날짜가 오늘이 아님, 가계부에 수정 존재 -> 백그라운드 fetch
+    if (lastFetchDate !== TODAY || !summary || !strategy || ledgerUpdated) {
       fetchAndCachedData(userId);
       // 가계부 변경 반영 후 플래그 초기화
       if (ledgerUpdated) localStorage.removeItem("ledgerUpdated");
