@@ -7,13 +7,14 @@ import { AuthContext } from "../context/AuthContext";
 import { Navigate } from "react-router-dom";
 
 function Analysis() {
+  const { user, isLoggedIn, loading: authLoading } = useContext(AuthContext);
+  const userId = user?.id;
+
   const [summary, setSummary] = useState(null);
   const [strategy, setStrategy] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   const TODAY = new Date().toISOString().split("T")[0];
-
-  const { user, isLoggedIn, loading } = useContext(AuthContext);
-  const userId = user?.id;
 
   // 로컬 스토리지에서 캐시 가져오기
   const loadCachedData = () => {
@@ -31,6 +32,7 @@ function Analysis() {
   // api 호출 및 캐시에 데이터 저장
   const fetchAndCachedData = async () => {
     if (!userId) return;
+    setLoading(true);
     try {
       const summaryData = await getSummary();
       const strategyData = await getStrategy(summaryData);
@@ -55,6 +57,8 @@ function Analysis() {
       localStorage.setItem(`lastFetchDate_${userId}`, TODAY);
     } catch (error) {
       console.log("코칭 전략 로드 실패: ", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -62,13 +66,20 @@ function Analysis() {
     if (!userId) return;
     const lastFetchDate = loadCachedData();
 
-    if (lastFetchDate !== TODAY || !summary || !strategy) {
+    // 수입/지출 내역 추가가 있었다면 fetch 하도록 코드 수정
+    const ledgerUpdated = localStorage.getItem("ledgerUpdated");
+
+    if (lastFetchDate !== TODAY || ledgerUpdated) {
       fetchAndCachedData(userId);
+      // 가계부 변경 반영 후 플래그 초기화
+      if (ledgerUpdated) localStorage.removeItem("ledgerUpdated");
     } else {
+      setLoading(false);
       console.log("캐시 데이터 사용");
     }
   }, [userId]);
-  if (loading) {
+
+  if (authLoading) {
     return (
       <div className="analysis w-3/4">
         <h1 className="text-3xl mb-5">소비분석</h1>
@@ -94,34 +105,19 @@ function Analysis() {
     return <Navigate to="/login" replace />;
   }
 
-  // 기존) 페이지 로드마다 데이터 불러오는 방식
-  // useEffect(() => {
-  //   if (!summary) {
-  //     const fetchData = async () => {
-  //       try {
-  //         const summaryData = await getSummary();
-  //         setSummary(summaryData);
-  //         // 코칭 전략
-  //         const strategyData = await getStrategy(summaryData);
-  //         setStrategy(strategyData);
-  //       } catch (error) {
-  //         console.log("코칭 전략 로드 실패: ", error);
-  //       }
-  //     };
-
-  //     fetchData();
-  //   }
-  // }, [summary]);
-
   return (
     <div className="analysis w-3/4">
       <h1 className="text-3xl mb-5">소비분석</h1>
       <div className="flex flex-col xl:flex-row gap-5 xl:gap-10">
         <div className="flex-1">
-          <Summary data={summary} />
+          <Summary data={summary} loading={loading} />
         </div>
         <div className="flex-1">
-          <Strategy data={strategy} />
+          <Strategy
+            data={strategy}
+            summaryExists={!!summary?.summary}
+            loading={loading}
+          />
         </div>
       </div>
     </div>

@@ -1,6 +1,26 @@
 import React from "react";
 
-function Strategy({ data }) {
+function Strategy({ data, summaryExists, loading }) {
+  if (loading) {
+    return (
+      <div>
+        <h3 className="text-2xl font-semibold">코칭 전략</h3>
+        <p>로딩 중...</p>
+      </div>
+    );
+  }
+  if (!summaryExists) {
+    return (
+      <div>
+        <h3 className="text-2xl font-semibold">코칭 전략</h3>
+        <div className="alert alert-vertical p-10">
+          <p className="text-lg">
+            소비 요약 데이터가 없어 코칭 전략을 표시할 수 없습니다.
+          </p>
+        </div>
+      </div>
+    );
+  }
   if (
     !data ||
     !data.strategy ||
@@ -11,7 +31,7 @@ function Strategy({ data }) {
     return (
       <div>
         <h3 className="text-2xl font-semibold">코칭 전략</h3>
-        <p>로딩 중...</p>
+        <p>데이터를 불러오는 중 오류가 발생했습니다.</p>
       </div>
     );
   }

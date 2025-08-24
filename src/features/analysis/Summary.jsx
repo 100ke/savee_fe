@@ -1,7 +1,15 @@
 import React from "react";
 import { FaExclamationCircle } from "react-icons/fa";
 
-function Summary({ data }) {
+function Summary({ data, loading }) {
+  if (loading) {
+    return (
+      <div>
+        <h3 className="text-2xl font-semibold">이번 달 소비 요약</h3>
+        <p>로딩 중...</p>
+      </div>
+    );
+  }
   if (
     !data ||
     !data.summary ||
@@ -12,7 +20,14 @@ function Summary({ data }) {
     return (
       <div>
         <h3 className="text-2xl font-semibold">이번 달 소비 요약</h3>
-        <p>로딩 중...</p>
+        <div className="alert alert-vertical p-10">
+          <p className="text-lg">
+            가계부 내역이 없습니다. 수입/지출 항목을 작성해 보세요!
+          </p>
+          <a className="btn btn-primary" href="/ledger">
+            가계부 작성하기
+          </a>
+        </div>
       </div>
     );
   }
