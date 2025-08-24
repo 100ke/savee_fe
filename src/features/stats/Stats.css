@@ -42,6 +42,10 @@
   background-color: var(--black20);
 }
 
+.category-stats-box .blue {
+  color: var(--accent-color);
+}
+
 /* 월별 지출 총합 */
 .monthly-trend .blue {
   color: var(--main-color-dark);
