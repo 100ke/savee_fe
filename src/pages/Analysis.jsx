@@ -12,7 +12,7 @@ function Analysis() {
 
   const TODAY = new Date().toISOString().split("T")[0];
 
-  const { user, isLoggedIn } = useContext(AuthContext);
+  const { user, isLoggedIn, loading } = useContext(AuthContext);
   const userId = user?.id;
 
   // 로컬 스토리지에서 캐시 가져오기
@@ -68,6 +68,27 @@ function Analysis() {
       console.log("캐시 데이터 사용");
     }
   }, [userId]);
+  if (loading) {
+    return (
+      <div className="analysis w-3/4">
+        <h1 className="text-3xl mb-5">소비분석</h1>
+        <div className="flex flex-col xl:flex-row gap-5 xl:gap-10">
+          <div className="flex-1">
+            <div>
+              <h3 className="text-2xl font-semibold">이번 달 소비 요약</h3>
+              <p>로딩 중...</p>
+            </div>
+          </div>
+          <div className="flex-1">
+            <div>
+              <h3 className="text-2xl font-semibold">코칭 전략</h3>
+              <p>로딩 중...</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   if (!isLoggedIn) {
     return <Navigate to="/login" replace />;

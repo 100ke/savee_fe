@@ -138,6 +138,12 @@ function ChangePassword({ isOpen, onSuccess, onClose }) {
                   onChange={(e) => {
                     setNewPw(e.target.value);
                   }}
+                  onKeyDown={(e) => {
+                    if (e.key === " ") {
+                      e.preventDefault();
+                      alert("비밀번호에 공백은 사용할 수 없습니다.");
+                    }
+                  }}
                 />
               </label>
               <p className="validator-hint">
@@ -181,6 +187,12 @@ function ChangePassword({ isOpen, onSuccess, onClose }) {
                   value={confirmPw}
                   onChange={(e) => {
                     setConfirmPw(e.target.value);
+                  }}
+                  onKeyDown={(e) => {
+                    if (e.key === " ") {
+                      e.preventDefault();
+                      alert("비밀번호에 공백은 사용할 수 없습니다.");
+                    }
                   }}
                 />
               </label>
