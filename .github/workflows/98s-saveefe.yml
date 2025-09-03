@@ -6,7 +6,7 @@ on:
       - deploy
     paths:
       - "**"
-      - ".github/workflows/azure-static-web-apps-polite-dune-0f3b9e800.yml"
+      - ".github/workflows/98s-saveefe.yml"
   pull_request:
     types: [opened, synchronize, reopened, closed]
     branches:
